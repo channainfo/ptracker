@@ -136,20 +136,245 @@ CryptoTracker aims to democratize cryptocurrency investing by providing:
 3. **Learning**: Bite-sized educational content
 4. **Alerts**: Price and portfolio notifications
 
+## 🚀 Getting Started
+
+### Prerequisites
+
+- Node.js 18+ and npm 8+
+- Docker and Docker Compose
+- Git
+- PostgreSQL 15+ (for local development without Docker)
+- Redis 7+ (for local development without Docker)
+
+### Quick Start with Docker
+
+1. **Clone the repository**
+   ```bash
+   git clone https://github.com/cryptotracker/cryptotracker.git
+   cd cryptotracker
+   ```
+
+2. **Copy environment variables**
+   ```bash
+   cp .env.example .env
+   # Edit .env with your configuration
+   ```
+
+3. **Start with Docker Compose**
+   ```bash
+   # Start all services (API, Web, Database, Redis, etc.)
+   docker-compose up -d
+
+   # View logs
+   docker-compose logs -f
+
+   # Stop all services
+   docker-compose down
+   ```
+
+4. **Access the applications**
+   - Web App: http://localhost:3000
+   - API: http://localhost:3001
+   - API Docs: http://localhost:3001/api/docs
+   - Grafana: http://localhost:3003 (admin/admin123)
+   - Prometheus: http://localhost:9090
+
+### Local Development Setup
+
+1. **Install dependencies**
+   ```bash
+   # Install root dependencies
+   npm install
+
+   # Install all workspace dependencies
+   npm run install:all
+   ```
+
+2. **Setup database**
+   ```bash
+   # Create database
+   createdb cryptotracker
+
+   # Run migrations
+   cd apps/api
+   npm run migration:run
+   ```
+
+3. **Start development servers**
+   ```bash
+   # Start all applications in development mode
+   npm run dev
+
+   # Or start individually:
+   # API server
+   npm run dev:api
+
+   # Web client
+   npm run dev:web
+
+   # Mobile app
+   npm run dev:mobile
+   ```
+
+### Mobile Development
+
+1. **Install Expo CLI**
+   ```bash
+   npm install -g expo-cli eas-cli
+   ```
+
+2. **Start mobile development**
+   ```bash
+   cd apps/mobile
+   
+   # Start Expo development server
+   npm start
+
+   # Run on iOS simulator
+   npm run ios
+
+   # Run on Android emulator
+   npm run android
+   ```
+
+3. **Build for production**
+   ```bash
+   # Configure EAS
+   eas login
+   eas configure
+
+   # Build for iOS
+   eas build --platform ios
+
+   # Build for Android
+   eas build --platform android
+   ```
+
+### Testing
+
+```bash
+# Run all tests
+npm test
+
+# Run API tests
+npm run test:api
+
+# Run web tests
+npm run test:web
+
+# Run E2E tests
+npm run test:e2e
+
+# Run with coverage
+npm run test:cov
+```
+
+### Linting & Type Checking
+
+```bash
+# Run linting
+npm run lint
+
+# Run type checking
+npm run type-check
+
+# Fix linting issues
+npm run lint:fix
+```
+
+### Database Management
+
+```bash
+cd apps/api
+
+# Generate migration
+npm run migration:generate -- src/database/migrations/MigrationName
+
+# Run migrations
+npm run migration:run
+
+# Revert last migration
+npm run migration:revert
+
+# Sync schema (development only)
+npm run schema:sync
+```
+
+### Common Development Tasks
+
+**Add a new dependency to API**
+```bash
+cd apps/api
+npm install package-name
+```
+
+**Create a new NestJS module**
+```bash
+cd apps/api
+nest generate module module-name
+nest generate controller module-name
+nest generate service module-name
+```
+
+**Create a new Next.js page**
+```bash
+cd apps/web
+# Create file in src/app/page-name/page.tsx
+```
+
+**Update shared types**
+```bash
+cd packages/shared-types
+# Edit types in src/
+npm run build
+```
+
+### Troubleshooting
+
+**Port already in use**
+```bash
+# Find process using port
+lsof -ti:3000 | xargs kill -9
+lsof -ti:3001 | xargs kill -9
+```
+
+**Docker issues**
+```bash
+# Clean Docker system
+docker system prune -a
+
+# Rebuild containers
+docker-compose build --no-cache
+docker-compose up -d
+```
+
+**Node modules issues**
+```bash
+# Clean and reinstall
+rm -rf node_modules package-lock.json
+rm -rf apps/*/node_modules
+rm -rf packages/*/node_modules
+npm install
+```
+
 ## = Security & Compliance
 
 ### Security Measures
-- Multi-factor authentication
-- API key encryption
-- Read-only exchange permissions
-- Regular security audits
-- GDPR compliance
+- **Multi-factor authentication (MFA/2FA)** with TOTP and backup codes
+- **Social authentication** (Google, Facebook, Telegram) with OAuth 2.0
+- **Crypto wallet authentication** (MetaMask, Phantom, Sui Wallet)
+- **Anti-phishing protection** with verified domains and email warnings
+- **API key encryption** with AES-256-GCM
+- **Read-only exchange permissions** for enhanced account security
+- **Regular security audits** and penetration testing
+- **GDPR compliance** with data minimization principles
 
 ### Data Privacy
-- Encrypted user data
-- Minimal data collection
-- User data control
-- Transparent privacy policy
+- **End-to-end encrypted user data** using industry-standard encryption
+- **Minimal data collection** - only what's necessary for functionality
+- **User data control** with export, deletion, and privacy settings
+- **Transparent privacy policy** with clear data usage explanations
+- **Secure account recovery** with time-locked mechanisms and trusted contacts
 
 ## =� Monetization Strategy
 
