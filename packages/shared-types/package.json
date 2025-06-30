@@ -1,0 +1,44 @@
+{
+  "name": "@cryptotracker/shared-types",
+  "version": "1.0.0",
+  "description": "Shared TypeScript types and interfaces for CryptoTracker",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist/**/*",
+    "src/**/*"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "watch": "tsc --watch",
+    "clean": "rm -rf dist",
+    "dev": "tsc --watch",
+    "lint": "eslint src --ext .ts --fix",
+    "type-check": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "typescript": "^5.1.6",
+    "@typescript-eslint/eslint-plugin": "^6.0.0",
+    "@typescript-eslint/parser": "^6.0.0",
+    "eslint": "^8.45.0"
+  },
+  "peerDependencies": {
+    "typescript": ">=4.0.0"
+  },
+  "publishConfig": {
+    "access": "restricted"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cryptotracker/cryptotracker.git",
+    "directory": "packages/shared-types"
+  },
+  "keywords": [
+    "typescript",
+    "types",
+    "crypto",
+    "shared"
+  ],
+  "author": "CryptoTracker Team",
+  "license": "MIT"
+}

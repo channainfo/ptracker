@@ -1,0 +1,71 @@
+# Global
+node_modules/
+.env*
+.DS_Store
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+package-lock.json
+yarn.lock
+.pnpm-debug.log
+*.swp
+
+# OS-specific
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# IDEs
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# Build output
+dist/
+build/
+.cache/
+.next/
+out/
+.expo/
+.expo-shared/
+android/.gradle/
+android/app/build/
+ios/Pods/
+ios/build/
+web-build/
+coverage/
+tmp/
+temp/
+
+# NestJS
+nestjs/node_modules/
+nestjs/dist/
+nestjs/coverage/
+
+# Next.js
+nextjs/.next/
+nextjs/out/
+nextjs/.turbo/
+nextjs/node_modules/
+
+# Expo
+expo/node_modules/
+expo/.expo/
+expo/.expo-shared/
+expo/web-build/
+expo/android/.gradle/
+expo/android/app/build/
+expo/ios/build/
+expo/ios/Pods/
+
+# Optional: if using TypeScript
+**/*.tsbuildinfo
+
+# Optional: Firebase or cloud-specific artifacts
+.firebaserc
+.firebase/
+
+# Lint cache
+.eslintcache

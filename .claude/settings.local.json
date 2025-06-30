@@ -1,0 +1,31 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(mkdir:*)",
+      "Bash(ls:*)",
+      "Bash(npm install)",
+      "Bash(npm run start:dev:*)",
+      "Bash(timeout 15 npm run start:dev)",
+      "Bash(createdb:*)",
+      "Bash(npm run type-check:*)",
+      "Bash(npm install:*)",
+      "Bash(docker-compose up:*)",
+      "Bash(docker-compose:*)",
+      "Bash(rm:*)",
+      "Bash(npm run migration:run:*)",
+      "Bash(pkill:*)",
+      "Bash(find:*)",
+      "Bash(npm run migration:generate:*)",
+      "Bash(npm run typeorm:*)",
+      "Bash(node:*)",
+      "Bash(npm --version)",
+      "Bash(npx typeorm migration:show:*)",
+      "Bash(psql:*)",
+      "Bash(npm run dev:*)",
+      "Bash(npm run build:*)",
+      "Bash(curl:*)",
+      "Bash(npm run start:*)"
+    ],
+    "deny": []
+  }
+}
