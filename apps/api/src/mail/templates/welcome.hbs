@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome to CryptoTracker</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 600px;
+            margin: 40px auto;
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+        .header {
+            background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+            color: #ffffff;
+            padding: 40px 30px;
+            text-align: center;
+        }
+        .header h1 {
+            margin: 0 0 10px 0;
+            font-size: 32px;
+            font-weight: 700;
+        }
+        .header p {
+            margin: 0;
+            font-size: 18px;
+            opacity: 0.9;
+        }
+        .content {
+            padding: 40px 30px;
+        }
+        .feature {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 25px;
+        }
+        .feature-icon {
+            width: 50px;
+            height: 50px;
+            background-color: #f3f4f6;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            flex-shrink: 0;
+        }
+        .button {
+            display: inline-block;
+            padding: 14px 30px;
+            background-color: #4f46e5;
+            color: #ffffff;
+            text-decoration: none;
+            border-radius: 6px;
+            font-weight: 600;
+            margin: 20px 0;
+        }
+        .footer {
+            background-color: #f8f9fa;
+            padding: 30px;
+            text-align: center;
+            font-size: 14px;
+            color: #6b7280;
+        }
+        .social-links {
+            margin: 20px 0;
+        }
+        .social-links a {
+            display: inline-block;
+            margin: 0 10px;
+            color: #6b7280;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Welcome to CryptoTracker!</h1>
+            <p>Your journey to smarter crypto investing starts here</p>
+        </div>
+        <div class="content">
+            <h2>Hi {{name}},</h2>
+            <p>Thank you for joining CryptoTracker! We're thrilled to have you as part of our community.</p>
+            
+            <h3>Here's what you can do with CryptoTracker:</h3>
+            
+            <div class="feature">
+                <div class="feature-icon">📊</div>
+                <div>
+                    <strong>Track Your Portfolio</strong>
+                    <p>Monitor all your crypto investments in one place with real-time price updates.</p>
+                </div>
+            </div>
+            
+            <div class="feature">
+                <div class="feature-icon">📈</div>
+                <div>
+                    <strong>Analyze Performance</strong>
+                    <p>Get detailed insights into your portfolio's performance with advanced analytics.</p>
+                </div>
+            </div>
+            
+            <div class="feature">
+                <div class="feature-icon">🔔</div>
+                <div>
+                    <strong>Price Alerts</strong>
+                    <p>Set custom alerts and never miss important market movements.</p>
+                </div>
+            </div>
+            
+            <div class="feature">
+                <div class="feature-icon">🎓</div>
+                <div>
+                    <strong>Learn & Grow</strong>
+                    <p>Access educational resources to improve your crypto investment knowledge.</p>
+                </div>
+            </div>
+            
+            <div style="text-align: center; margin: 40px 0;">
+                <a href="{{loginUrl}}" class="button">Get Started</a>
+            </div>
+            
+            <p><strong>Need help getting started?</strong></p>
+            <p>Check out our <a href="{{loginUrl}}" style="color: #4f46e5;">Getting Started Guide</a> or reply to this email if you have any questions.</p>
+        </div>
+        <div class="footer">
+            <div class="social-links">
+                <a href="#">Twitter</a>
+                <a href="#">Discord</a>
+                <a href="#">Telegram</a>
+            </div>
+            <p>© 2025 CryptoTracker. All rights reserved.</p>
+            <p>You're receiving this email because you signed up for CryptoTracker.</p>
+        </div>
+    </div>
+</body>
+</html>

@@ -31,7 +31,15 @@
       "Bash(npm test:*)",
       "Bash(npm run typecheck:*)",
       "Bash(rg:*)",
-      "Bash(grep:*)"
+      "Bash(grep:*)",
+      "Bash(pg_isready:*)",
+      "Bash(cat:*)",
+      "Bash(npm rebuild:*)",
+      "Bash(npm uninstall:*)",
+      "Bash(npm run schema:sync:*)",
+      "Bash(npm run:*)",
+      "Bash(time npm run test:setup:migrations)",
+      "Bash(time npm run test:unit)"
     ],
     "deny": []
   }

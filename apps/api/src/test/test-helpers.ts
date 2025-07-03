@@ -9,13 +9,15 @@ import { Transaction, TransactionType } from '../portfolio/entities/transaction.
 
 export class TestHelpers {
   static async createTestingModule(providers: any[] = []): Promise<TestingModule> {
-    return Test.createTestingModule({
+    const module = await Test.createTestingModule({
       imports: [
         DatabaseTestModule,
         TypeOrmModule.forFeature([User, Portfolio, PortfolioHolding, Transaction]),
       ],
       providers,
     }).compile();
+
+    return module;
   }
 
   static async cleanDatabase(dataSource: DataSource): Promise<void> {
@@ -24,37 +26,32 @@ export class TestHelpers {
     
     try {
       await queryRunner.connect();
+      await queryRunner.startTransaction();
       
-      // Disable foreign key checks temporarily
-      await queryRunner.query('SET session_replication_role = replica;');
+      // Delete in the correct order: child tables first, then parent tables
+      await queryRunner.query('DELETE FROM transactions');
+      await queryRunner.query('DELETE FROM portfolio_holdings'); 
+      await queryRunner.query('DELETE FROM portfolios');
+      await queryRunner.query('DELETE FROM users');
       
-      // Get all table names
-      const tables = await queryRunner.query(`
-        SELECT tablename FROM pg_tables 
-        WHERE schemaname = 'public' 
-        AND tablename NOT LIKE 'pg_%' 
-        AND tablename != 'information_schema'
-      `);
-      
-      // Truncate all tables
-      for (const table of tables) {
-        await queryRunner.query(`TRUNCATE TABLE "${table.tablename}" CASCADE;`);
-      }
-      
-      // Re-enable foreign key checks
-      await queryRunner.query('SET session_replication_role = DEFAULT;');
+      await queryRunner.commitTransaction();
+    } catch (error) {
+      await queryRunner.rollbackTransaction();
+      throw error;
     } finally {
       await queryRunner.release();
     }
   }
 
-  static createMockUser(): Partial<User> {
+  static createMockUser(overrides: Partial<User> = {}): Partial<User> {
+    const timestamp = Date.now();
     return {
-      email: 'test@example.com',
+      email: `test-${timestamp}@example.com`,
       firstName: 'Test',
       lastName: 'User',
       isActive: true,
       emailVerified: true,
+      ...overrides,
     };
   }
 

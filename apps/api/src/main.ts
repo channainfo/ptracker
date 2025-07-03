@@ -1,3 +1,4 @@
+import * as dotenv from 'dotenv';
 import { NestFactory } from '@nestjs/core';
 import { ValidationPipe } from '@nestjs/common';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
@@ -5,6 +6,10 @@ import { ConfigService } from '@nestjs/config';
 import helmet from 'helmet';
 import * as compression from 'compression';
 import { AppModule } from './app.module';
+
+
+const dotenvPath = `.env.${process.env.NODE_ENV || 'development'}`
+dotenv.config({ path: dotenvPath });
 
 async function bootstrap(): Promise<void> {
   const app = await NestFactory.create(AppModule);
@@ -70,7 +75,7 @@ async function bootstrap(): Promise<void> {
 
   const port = configService.get('PORT') || 3001;
   await app.listen(port);
-  
+
   console.log(`🚀 CryptoTracker API is running on: http://localhost:${port}`);
   console.log(`📖 API Documentation: http://localhost:${port}/api/docs`);
 }

@@ -36,11 +36,16 @@ print_warning() {
     echo -e "${YELLOW}⚠️  $1${NC}"
 }
 
-# Check if PostgreSQL is running
-if ! pg_isready -h $DB_HOST -p $DB_PORT -U $DB_USERNAME >/dev/null 2>&1; then
-    print_error "PostgreSQL is not running or not accessible"
-    print_status "Please ensure PostgreSQL is running on ${DB_HOST}:${DB_PORT}"
-    exit 1
+# Check if PostgreSQL is running (try Unix socket first, then TCP)
+if ! pg_isready -U $DB_USERNAME >/dev/null 2>&1; then
+    if ! pg_isready -h $DB_HOST -p $DB_PORT -U $DB_USERNAME >/dev/null 2>&1; then
+        print_error "PostgreSQL is not running or not accessible"
+        print_status "Please ensure PostgreSQL is running on ${DB_HOST}:${DB_PORT} or via Unix socket"
+        exit 1
+    fi
+    USE_TCP=true
+else
+    USE_TCP=false
 fi
 
 print_success "PostgreSQL is running"
@@ -48,17 +53,33 @@ print_success "PostgreSQL is running"
 # Create test database if it doesn't exist
 print_status "Creating test database if it doesn't exist..."
 
-if [ -n "$DB_PASSWORD" ]; then
-    PGPASSWORD=$DB_PASSWORD createdb -h $DB_HOST -p $DB_PORT -U $DB_USERNAME $DB_NAME 2>/dev/null || true
+if [ "$USE_TCP" = true ]; then
+    if [ -n "$DB_PASSWORD" ]; then
+        PGPASSWORD=$DB_PASSWORD createdb -h $DB_HOST -p $DB_PORT -U $DB_USERNAME $DB_NAME 2>/dev/null || true
+    else
+        createdb -h $DB_HOST -p $DB_PORT -U $DB_USERNAME $DB_NAME 2>/dev/null || true
+    fi
 else
-    createdb -h $DB_HOST -p $DB_PORT -U $DB_USERNAME $DB_NAME 2>/dev/null || true
+    if [ -n "$DB_PASSWORD" ]; then
+        PGPASSWORD=$DB_PASSWORD createdb -U $DB_USERNAME $DB_NAME 2>/dev/null || true
+    else
+        createdb -U $DB_USERNAME $DB_NAME 2>/dev/null || true
+    fi
 fi
 
 # Check if database was created or already exists
-if [ -n "$DB_PASSWORD" ]; then
-    PGPASSWORD=$DB_PASSWORD psql -h $DB_HOST -p $DB_PORT -U $DB_USERNAME -d $DB_NAME -c "SELECT version();" >/dev/null 2>&1
+if [ "$USE_TCP" = true ]; then
+    if [ -n "$DB_PASSWORD" ]; then
+        PGPASSWORD=$DB_PASSWORD psql -h $DB_HOST -p $DB_PORT -U $DB_USERNAME -d $DB_NAME -c "SELECT version();" >/dev/null 2>&1
+    else
+        psql -h $DB_HOST -p $DB_PORT -U $DB_USERNAME -d $DB_NAME -c "SELECT version();" >/dev/null 2>&1
+    fi
 else
-    psql -h $DB_HOST -p $DB_PORT -U $DB_USERNAME -d $DB_NAME -c "SELECT version();" >/dev/null 2>&1
+    if [ -n "$DB_PASSWORD" ]; then
+        PGPASSWORD=$DB_PASSWORD psql -U $DB_USERNAME -d $DB_NAME -c "SELECT version();" >/dev/null 2>&1
+    else
+        psql -U $DB_USERNAME -d $DB_NAME -c "SELECT version();" >/dev/null 2>&1
+    fi
 fi
 
 if [ $? -eq 0 ]; then
@@ -71,10 +92,18 @@ fi
 # Create UUID extension if it doesn't exist
 print_status "Setting up database extensions..."
 
-if [ -n "$DB_PASSWORD" ]; then
-    PGPASSWORD=$DB_PASSWORD psql -h $DB_HOST -p $DB_PORT -U $DB_USERNAME -d $DB_NAME -c "CREATE EXTENSION IF NOT EXISTS \"uuid-ossp\";" >/dev/null 2>&1
+if [ "$USE_TCP" = true ]; then
+    if [ -n "$DB_PASSWORD" ]; then
+        PGPASSWORD=$DB_PASSWORD psql -h $DB_HOST -p $DB_PORT -U $DB_USERNAME -d $DB_NAME -c "CREATE EXTENSION IF NOT EXISTS \"uuid-ossp\";" >/dev/null 2>&1
+    else
+        psql -h $DB_HOST -p $DB_PORT -U $DB_USERNAME -d $DB_NAME -c "CREATE EXTENSION IF NOT EXISTS \"uuid-ossp\";" >/dev/null 2>&1
+    fi
 else
-    psql -h $DB_HOST -p $DB_PORT -U $DB_USERNAME -d $DB_NAME -c "CREATE EXTENSION IF NOT EXISTS \"uuid-ossp\";" >/dev/null 2>&1
+    if [ -n "$DB_PASSWORD" ]; then
+        PGPASSWORD=$DB_PASSWORD psql -U $DB_USERNAME -d $DB_NAME -c "CREATE EXTENSION IF NOT EXISTS \"uuid-ossp\";" >/dev/null 2>&1
+    else
+        psql -U $DB_USERNAME -d $DB_NAME -c "CREATE EXTENSION IF NOT EXISTS \"uuid-ossp\";" >/dev/null 2>&1
+    fi
 fi
 
 print_success "Database extensions configured"
