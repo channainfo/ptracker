@@ -17,28 +17,34 @@ async function bootstrap(): Promise<void> {
 
   // Security middleware
   app.use(helmet({
-    contentSecurityPolicy: {
+    contentSecurityPolicy: process.env.NODE_ENV === 'production' ? {
       directives: {
         defaultSrc: ["'self'"],
         styleSrc: ["'self'", "'unsafe-inline'"],
         scriptSrc: ["'self'"],
         imgSrc: ["'self'", "data:", "https:"],
-        connectSrc: ["'self'", "wss:", "ws:"],
+        connectSrc: ["'self'", "wss:", "ws:", "http://localhost:*", "https://localhost:*"],
       },
-    },
+    } : false, // Disable CSP in development
     crossOriginEmbedderPolicy: false,
   }));
 
   // Compression
   app.use(compression());
 
-  // CORS configuration
+  // CORS configuration - Allow all origins for development
   app.enableCors({
-    origin: configService.get('CORS_ORIGINS')?.split(',') || ['http://localhost:3000'],
+    origin: true, // Allow all origins
     credentials: true,
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization'],
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS', 'HEAD'],
+    allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'Accept', 'Origin', 'X-Request-ID', 'X-Client-Version'],
+    exposedHeaders: ['X-Total-Count', 'X-Request-ID'],
+    maxAge: 86400, // 24 hours
+    preflightContinue: false,
+    optionsSuccessStatus: 204,
   });
+  
+  console.log('⚠️  CORS: Allowing all origins - This should only be used in development!');
 
   // Global validation pipe
   app.useGlobalPipes(

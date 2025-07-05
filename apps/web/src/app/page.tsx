@@ -1,6 +1,8 @@
 import { HeroSection } from '@/components/landing/hero-section';
 import { FeaturesSection } from '@/components/landing/features-section';
 import { StatsSection } from '@/components/landing/stats-section';
+import { WidgetsShowcaseSection } from '@/components/landing/widgets-showcase-section';
+import { EducationSection } from '@/components/landing/education-section';
 import { TestimonialsSection } from '@/components/landing/testimonials-section';
 import { CTASection } from '@/components/landing/cta-section';
 import { Header } from '@/components/layout/header';
@@ -14,6 +16,8 @@ export default function HomePage() {
         <HeroSection />
         <FeaturesSection />
         <StatsSection />
+        <WidgetsShowcaseSection />
+        <EducationSection />
         <TestimonialsSection />
         <CTASection />
       </main>

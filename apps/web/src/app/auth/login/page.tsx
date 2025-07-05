@@ -1,19 +1,19 @@
 import { Metadata } from 'next';
-import { LoginForm } from '@/components/auth/login-form';
+import { ImprovedLoginForm } from '@/components/auth/improved-login-form';
 import { AuthLayout } from '@/components/layout/auth-layout';
 
 export const metadata: Metadata = {
-  title: 'Login',
-  description: 'Sign in to your CryptoTracker account',
+  title: 'Sign In | CryptoTracker',
+  description: 'Sign in to your CryptoTracker account to manage your cryptocurrency portfolio',
 };
 
 export default function LoginPage() {
   return (
     <AuthLayout
       title="Welcome back"
-      subtitle="Sign in to your account to continue"
+      subtitle="Sign in to your account to continue tracking your crypto portfolio"
     >
-      <LoginForm />
+      <ImprovedLoginForm />
     </AuthLayout>
   );
 }
