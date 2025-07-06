@@ -12,6 +12,7 @@ import { GoogleStrategy } from './strategies/google.strategy';
 import { FacebookStrategy } from './strategies/facebook.strategy';
 import { User } from '../users/entities/user.entity';
 import { UsersModule } from '../users/users.module';
+import { MailModule } from '../mail/mail.module';
 
 @Module({
   imports: [
@@ -27,6 +28,7 @@ import { UsersModule } from '../users/users.module';
     }),
     TypeOrmModule.forFeature([User]),
     UsersModule,
+    MailModule,
   ],
   controllers: [AuthController],
   providers: [

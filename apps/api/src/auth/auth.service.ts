@@ -17,6 +17,7 @@ import { UsersService } from '../users/users.service';
 import { LoginDto } from './dto/login.dto';
 import { RegisterDto } from './dto/register.dto';
 import { ResetPasswordDto } from './dto/reset-password.dto';
+import { MailService } from '../mail/mail.service';
 
 export interface JwtPayload {
   sub: string;
@@ -40,6 +41,7 @@ export class AuthService {
     private readonly usersService: UsersService,
     private readonly jwtService: JwtService,
     private readonly configService: ConfigService,
+    private readonly mailService: MailService,
   ) {}
 
   async register(registerDto: RegisterDto): Promise<AuthResult> {
@@ -361,12 +363,28 @@ export class AuthService {
   }
 
   private async sendVerificationEmail(user: User): Promise<void> {
-    // TODO: Implement email service
-    console.log(`Verification email would be sent to ${user.email} with token: ${user.emailVerificationToken}`);
+    try {
+      await this.mailService.sendEmailVerification(
+        user.email,
+        `${user.firstName} ${user.lastName}`,
+        user.emailVerificationToken,
+      );
+    } catch (error) {
+      console.error('Failed to send verification email:', error);
+      // Log error but don't fail registration
+    }
   }
 
   private async sendPasswordResetEmail(user: User, resetToken: string): Promise<void> {
-    // TODO: Implement email service
-    console.log(`Password reset email would be sent to ${user.email} with token: ${resetToken}`);
+    try {
+      await this.mailService.sendPasswordReset(
+        user.email,
+        `${user.firstName} ${user.lastName}`,
+        resetToken,
+      );
+    } catch (error) {
+      console.error('Failed to send password reset email:', error);
+      // Log error but don't fail the request
+    }
   }
 }

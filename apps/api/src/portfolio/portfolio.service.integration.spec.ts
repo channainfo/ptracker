@@ -279,7 +279,9 @@ describe('PortfolioService Integration Tests', () => {
       // Assert - portfolio should be soft deleted (isActive = false)
       const deletedPortfolio = await portfolioRepository.findOne({
         where: { id: savedPortfolio.id },
+        withDeleted: true, // Include soft-deleted records
       });
+      expect(deletedPortfolio).toBeDefined();
       expect(deletedPortfolio.isActive).toBe(false);
     });
 
