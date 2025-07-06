@@ -64,27 +64,45 @@
   }
 
   .btn {
-    @apply inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50;
+    @apply inline-flex items-center justify-center rounded-md font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50;
   }
 
+  /* Button sizes */
+  .btn-sm {
+    @apply btn h-8 px-3 text-xs;
+  }
+
+  .btn-md {
+    @apply btn h-10 px-4 py-2 text-sm;
+  }
+
+  .btn-lg {
+    @apply btn h-12 px-6 py-3 text-base;
+  }
+
+  .btn-xl {
+    @apply btn h-14 px-8 py-4 text-lg;
+  }
+
+  /* Button variants - default to medium size */
   .btn-primary {
-    @apply btn bg-primary text-primary-foreground hover:bg-primary/90;
+    @apply btn-md bg-primary text-primary-foreground hover:bg-primary/90;
   }
 
   .btn-secondary {
-    @apply btn bg-secondary text-secondary-foreground hover:bg-secondary/80;
+    @apply btn-md bg-secondary text-secondary-foreground hover:bg-secondary/80;
   }
 
   .btn-outline {
-    @apply btn border border-input bg-background hover:bg-accent hover:text-accent-foreground;
+    @apply btn-md border border-input bg-background hover:bg-accent hover:text-accent-foreground;
   }
 
   .btn-ghost {
-    @apply btn hover:bg-accent hover:text-accent-foreground;
+    @apply btn-md hover:bg-accent hover:text-accent-foreground;
   }
 
   .btn-destructive {
-    @apply btn bg-destructive text-destructive-foreground hover:bg-destructive/90;
+    @apply btn-md bg-destructive text-destructive-foreground hover:bg-destructive/90;
   }
 
   .input {
@@ -109,6 +127,119 @@
 
   .price-neutral {
     @apply text-muted-foreground;
+  }
+
+  /* Enhanced Checkbox Styles */
+  .checkbox {
+    @apply h-5 w-5 rounded border-2 border-input bg-background transition-all duration-200 ease-in-out cursor-pointer relative;
+    @apply focus:ring-2 focus:ring-ring focus:ring-offset-2 focus:outline-none;
+    @apply hover:border-primary hover:bg-primary/5 hover:shadow-sm;
+    transform: scale(1);
+  }
+
+  .checkbox:hover {
+    transform: scale(1.05);
+    @apply shadow-md;
+  }
+
+  .checkbox:active {
+    transform: scale(0.95);
+  }
+
+  .checkbox:checked {
+    @apply bg-primary border-primary shadow-md;
+    background-image: url("data:image/svg+xml,%3csvg viewBox='0 0 16 16' fill='%23ffffff' xmlns='http://www.w3.org/2000/svg'%3e%3cpath d='m13.854 3.646-7.5 7.5a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6 10.293l7.146-7.147a.5.5 0 0 1 .708.708z'/%3e%3c/svg%3e");
+    background-size: 14px 14px;
+    background-position: center;
+    background-repeat: no-repeat;
+    animation: checkboxCheck 0.2s ease-in-out;
+  }
+
+  /* Dark mode specific checkmark - use dark checkmark for better contrast */
+  .dark .checkbox:checked {
+    background-image: url("data:image/svg+xml,%3csvg viewBox='0 0 16 16' fill='%23000000' xmlns='http://www.w3.org/2000/svg'%3e%3cpath d='m13.854 3.646-7.5 7.5a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6 10.293l7.146-7.147a.5.5 0 0 1 .708.708z'/%3e%3c/svg%3e");
+  }
+
+  .checkbox:checked:hover {
+    @apply bg-primary/90;
+    transform: scale(1.05);
+  }
+
+  .checkbox:indeterminate {
+    @apply bg-primary border-primary shadow-md;
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 16 16'%3e%3cpath stroke='white' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M4 8h8'/%3e%3c/svg%3e");
+    background-size: 12px 12px;
+    background-position: center;
+    background-repeat: no-repeat;
+  }
+
+  .checkbox:disabled {
+    @apply opacity-50 cursor-not-allowed;
+    transform: scale(1) !important;
+  }
+
+  .checkbox:disabled:checked {
+    @apply bg-muted border-muted;
+  }
+
+  /* Checkbox animation */
+  @keyframes checkboxCheck {
+    0% {
+      transform: scale(0.8);
+      opacity: 0.8;
+    }
+    50% {
+      transform: scale(1.1);
+    }
+    100% {
+      transform: scale(1);
+      opacity: 1;
+    }
+  }
+
+  /* Additional visual feedback for unchecked state */
+  .checkbox:not(:checked) {
+    @apply border-input bg-background;
+  }
+
+  .checkbox:not(:checked):hover {
+    @apply border-primary/60 bg-primary/5;
+    box-shadow: 0 0 0 3px rgba(var(--primary), 0.1);
+  }
+
+  .checkbox:not(:checked):focus {
+    @apply border-primary;
+    box-shadow: 0 0 0 3px rgba(var(--primary), 0.2);
+  }
+
+  /* Form validation styles for checkboxes */
+  .checkbox.error {
+    @apply border-destructive;
+  }
+
+  .checkbox.error:checked {
+    @apply bg-destructive border-destructive;
+  }
+
+  .checkbox.success {
+    @apply border-green-500;
+  }
+
+  .checkbox.success:checked {
+    @apply bg-green-500 border-green-500;
+  }
+
+  /* Label interaction styles */
+  .checkbox-label {
+    @apply transition-colors duration-200 cursor-pointer select-none;
+  }
+
+  .checkbox-label:hover {
+    @apply text-primary;
+  }
+
+  .checkbox:checked + .checkbox-label {
+    @apply text-foreground;
   }
 }
 
@@ -153,6 +284,109 @@
   animation: ticker 60s linear infinite;
 }
 
+/* Widget showcase animations */
+@keyframes fade-in {
+  0% {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in {
+  animation: fade-in 0.5s ease-out;
+}
+
+/* News streaming animations */
+@keyframes slide-in-top {
+  0% {
+    opacity: 0;
+    transform: translateY(-20px) scale(0.95);
+  }
+  50% {
+    opacity: 0.8;
+    transform: translateY(-5px) scale(0.98);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Hero widget progress bar animation */
+@keyframes progress {
+  0% {
+    width: 0%;
+  }
+  100% {
+    width: 100%;
+  }
+}
+
+.animate-slide-in-top {
+  animation: slide-in-top 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+@keyframes news-highlight {
+  0% {
+    background-color: transparent;
+  }
+  50% {
+    background-color: rgba(59, 130, 246, 0.1);
+  }
+  100% {
+    background-color: transparent;
+  }
+}
+
+.animate-news-highlight {
+  animation: news-highlight 2s ease-in-out;
+}
+
+/* Market sentiment streaming animations */
+@keyframes shimmer {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+.animate-shimmer {
+  animation: shimmer 1.5s ease-in-out infinite;
+}
+
+@keyframes sentiment-update {
+  0% {
+    background-color: transparent;
+    transform: scale(1);
+  }
+  50% {
+    background-color: rgba(139, 92, 246, 0.1);
+    transform: scale(1.02);
+  }
+  100% {
+    background-color: transparent;
+    transform: scale(1);
+  }
+}
+
+.animate-sentiment-update {
+  animation: sentiment-update 1.5s ease-in-out;
+}
+
+/* Utility classes for line clamping */
+.line-clamp-2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
 /* Loading states */
 .skeleton {
   @apply animate-pulse bg-muted;
@@ -170,11 +404,41 @@
 
 /* Form styles */
 .form-error {
-  @apply text-sm text-destructive;
+  @apply text-sm text-destructive mt-1;
 }
 
 .form-label {
-  @apply text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70;
+  @apply text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 block mb-1;
+}
+
+.form-description {
+  @apply text-sm text-muted-foreground;
+}
+
+.form-field {
+  @apply space-y-2;
+}
+
+/* Enhanced input styles */
+.input:focus {
+  @apply ring-2 ring-ring ring-offset-2;
+}
+
+.input:disabled {
+  @apply cursor-not-allowed opacity-50;
+}
+
+/* Checkbox styles */
+input[type="checkbox"] {
+  @apply h-4 w-4 rounded border-input bg-background text-primary focus:ring-2 focus:ring-ring focus:ring-offset-2 focus:ring-offset-background;
+}
+
+input[type="checkbox"]:checked {
+  @apply bg-primary border-primary;
+}
+
+input[type="checkbox"]:disabled {
+  @apply cursor-not-allowed opacity-50;
 }
 
 /* Responsive text sizes */

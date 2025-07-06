@@ -25,6 +25,8 @@
     "test:integration:migrations": "npm run test:setup:migrations && jest --testPathPattern=integration.spec.ts",
     "test:unit": "jest --testPathPattern=spec.ts --testPathIgnorePatterns=integration.spec.ts",
     "test:email": "ts-node src/mail/test-email.ts",
+    "mailhog:start": "docker run -d -p 1025:1025 -p 8025:8025 --name mailhog mailhog/mailhog",
+    "mailhog:stop": "docker stop mailhog && docker rm mailhog",
     "test:migration": "node ./scripts/test-migration.js",
     "typeorm": "node -r ts-node/register ../../node_modules/typeorm/cli.js",
     "migration:generate": "npm run typeorm -- migration:generate -d src/database/data-source.js",

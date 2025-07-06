@@ -9,6 +9,7 @@ import { UsersModule } from './users/users.module';
 import { PortfolioModule } from './portfolio/portfolio.module';
 import { MarketDataModule } from './market-data/market-data.module';
 import { MailModule } from './mail/mail.module';
+import { WebSocketModule } from './websocket/websocket.module';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 
@@ -70,6 +71,7 @@ const envFilePath = `.env.${process.env.NODE_ENV || 'development'}`
     UsersModule,
     PortfolioModule,
     MarketDataModule,
+    WebSocketModule,
   ],
   controllers: [AppController],
   providers: [
