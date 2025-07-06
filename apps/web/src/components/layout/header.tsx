@@ -5,16 +5,11 @@ import Link from 'next/link';
 import { useAuth } from '@/components/providers/auth-provider';
 import { ThemeToggle } from '@/components/ui/theme-toggle';
 import { Logo } from '@/components/ui/logo';
-import { 
-  Bars3Icon, 
-  XMarkIcon, 
-  ChartBarIcon,
-  AcademicCapIcon,
-  CurrencyDollarIcon,
-  HomeIcon,
-  UserCircleIcon,
+import {
+  Bars3Icon,
+  XMarkIcon,
   Cog6ToothIcon,
-  ArrowRightOnRectangleIcon,
+  ArrowRightStartOnRectangleIcon,
   ChevronDownIcon,
   UserIcon,
   ShieldCheckIcon
@@ -27,16 +22,29 @@ export function Header() {
   const settingsMenuRef = useRef<HTMLDivElement>(null);
 
   const navigationItems = isAuthenticated ? [
-    { name: 'Dashboard', href: '/dashboard', icon: HomeIcon },
-    { name: 'Portfolio', href: '/portfolio', icon: ChartBarIcon },
-    { name: 'Market', href: '/market', icon: CurrencyDollarIcon },
-    { name: 'Learn', href: '/learn', icon: AcademicCapIcon },
+    { name: 'Dashboard', href: '/dashboard' },
+    { name: 'Portfolio', href: '/portfolio' },
+    { name: 'Market', href: '/market' },
+    { name: 'Learn', href: '/learn' },
   ] : [
-    { name: 'Market', href: '/market', icon: CurrencyDollarIcon },
-    { name: 'Learn', href: '/learn', icon: AcademicCapIcon },
+    { name: 'Features', href: '#features' },
+    { name: 'How It Works', href: '#how-it-works' },
+    { name: 'Learn', href: '/learn' },
+    { name: 'Testimonials', href: '#testimonials' },
+    { name: 'Pricing', href: '#pricing' },
   ];
 
   const closeMobileMenu = () => setMobileMenuOpen(false);
+
+  const handleNavClick = (href: string) => {
+    if (href.startsWith('#')) {
+      const element = document.getElementById(href.substring(1));
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth' });
+        closeMobileMenu();
+      }
+    }
+  };
 
   // Close settings menu when clicking outside
   useEffect(() => {
@@ -63,8 +71,8 @@ export function Header() {
         <div className="flex h-16 items-center justify-between">
           {/* Logo */}
           <div className="flex items-center">
-            <Link 
-              href="/" 
+            <Link
+              href="/"
               className="hover:opacity-80 transition-opacity"
               onClick={closeMobileMenu}
             >
@@ -77,14 +85,20 @@ export function Header() {
           <div className="hidden lg:block">
             <div className="flex items-center space-x-1">
               {navigationItems.map((item) => {
-                const Icon = item.icon;
-                return (
+                return item.href.startsWith('#') ? (
+                  <button
+                    key={item.name}
+                    onClick={() => handleNavClick(item.href)}
+                    className="flex items-center space-x-2 px-3 py-2 rounded-lg text-muted-foreground hover:text-foreground hover:bg-accent transition-all duration-200"
+                  >
+                    <span>{item.name}</span>
+                  </button>
+                ) : (
                   <Link
                     key={item.name}
                     href={item.href}
                     className="flex items-center space-x-2 px-3 py-2 rounded-lg text-muted-foreground hover:text-foreground hover:bg-accent transition-all duration-200"
                   >
-                    <Icon className="h-4 w-4" />
                     <span>{item.name}</span>
                   </Link>
                 );
@@ -113,7 +127,7 @@ export function Header() {
                 </div>
                 <div className="h-6 w-px bg-border" />
                 <ThemeToggle />
-                
+
                 {/* Settings Dropdown */}
                 <div className="relative" ref={settingsMenuRef}>
                   <button
@@ -124,7 +138,7 @@ export function Header() {
                     <Cog6ToothIcon className="h-5 w-5" />
                     <ChevronDownIcon className={`h-4 w-4 transition-transform duration-200 ${settingsMenuOpen ? 'rotate-180' : ''}`} />
                   </button>
-                  
+
                   {settingsMenuOpen && (
                     <div className="absolute right-0 mt-2 w-48 bg-background border border-border rounded-lg shadow-lg z-50">
                       <div className="py-1">
@@ -150,7 +164,7 @@ export function Header() {
                           }}
                           className="flex items-center space-x-3 px-4 py-2 text-sm text-destructive hover:bg-destructive/10 w-full text-left transition-colors"
                         >
-                          <ArrowRightOnRectangleIcon className="h-4 w-4" />
+                          <ArrowRightStartOnRectangleIcon className="h-4 w-4" />
                           <span>Sign out</span>
                         </button>
                       </div>
@@ -202,16 +216,22 @@ export function Header() {
               <div className="px-4 py-6 space-y-1">
                 {/* Navigation Items */}
                 {navigationItems.map((item) => {
-                  const Icon = item.icon;
-                  return (
+                  return item.href.startsWith('#') ? (
+                    <button
+                      key={item.name}
+                      onClick={() => handleNavClick(item.href)}
+                      className="px-4 py-3 rounded-lg text-muted-foreground hover:text-foreground hover:bg-accent transition-all duration-200 w-full text-left font-medium"
+                    >
+                      {item.name}
+                    </button>
+                  ) : (
                     <Link
                       key={item.name}
                       href={item.href}
-                      className="flex items-center space-x-3 px-4 py-3 rounded-lg text-muted-foreground hover:text-foreground hover:bg-accent transition-all duration-200"
+                      className="block px-4 py-3 rounded-lg text-muted-foreground hover:text-foreground hover:bg-accent transition-all duration-200 font-medium"
                       onClick={closeMobileMenu}
                     >
-                      <Icon className="h-5 w-5" />
-                      <span className="font-medium">{item.name}</span>
+                      {item.name}
                     </Link>
                   );
                 })}
@@ -256,7 +276,7 @@ export function Header() {
                         }}
                         className="flex items-center space-x-3 px-4 py-3 w-full text-left rounded-lg text-destructive hover:text-destructive/80 hover:bg-destructive/10 transition-all duration-200"
                       >
-                        <ArrowRightOnRectangleIcon className="h-5 w-5" />
+                        <ArrowRightStartOnRectangleIcon className="h-5 w-5" />
                         <span className="font-medium">Sign out</span>
                       </button>
                     </>
@@ -267,7 +287,6 @@ export function Header() {
                         className="flex items-center justify-center px-4 py-3 rounded-lg text-muted-foreground hover:text-foreground hover:bg-accent transition-all duration-200 font-medium text-base"
                         onClick={closeMobileMenu}
                       >
-                        <UserCircleIcon className="h-5 w-5 mr-2" />
                         Sign in
                       </Link>
                       <Link

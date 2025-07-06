@@ -5,12 +5,12 @@ import { AppService } from './app.service';
 @ApiTags('health')
 @Controller()
 export class AppController {
-  constructor(private readonly appService: AppService) {}
+  constructor(private readonly appService: AppService) { }
 
   @Get('health')
   @ApiOperation({ summary: 'Health check endpoint' })
-  @ApiResponse({ 
-    status: 200, 
+  @ApiResponse({
+    status: 200,
     description: 'Service is healthy',
     schema: {
       type: 'object',
@@ -29,8 +29,8 @@ export class AppController {
 
   @Get()
   @ApiOperation({ summary: 'API root endpoint' })
-  @ApiResponse({ 
-    status: 200, 
+  @ApiResponse({
+    status: 200,
     description: 'API information',
     schema: {
       type: 'object',

@@ -40,7 +40,8 @@
       "Bash(npm run:*)",
       "Bash(time npm run test:setup:migrations)",
       "Bash(time npm run test:unit)",
-      "Bash(npx tsc:*)"
+      "Bash(npx tsc:*)",
+      "Bash(cp:*)"
     ],
     "deny": []
   }

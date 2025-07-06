@@ -12,8 +12,8 @@ const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
   title: {
-    default: 'CryptoTracker - Smart Portfolio & Crypto Education',
-    template: '%s | CryptoTracker',
+    default: 'PTracker - Smart Portfolio & Crypto Education',
+    template: '%s | PTracker',
   },
   description: 'The ultimate crypto portfolio management and education platform with real-time market sentiment analysis.',
   keywords: [
@@ -28,31 +28,31 @@ export const metadata: Metadata = {
     'market analysis',
     'sentiment analysis',
   ],
-  authors: [{ name: 'CryptoTracker Team' }],
-  creator: 'CryptoTracker',
-  metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL || 'https://cryptotracker.com'),
+  authors: [{ name: 'PTracker Team' }],
+  creator: 'PTracker',
+  metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL || 'https://ptracker.com'),
   openGraph: {
     type: 'website',
     locale: 'en_US',
     url: process.env.NEXT_PUBLIC_APP_URL,
-    title: 'CryptoTracker - Smart Portfolio & Crypto Education',
+    title: 'PTracker - Smart Portfolio & Crypto Education',
     description: 'The ultimate crypto portfolio management and education platform with real-time market sentiment analysis.',
-    siteName: 'CryptoTracker',
+    siteName: 'PTracker',
     images: [
       {
         url: '/og-image.png',
         width: 1200,
         height: 630,
-        alt: 'CryptoTracker',
+        alt: 'PTracker',
       },
     ],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'CryptoTracker - Smart Portfolio & Crypto Education',
+    title: 'PTracker - Smart Portfolio & Crypto Education',
     description: 'The ultimate crypto portfolio management and education platform with real-time market sentiment analysis.',
     images: ['/og-image.png'],
-    creator: '@cryptotracker',
+    creator: '@ptracker',
   },
   icons: {
     icon: '/favicon.ico',
