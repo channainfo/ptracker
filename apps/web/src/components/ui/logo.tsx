@@ -69,10 +69,10 @@ export function Logo({ className, size = 'md', variant = 'default' }: LogoProps)
         'font-bold text-foreground leading-none',
         sizes[size].text
       )}>
-        CryptoTracker
+        PTracker
       </span>
       <span className="text-xs text-muted-foreground font-medium leading-none mt-0.5">
-        Smart Portfolio
+        Portfolio Tracker
       </span>
     </div>
   );

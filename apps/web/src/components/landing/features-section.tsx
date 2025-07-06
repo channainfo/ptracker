@@ -69,15 +69,15 @@ export function FeaturesSection() {
   ];
 
   return (
-    <section className="bg-gray-900 py-24 sm:py-32">
+    <section id="features" className="bg-background py-24 sm:py-32">
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         {/* Header */}
         <div className="mx-auto max-w-4xl text-center">
-          <h2 className="text-base font-semibold leading-7 text-blue-400">Powerful Features</h2>
-          <p className="mt-2 text-4xl font-bold tracking-tight text-white sm:text-5xl">
+          <h2 className="text-base font-semibold leading-7 text-primary">Powerful Features</h2>
+          <p className="mt-2 text-4xl font-bold tracking-tight text-foreground sm:text-5xl">
             Everything you need to succeed in crypto
           </p>
-          <p className="mt-6 text-lg leading-8 text-gray-300">
+          <p className="mt-6 text-lg leading-8 text-muted-foreground">
             From beginners taking their first steps to experienced traders optimizing their strategies
           </p>
         </div>
@@ -88,8 +88,8 @@ export function FeaturesSection() {
             {mainFeatures.map((feature) => {
               const Icon = feature.icon;
               return (
-                <div key={feature.name} className="group relative bg-gray-800 p-8 rounded-2xl border border-gray-700 hover:border-gray-600 transition-all duration-300 hover:shadow-xl hover:shadow-blue-500/10">
-                  <div className="absolute inset-0 rounded-2xl bg-gradient-to-r opacity-0 group-hover:opacity-10 transition-opacity duration-300" 
+                <div key={feature.name} className="group relative bg-card p-8 rounded-2xl border border-border hover:border-primary/50 transition-all duration-300 hover:shadow-xl hover:shadow-primary/10">
+                  <div className="absolute inset-0 rounded-2xl bg-gradient-to-r opacity-0 group-hover:opacity-5 transition-opacity duration-300" 
                        style={{background: `linear-gradient(to right, var(--tw-gradient-from), var(--tw-gradient-to))`}} />
                   
                   <dt className="flex flex-col">
@@ -97,13 +97,13 @@ export function FeaturesSection() {
                       <Icon className="h-6 w-6 text-white" />
                     </div>
                     <div className="flex items-center justify-between mb-2">
-                      <span className="text-xl font-semibold text-white">{feature.name}</span>
-                      <span className="text-xs font-medium text-gray-400 bg-gray-700 px-2 py-1 rounded-full">
+                      <span className="text-xl font-semibold text-foreground">{feature.name}</span>
+                      <span className="text-xs font-medium text-muted-foreground bg-muted px-2 py-1 rounded-full">
                         {feature.stats}
                       </span>
                     </div>
                   </dt>
-                  <dd className="mt-4 text-base text-gray-300 leading-relaxed">
+                  <dd className="mt-4 text-base text-muted-foreground leading-relaxed">
                     <p>{feature.description}</p>
                   </dd>
                 </div>
@@ -115,22 +115,22 @@ export function FeaturesSection() {
         {/* Additional Features Grid */}
         <div className="mx-auto mt-24 max-w-2xl sm:mt-32 lg:max-w-none">
           <div className="text-center mb-12">
-            <h3 className="text-2xl font-bold text-white mb-4">More Features You'll Love</h3>
-            <p className="text-gray-400">Comprehensive tools designed for crypto investors at every level</p>
+            <h3 className="text-2xl font-bold text-foreground mb-4">More Features You'll Love</h3>
+            <p className="text-muted-foreground">Comprehensive tools designed for crypto investors at every level</p>
           </div>
           
           <dl className="grid max-w-xl grid-cols-1 gap-6 lg:max-w-none lg:grid-cols-2 xl:grid-cols-3">
             {additionalFeatures.map((feature) => {
               const Icon = feature.icon;
               return (
-                <div key={feature.name} className="group relative bg-gray-800/50 p-6 rounded-xl border border-gray-700 hover:border-gray-600 transition-all duration-300 hover:bg-gray-800">
-                  <dt className="flex items-center gap-x-3 text-base font-semibold text-white mb-3">
+                <div key={feature.name} className="group relative bg-card/50 p-6 rounded-xl border border-border hover:border-primary/50 transition-all duration-300 hover:bg-card">
+                  <dt className="flex items-center gap-x-3 text-base font-semibold text-foreground mb-3">
                     <div className="flex-shrink-0">
-                      <Icon className="h-6 w-6 text-blue-400" />
+                      <Icon className="h-6 w-6 text-primary" />
                     </div>
                     {feature.name}
                   </dt>
-                  <dd className="text-sm text-gray-300 leading-relaxed">
+                  <dd className="text-sm text-muted-foreground leading-relaxed">
                     <p>{feature.description}</p>
                   </dd>
                 </div>
@@ -141,18 +141,18 @@ export function FeaturesSection() {
 
         {/* CTA Section */}
         <div className="mx-auto mt-16 max-w-2xl text-center">
-          <div className="rounded-2xl bg-gradient-to-r from-blue-600 to-purple-600 p-8">
-            <h3 className="text-2xl font-bold text-white mb-4">
+          <div className="rounded-2xl bg-gradient-to-r from-primary to-primary/80 p-8">
+            <h3 className="text-2xl font-bold text-primary-foreground mb-4">
               Ready to Start Your Crypto Journey?
             </h3>
-            <p className="text-blue-100 mb-6">
+            <p className="text-primary-foreground/80 mb-6">
               Join thousands of successful crypto investors who trust our platform
             </p>
             <div className="flex flex-row gap-3 sm:gap-4 justify-center">
-              <button className="bg-white text-blue-600 px-4 sm:px-6 py-2 sm:py-3 text-sm sm:text-base rounded-lg font-semibold hover:bg-gray-100 transition-colors">
+              <button className="bg-background text-primary px-4 sm:px-6 py-2 sm:py-3 text-sm sm:text-base rounded-lg font-semibold hover:bg-accent transition-colors">
                 Start Free Trial
               </button>
-              <button className="border border-white/30 text-white px-4 sm:px-6 py-2 sm:py-3 text-sm sm:text-base rounded-lg font-semibold hover:bg-white/10 transition-colors">
+              <button className="border border-primary-foreground/30 text-primary-foreground px-4 sm:px-6 py-2 sm:py-3 text-sm sm:text-base rounded-lg font-semibold hover:bg-primary-foreground/10 transition-colors">
                 View Demo
               </button>
             </div>

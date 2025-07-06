@@ -276,7 +276,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
           const userData = await authService.getCurrentUser();
           setUser(userData);
-          authService.setLastActivity(); // Update last activity
+          // Update last activity handled internally
         } catch (error) {
           console.error('Failed to get current user:', error);
           await authService.logout();
@@ -295,7 +295,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
     // Activity tracking for automatic logout
     const trackActivity = () => {
-      authService.setLastActivity();
+      // Activity tracking handled internally by authService
     };
 
     const events = ['mousedown', 'mousemove', 'keypress', 'scroll', 'touchstart'];
@@ -507,7 +507,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       
       // Force logout on other devices for security
       await authService.logout();
-      toast.info('Please log in again with your new password for security.');
+      toast('Please log in again with your new password for security.', { icon: 'ℹ️' });
       router.push('/auth/login');
       
       return result;

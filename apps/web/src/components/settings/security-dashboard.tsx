@@ -1,17 +1,25 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Tab } from '@headlessui/react';
-import { 
-  ShieldCheckIcon, 
-  KeyIcon, 
-  EnvelopeIcon,
-  ClockIcon,
-  ExclamationTriangleIcon,
-  CheckCircleIcon
-} from '@heroicons/react/24/outline';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import {
+  Shield,
+  Key,
+  Mail,
+  Clock,
+  AlertTriangle,
+  CheckCircle,
+  Smartphone,
+  Download,
+  Trash2
+} from 'lucide-react';
 import { useAuth } from '@/components/providers/auth-provider';
-import { Switch } from '@headlessui/react';
+import { Switch } from '@/components/ui/switch';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Badge } from '@/components/ui/badge';
+import { Progress } from '@/components/ui/progress';
 
 interface SecurityEvent {
   id: string;
@@ -47,7 +55,7 @@ export function SecurityDashboard() {
   const [backupCodes, setBackupCodes] = useState<string[]>([]);
   const [verificationCode, setVerificationCode] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  
+
   const { user } = useAuth();
 
   useEffect(() => {
@@ -92,7 +100,7 @@ export function SecurityDashboard() {
         headers: { 'Authorization': `Bearer ${localStorage.getItem('accessToken')}` }
       });
       const data = await response.json();
-      
+
       setQrCode(data.qrCode);
       setBackupCodes(data.backupCodes);
       setShow2FASetup(true);
@@ -109,13 +117,13 @@ export function SecurityDashboard() {
       // Mock API call
       await fetch(`${process.env.NEXT_PUBLIC_API_URL}/auth/2fa/verify`, {
         method: 'POST',
-        headers: { 
+        headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
         },
         body: JSON.stringify({ token: verificationCode })
       });
-      
+
       setSecuritySettings(prev => ({ ...prev, twoFactorEnabled: true }));
       setShow2FASetup(false);
       setVerificationCode('');
@@ -129,7 +137,7 @@ export function SecurityDashboard() {
   const handleDisable2FA = async () => {
     const confirmed = confirm('Are you sure you want to disable two-factor authentication? This will make your account less secure.');
     if (!confirmed) return;
-    
+
     setIsLoading(true);
     try {
       // Mock API call
@@ -137,7 +145,7 @@ export function SecurityDashboard() {
         method: 'POST',
         headers: { 'Authorization': `Bearer ${localStorage.getItem('accessToken')}` }
       });
-      
+
       setSecuritySettings(prev => ({ ...prev, twoFactorEnabled: false }));
     } catch (error) {
       console.error('Failed to disable 2FA:', error);
@@ -185,329 +193,326 @@ export function SecurityDashboard() {
     return Math.min(score, 100);
   };
 
+  const secScore = calculateSecurityScore();
+
   const tabs = ['Overview', 'Activity Log', 'Settings'];
 
   if (show2FASetup) {
     return (
       <div className="max-w-2xl mx-auto">
-        <div className="bg-white shadow rounded-lg p-6">
-          <div className="text-center mb-6">
-            <h2 className="text-2xl font-bold text-gray-900">Set Up Two-Factor Authentication</h2>
-            <p className="mt-2 text-sm text-gray-600">Scan the QR code with your authenticator app</p>
-          </div>
+        <Card>
+          <CardHeader className="text-center">
+            <CardTitle className="text-2xl">Set Up Two-Factor Authentication</CardTitle>
+            <p className="text-muted-foreground">Scan the QR code with your authenticator app</p>
+          </CardHeader>
+          <CardContent>
 
-          <div className="space-y-6">
-            <div className="text-center">
-              <div className="inline-block p-4 bg-white border border-gray-200 rounded-lg">
-                <div className="w-48 h-48 bg-gray-100 rounded-lg flex items-center justify-center">
-                  {qrCode ? (
-                    <img src={qrCode} alt="2FA QR Code" className="w-full h-full" />
-                  ) : (
-                    <div className="text-gray-400">QR Code will appear here</div>
-                  )}
+            <div className="space-y-6">
+              <div className="text-center">
+                <div className="inline-block p-4 bg-background border border-border rounded-lg">
+                  <div className="w-48 h-48 bg-muted rounded-lg flex items-center justify-center">
+                    {qrCode ? (
+                      <img src={qrCode} alt="2FA QR Code" className="w-full h-full" />
+                    ) : (
+                      <div className="text-muted-foreground">QR Code will appear here</div>
+                    )}
+                  </div>
                 </div>
-              </div>
-              <p className="mt-2 text-sm text-gray-600">
-                Scan this QR code with Google Authenticator, Authy, or another TOTP app
-              </p>
-            </div>
-
-            {backupCodes.length > 0 && (
-              <div>
-                <h3 className="text-lg font-medium text-gray-900 mb-2">Backup Codes</h3>
-                <p className="text-sm text-gray-600 mb-4">
-                  Save these backup codes in a secure location. You can use them to access your account if you lose your authenticator device.
+                <p className="mt-2 text-sm text-muted-foreground">
+                  Scan this QR code with Google Authenticator, Authy, or another TOTP app
                 </p>
-                <div className="grid grid-cols-2 gap-2 p-4 bg-gray-50 rounded-lg">
-                  {backupCodes.map((code, index) => (
-                    <div key={index} className="text-center font-mono text-sm py-2 px-3 bg-white rounded border">
-                      {code}
-                    </div>
-                  ))}
+              </div>
+
+              {backupCodes.length > 0 && (
+                <div>
+                  <h3 className="text-lg font-medium mb-2">Backup Codes</h3>
+                  <p className="text-sm text-muted-foreground mb-4">
+                    Save these backup codes in a secure location. You can use them to access your account if you lose your authenticator device.
+                  </p>
+                  <div className="grid grid-cols-2 gap-2 p-4 bg-muted rounded-lg">
+                    {backupCodes.map((code, index) => (
+                      <div key={index} className="text-center font-mono text-sm py-2 px-3 bg-background rounded border">
+                        {code}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              <div>
+                <h3 className="text-lg font-medium mb-2">Verify Setup</h3>
+                <p className="text-sm text-muted-foreground mb-4">
+                  Enter the 6-digit code from your authenticator app to complete setup:
+                </p>
+                <Input
+                  type="text"
+                  value={verificationCode}
+                  onChange={(e) => setVerificationCode(e.target.value.replace(/\D/g, '').slice(0, 6))}
+                  placeholder="000000"
+                  maxLength={6}
+                  className="text-center text-2xl tracking-widest"
+                />
+                <div className="mt-4 flex space-x-4">
+                  <Button
+                    variant="outline"
+                    onClick={() => setShow2FASetup(false)}
+                    className="flex-1"
+                  >
+                    Cancel
+                  </Button>
+                  <Button
+                    onClick={handleVerify2FA}
+                    className="flex-1"
+                    disabled={verificationCode.length !== 6 || isLoading}
+                  >
+                    {isLoading ? 'Verifying...' : 'Complete Setup'}
+                  </Button>
                 </div>
               </div>
-            )}
-
-            <div>
-              <h3 className="text-lg font-medium text-gray-900 mb-2">Verify Setup</h3>
-              <p className="text-sm text-gray-600 mb-4">
-                Enter the 6-digit code from your authenticator app to complete setup:
-              </p>
-              <input
-                type="text"
-                value={verificationCode}
-                onChange={(e) => setVerificationCode(e.target.value.replace(/\D/g, '').slice(0, 6))}
-                placeholder="000000"
-                maxLength={6}
-                className="block w-full text-center text-2xl tracking-widest rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
-              />
-              <div className="mt-4 flex space-x-4">
-                <button
-                  onClick={() => setShow2FASetup(false)}
-                  className="flex-1 py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                >
-                  Cancel
-                </button>
-                <button 
-                  onClick={handleVerify2FA} 
-                  className="flex-1 py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50"
-                  disabled={verificationCode.length !== 6 || isLoading}
-                >
-                  {isLoading ? 'Verifying...' : 'Complete Setup'}
-                </button>
-              </div>
             </div>
-          </div>
-        </div>
+          </CardContent>
+        </Card>
       </div>
     );
   }
 
   return (
-    <div className="max-w-4xl mx-auto">
-      <Tab.Group selectedIndex={activeTab} onChange={setActiveTab}>
-        <Tab.List className="flex space-x-1 rounded-xl bg-blue-900/20 p-1">
-          {tabs.map((tab) => (
-            <Tab
-              key={tab}
-              className={({ selected }) =>
-                classNames(
-                  'w-full rounded-lg py-2.5 text-sm font-medium leading-5',
-                  'ring-white ring-opacity-60 ring-offset-2 ring-offset-blue-400 focus:outline-none focus:ring-2',
-                  selected
-                    ? 'bg-white text-blue-700 shadow'
-                    : 'text-blue-100 hover:bg-white/[0.12] hover:text-white'
-                )
-              }
-            >
-              {tab}
-            </Tab>
-          ))}
-        </Tab.List>
-        
-        <Tab.Panels className="mt-6">
-          {/* Overview Panel */}
-          <Tab.Panel>
-            <div className="space-y-6">
-              {/* Security Score */}
-              <div className="bg-white shadow rounded-lg p-6">
-                <div className="flex items-center justify-between">
+    <Tabs defaultValue="overview" className="w-full">
+      <TabsList className="grid w-full grid-cols-3">
+        <TabsTrigger value="overview">Overview</TabsTrigger>
+        <TabsTrigger value="activity">Activity Log</TabsTrigger>
+        <TabsTrigger value="settings">Settings</TabsTrigger>
+      </TabsList>
+
+      <TabsContent value="overview" className="mt-6">
+        <div className="space-y-6">
+          {/* Security Score */}
+          <Card>
+            <CardContent className="p-6">
+              <div className="flex items-center justify-between">
+                <div>
+                  <h3 className="text-lg font-medium">Security Score</h3>
+                  <p className="mt-1 text-sm text-muted-foreground">
+                    Your account security rating based on enabled features
+                  </p>
+                </div>
+                <div className="flex items-center space-x-4">
+                  <div className="relative w-20 h-20">
+                    <Progress value={secScore} className="w-20 h-20 rounded-full" />
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      <span className="text-xl font-bold">{secScore}</span>
+                    </div>
+                  </div>
                   <div>
-                    <h3 className="text-lg font-medium text-gray-900">Security Score</h3>
-                    <p className="mt-1 text-sm text-gray-600">
-                      Your account security rating based on enabled features
+                    <Badge variant={secScore >= 85 ? "default" : secScore >= 70 ? "secondary" : "destructive"}>
+                      {secScore >= 85 ? 'Excellent' :
+                        secScore >= 70 ? 'Good' : 'Needs improvement'}
+                    </Badge>
+                  </div>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Security Features */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <Card>
+              <CardContent className="p-6">
+                <div className="flex items-center">
+                  <div className="flex-shrink-0">
+                    <Shield className="h-8 w-8 text-primary" />
+                  </div>
+                  <div className="ml-4">
+                    <h3 className="text-lg font-medium">Two-Factor Authentication</h3>
+                    <p className="mt-1 text-sm text-muted-foreground">
+                      {securitySettings.twoFactorEnabled
+                        ? 'Your account is protected with 2FA'
+                        : 'Add an extra layer of security to your account'
+                      }
+                    </p>
+                    <Button
+                      onClick={securitySettings.twoFactorEnabled ? handleDisable2FA : handleEnable2FA}
+                      variant={securitySettings.twoFactorEnabled ? "destructive" : "default"}
+                      size="sm"
+                      className="mt-3"
+                      disabled={isLoading}
+                    >
+                      <Smartphone className="w-4 h-4 mr-2" />
+                      {securitySettings.twoFactorEnabled ? 'Disable 2FA' : 'Enable 2FA'}
+                    </Button>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardContent className="p-6">
+                <div className="flex items-center">
+                  <div className="flex-shrink-0">
+                    <Key className="h-8 w-8 text-green-600" />
+                  </div>
+                  <div className="ml-4">
+                    <h3 className="text-lg font-medium">Password Security</h3>
+                    <p className="mt-1 text-sm text-muted-foreground">Last changed 2 months ago</p>
+                    <Button variant="outline" size="sm" className="mt-3">
+                      <Key className="w-4 h-4 mr-2" />
+                      Change Password
+                    </Button>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardContent className="p-6">
+                <div className="flex items-center">
+                  <div className="flex-shrink-0">
+                    <Mail className="h-8 w-8 text-blue-600" />
+                  </div>
+                  <div className="ml-4">
+                    <h3 className="text-lg font-medium">Email Notifications</h3>
+                    <p className="mt-1 text-sm text-muted-foreground">Get alerts about suspicious activity</p>
+                    <div className="mt-3 flex items-center space-x-2">
+                      <Switch
+                        checked={securitySettings.emailNotifications}
+                        onCheckedChange={(checked) => setSecuritySettings(prev => ({ ...prev, emailNotifications: checked }))}
+                      />
+                      <span className="text-sm">{securitySettings.emailNotifications ? 'Enabled' : 'Disabled'}</span>
+                    </div>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+        </div>
+      </TabsContent>
+
+      <TabsContent value="activity" className="mt-6">
+        <Card>
+          <CardHeader>
+            <CardTitle>Recent Security Activity</CardTitle>
+            <p className="text-muted-foreground">
+              Monitor login attempts and security events on your account
+            </p>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-4">
+              {recentActivity.map((event) => (
+                <div key={event.id} className="flex items-center space-x-4 p-4 border rounded-lg">
+                  <div className="flex-shrink-0 text-2xl">
+                    {getEventIcon(event.type)}
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <p className="text-sm font-medium">
+                      {getEventDescription(event)}
+                    </p>
+                    <p className="text-sm text-muted-foreground">
+                      {formatDate(event.timestamp)} • {event.location} • {event.ipAddress}
                     </p>
                   </div>
-                  <div className="flex items-center space-x-4">
-                    <div className="relative w-20 h-20">
-                      <div className="absolute inset-0 rounded-full border-4 border-gray-200"></div>
-                      <div 
-                        className="absolute inset-0 rounded-full border-4 border-indigo-600"
-                        style={{
-                          clipPath: `polygon(50% 50%, 50% 0%, ${50 + (calculateSecurityScore() / 100) * 50}% 0%, 100% 0%, 100% 100%, 0% 100%, 0% 0%, 50% 0%)`
-                        }}
-                      ></div>
-                      <div className="absolute inset-0 flex items-center justify-center">
-                        <span className="text-xl font-bold text-gray-900">{calculateSecurityScore()}</span>
-                      </div>
-                    </div>
-                    <div>
-                      <div className="text-sm text-gray-600">
-                        {calculateSecurityScore() >= 85 ? '✅ Excellent' : 
-                         calculateSecurityScore() >= 70 ? '🟡 Good' : '🔴 Needs improvement'}
-                      </div>
-                    </div>
+                  <div className="flex-shrink-0">
+                    <Badge variant="outline" className="bg-green-50 text-green-700 border-green-200">
+                      <CheckCircle className="w-3 h-3 mr-1" />
+                      Verified
+                    </Badge>
                   </div>
                 </div>
-              </div>
-
-              {/* Security Features */}
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                <div className="bg-white shadow rounded-lg p-6">
-                  <div className="flex items-center">
-                    <div className="flex-shrink-0">
-                      <ShieldCheckIcon className="h-8 w-8 text-indigo-600" />
-                    </div>
-                    <div className="ml-4">
-                      <h3 className="text-lg font-medium text-gray-900">Two-Factor Authentication</h3>
-                      <p className="mt-1 text-sm text-gray-600">
-                        {securitySettings.twoFactorEnabled 
-                          ? 'Your account is protected with 2FA'
-                          : 'Add an extra layer of security to your account'
-                        }
-                      </p>
-                      <button 
-                        onClick={securitySettings.twoFactorEnabled ? handleDisable2FA : handleEnable2FA}
-                        className={`mt-3 inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md ${
-                          securitySettings.twoFactorEnabled
-                            ? 'text-red-700 bg-red-100 hover:bg-red-200'
-                            : 'text-indigo-700 bg-indigo-100 hover:bg-indigo-200'
-                        }`}
-                        disabled={isLoading}
-                      >
-                        {securitySettings.twoFactorEnabled ? 'Disable 2FA' : 'Enable 2FA'}
-                      </button>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="bg-white shadow rounded-lg p-6">
-                  <div className="flex items-center">
-                    <div className="flex-shrink-0">
-                      <KeyIcon className="h-8 w-8 text-green-600" />
-                    </div>
-                    <div className="ml-4">
-                      <h3 className="text-lg font-medium text-gray-900">Password Security</h3>
-                      <p className="mt-1 text-sm text-gray-600">Last changed 2 months ago</p>
-                      <button className="mt-3 inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-green-700 bg-green-100 hover:bg-green-200">
-                        Change Password
-                      </button>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="bg-white shadow rounded-lg p-6">
-                  <div className="flex items-center">
-                    <div className="flex-shrink-0">
-                      <EnvelopeIcon className="h-8 w-8 text-blue-600" />
-                    </div>
-                    <div className="ml-4">
-                      <h3 className="text-lg font-medium text-gray-900">Email Notifications</h3>
-                      <p className="mt-1 text-sm text-gray-600">Get alerts about suspicious activity</p>
-                      <div className="mt-3">
-                        <Switch
-                          checked={securitySettings.emailNotifications}
-                          onChange={(checked) => setSecuritySettings(prev => ({ ...prev, emailNotifications: checked }))}
-                          className={`${
-                            securitySettings.emailNotifications ? 'bg-indigo-600' : 'bg-gray-200'
-                          } relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2`}
-                        >
-                          <span
-                            className={`${
-                              securitySettings.emailNotifications ? 'translate-x-6' : 'translate-x-1'
-                            } inline-block h-4 w-4 transform rounded-full bg-white transition-transform`}
-                          />
-                        </Switch>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
+              ))}
             </div>
-          </Tab.Panel>
+          </CardContent>
+        </Card>
+      </TabsContent>
 
-          {/* Activity Log Panel */}
-          <Tab.Panel>
-            <div className="bg-white shadow rounded-lg">
-              <div className="px-6 py-4 border-b border-gray-200">
-                <h3 className="text-lg font-medium text-gray-900">Recent Security Activity</h3>
-                <p className="mt-1 text-sm text-gray-600">
-                  Monitor login attempts and security events on your account
-                </p>
-              </div>
-              <div className="divide-y divide-gray-200">
-                {recentActivity.map((event) => (
-                  <div key={event.id} className="px-6 py-4 flex items-center space-x-4">
-                    <div className="flex-shrink-0 text-2xl">
-                      {getEventIcon(event.type)}
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <p className="text-sm font-medium text-gray-900">
-                        {getEventDescription(event)}
-                      </p>
-                      <p className="text-sm text-gray-500">
-                        {formatDate(event.timestamp)} • {event.location} • {event.ipAddress}
-                      </p>
-                    </div>
-                    <div className="flex-shrink-0">
-                      <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
-                        Verified
-                      </span>
-                    </div>
+      <TabsContent value="settings" className="mt-6">
+        <div className="space-y-6">
+          <Card>
+            <CardHeader>
+              <CardTitle>Authentication Settings</CardTitle>
+            </CardHeader>
+            <CardContent>
+
+              <div className="space-y-6">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <h4 className="text-sm font-medium flex items-center gap-2">
+                      <Clock className="w-4 h-4" />
+                      Session Timeout
+                    </h4>
+                    <p className="text-sm text-muted-foreground">Automatically log out after period of inactivity</p>
                   </div>
-                ))}
-              </div>
-            </div>
-          </Tab.Panel>
+                  <select
+                    value={securitySettings.sessionTimeout}
+                    onChange={(e) => setSecuritySettings(prev => ({
+                      ...prev,
+                      sessionTimeout: parseInt(e.target.value)
+                    }))}
+                    className="rounded-md border border-input bg-background px-3 py-2 text-sm focus:border-primary focus:outline-none focus:ring-2 focus:ring-ring"
+                  >
+                    <option value={15}>15 minutes</option>
+                    <option value={30}>30 minutes</option>
+                    <option value={60}>1 hour</option>
+                    <option value={240}>4 hours</option>
+                  </select>
+                </div>
 
-          {/* Settings Panel */}
-          <Tab.Panel>
-            <div className="space-y-6">
-              <div className="bg-white shadow rounded-lg p-6">
-                <h3 className="text-lg font-medium text-gray-900 mb-4">Authentication Settings</h3>
-                
-                <div className="space-y-6">
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <h4 className="text-sm font-medium text-gray-900">Session Timeout</h4>
-                      <p className="text-sm text-gray-600">Automatically log out after period of inactivity</p>
-                    </div>
-                    <select 
-                      value={securitySettings.sessionTimeout}
-                      onChange={(e) => setSecuritySettings(prev => ({
-                        ...prev, 
-                        sessionTimeout: parseInt(e.target.value)
-                      }))}
-                      className="rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
-                    >
-                      <option value={15}>15 minutes</option>
-                      <option value={30}>30 minutes</option>
-                      <option value={60}>1 hour</option>
-                      <option value={240}>4 hours</option>
-                    </select>
+                <div className="flex items-center justify-between">
+                  <div>
+                    <h4 className="text-sm font-medium flex items-center gap-2">
+                      <AlertTriangle className="w-4 h-4" />
+                      Login Alerts
+                    </h4>
+                    <p className="text-sm text-muted-foreground">Get notified of new login attempts</p>
                   </div>
-
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <h4 className="text-sm font-medium text-gray-900">Login Alerts</h4>
-                      <p className="text-sm text-gray-600">Get notified of new login attempts</p>
-                    </div>
+                  <div className="flex items-center space-x-2">
                     <Switch
                       checked={securitySettings.loginAlerts}
-                      onChange={(checked) => setSecuritySettings(prev => ({ ...prev, loginAlerts: checked }))}
-                      className={`${
-                        securitySettings.loginAlerts ? 'bg-indigo-600' : 'bg-gray-200'
-                      } relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2`}
-                    >
-                      <span
-                        className={`${
-                          securitySettings.loginAlerts ? 'translate-x-6' : 'translate-x-1'
-                        } inline-block h-4 w-4 transform rounded-full bg-white transition-transform`}
-                      />
-                    </Switch>
+                      onCheckedChange={(checked) => setSecuritySettings(prev => ({ ...prev, loginAlerts: checked }))}
+                    />
+                    <span className="text-sm">{securitySettings.loginAlerts ? 'Enabled' : 'Disabled'}</span>
                   </div>
                 </div>
               </div>
+            </CardContent>
+          </Card>
 
-              <div className="bg-white shadow rounded-lg p-6">
-                <h3 className="text-lg font-medium text-gray-900 mb-4">Data & Privacy</h3>
-                
-                <div className="space-y-6">
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <h4 className="text-sm font-medium text-gray-900">Download Your Data</h4>
-                      <p className="text-sm text-gray-600">Get a copy of your account data and activity</p>
-                    </div>
-                    <button className="inline-flex items-center px-3 py-2 border border-gray-300 shadow-sm text-sm leading-4 font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                      Request Data Export
-                    </button>
+          <Card>
+            <CardHeader>
+              <CardTitle>Data & Privacy</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-6">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <h4 className="text-sm font-medium flex items-center gap-2">
+                      <Download className="w-4 h-4" />
+                      Download Your Data
+                    </h4>
+                    <p className="text-sm text-muted-foreground">Get a copy of your account data and activity</p>
                   </div>
+                  <Button variant="outline" size="sm">
+                    <Download className="w-4 h-4 mr-2" />
+                    Request Export
+                  </Button>
+                </div>
 
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <h4 className="text-sm font-medium text-gray-900">Delete Account</h4>
-                      <p className="text-sm text-red-600">Permanently delete your account and all data</p>
-                    </div>
-                    <button className="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <h4 className="text-sm font-medium flex items-center gap-2">
+                      <Trash2 className="w-4 h-4" />
                       Delete Account
-                    </button>
+                    </h4>
+                    <p className="text-sm text-destructive">Permanently delete your account and all data</p>
                   </div>
+                  <Button variant="destructive" size="sm">
+                    <Trash2 className="w-4 h-4 mr-2" />
+                    Delete Account
+                  </Button>
                 </div>
               </div>
-            </div>
-          </Tab.Panel>
-        </Tab.Panels>
-      </Tab.Group>
-    </div>
+            </CardContent>
+          </Card>
+        </div>
+      </TabsContent>
+    </Tabs>
   );
 }

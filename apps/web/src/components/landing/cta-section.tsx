@@ -63,17 +63,17 @@ export function CTASection() {
   ];
 
   return (
-    <section className="bg-gradient-to-br from-gray-900 via-blue-900 to-purple-900 py-24 sm:py-32">
+    <section id="pricing" className="bg-gradient-to-br from-background via-primary/5 to-secondary/10 dark:from-gray-900 dark:via-blue-900 dark:to-purple-900 py-24 sm:py-32">
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         {/* Main CTA */}
         <div className="mx-auto max-w-4xl text-center mb-20">
-          <h2 className="text-4xl font-bold tracking-tight text-white sm:text-6xl mb-6">
+          <h2 className="text-4xl font-bold tracking-tight text-foreground sm:text-6xl mb-6">
             Your Crypto Success 
-            <span className="bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
+            <span className="bg-gradient-to-r from-primary via-primary/80 to-accent bg-clip-text text-transparent">
               Starts Here
             </span>
           </h2>
-          <p className="mx-auto max-w-2xl text-xl text-gray-300 mb-8">
+          <p className="mx-auto max-w-2xl text-xl text-muted-foreground mb-8">
             Join 50,000+ investors who've transformed their crypto journey with our platform. 
             Start learning, tracking, and profiting today.
           </p>
@@ -82,8 +82,8 @@ export function CTASection() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-3xl mx-auto mb-12">
             {benefits.map((benefit, index) => (
               <div key={index} className="flex items-center gap-3 text-left">
-                <CheckIcon className="h-5 w-5 text-green-400 flex-shrink-0" />
-                <span className="text-gray-300">{benefit}</span>
+                <CheckIcon className="h-5 w-5 text-green-500 flex-shrink-0" />
+                <span className="text-muted-foreground">{benefit}</span>
               </div>
             ))}
           </div>
@@ -92,21 +92,21 @@ export function CTASection() {
           <div className="flex flex-row gap-3 sm:gap-4 justify-center mb-8">
             <Link
               href="/auth/register"
-              className="group relative inline-flex items-center justify-center px-4 sm:px-8 py-3 sm:py-4 text-sm sm:text-lg font-semibold text-white bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg shadow-lg hover:from-blue-700 hover:to-purple-700 transition-all duration-200 transform hover:scale-105 hover:shadow-xl"
+              className="group relative inline-flex items-center justify-center px-4 sm:px-8 py-3 sm:py-4 text-sm sm:text-lg font-semibold text-primary-foreground bg-gradient-to-r from-primary to-primary/80 rounded-lg shadow-lg hover:from-primary/90 hover:to-primary/70 transition-all duration-200 transform hover:scale-105 hover:shadow-xl"
             >
               <RocketLaunchIcon className="h-5 w-5 mr-2" />
               Start Free Trial
             </Link>
             <Link
               href="/demo"
-              className="inline-flex items-center justify-center px-4 sm:px-8 py-3 sm:py-4 text-sm sm:text-lg font-semibold text-white bg-white/10 backdrop-blur-sm rounded-lg border border-white/20 hover:bg-white/20 transition-all duration-200"
+              className="inline-flex items-center justify-center px-4 sm:px-8 py-3 sm:py-4 text-sm sm:text-lg font-semibold text-foreground bg-background/50 dark:bg-white/10 backdrop-blur-sm rounded-lg border border-border dark:border-white/20 hover:bg-accent dark:hover:bg-white/20 transition-all duration-200"
             >
               <ChartBarIcon className="h-5 w-5 mr-2" />
               View Live Demo
             </Link>
           </div>
           
-          <p className="text-sm text-gray-400">
+          <p className="text-sm text-muted-foreground">
             ✓ No credit card required • ✓ Cancel anytime • ✓ 7-day money back guarantee
           </p>
         </div>
@@ -114,39 +114,39 @@ export function CTASection() {
         {/* Pricing Plans */}
         <div className="mx-auto max-w-5xl">
           <div className="text-center mb-12">
-            <h3 className="text-3xl font-bold text-white mb-4">Choose Your Plan</h3>
-            <p className="text-gray-400">Start free, upgrade when you're ready to unlock your full potential</p>
+            <h3 className="text-3xl font-bold text-foreground mb-4">Choose Your Plan</h3>
+            <p className="text-muted-foreground">Start free, upgrade when you're ready to unlock your full potential</p>
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {plans.map((plan, index) => (
-              <div key={index} className={`relative bg-gray-800 rounded-2xl border-2 p-8 ${
+              <div key={index} className={`relative bg-card rounded-2xl border-2 p-8 ${
                 plan.popular 
-                  ? 'border-blue-500 bg-gradient-to-b from-blue-900/20 to-gray-800' 
-                  : 'border-gray-700'
+                  ? 'border-primary bg-gradient-to-b from-primary/20 to-card' 
+                  : 'border-border'
               }`}>
                 {plan.popular && (
                   <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
-                    <span className="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-4 py-2 rounded-full text-sm font-semibold">
+                    <span className="bg-gradient-to-r from-primary to-primary/80 text-primary-foreground px-4 py-2 rounded-full text-sm font-semibold">
                       Most Popular
                     </span>
                   </div>
                 )}
                 
                 <div className="text-center mb-8">
-                  <h4 className="text-xl font-semibold text-white mb-2">{plan.name}</h4>
+                  <h4 className="text-xl font-semibold text-foreground mb-2">{plan.name}</h4>
                   <div className="mb-2">
-                    <span className="text-4xl font-bold text-white">{plan.price}</span>
-                    <span className="text-gray-400">/{plan.period}</span>
+                    <span className="text-4xl font-bold text-foreground">{plan.price}</span>
+                    <span className="text-muted-foreground">/{plan.period}</span>
                   </div>
-                  <p className="text-gray-400 text-sm">{plan.description}</p>
+                  <p className="text-muted-foreground text-sm">{plan.description}</p>
                 </div>
                 
                 <ul className="space-y-3 mb-8">
                   {plan.features.map((feature, featureIndex) => (
                     <li key={featureIndex} className="flex items-start gap-3">
-                      <CheckIcon className="h-5 w-5 text-green-400 flex-shrink-0 mt-0.5" />
-                      <span className="text-gray-300 text-sm">{feature}</span>
+                      <CheckIcon className="h-5 w-5 text-green-500 flex-shrink-0 mt-0.5" />
+                      <span className="text-muted-foreground text-sm">{feature}</span>
                     </li>
                   ))}
                 </ul>
@@ -155,8 +155,8 @@ export function CTASection() {
                   href={plan.href}
                   className={`block w-full text-center py-3 px-4 rounded-lg font-semibold transition-all duration-200 ${
                     plan.popular
-                      ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white hover:from-blue-700 hover:to-purple-700 transform hover:scale-105'
-                      : 'bg-gray-700 text-white hover:bg-gray-600'
+                      ? 'bg-gradient-to-r from-primary to-primary/80 text-primary-foreground hover:from-primary/90 hover:to-primary/70 transform hover:scale-105'
+                      : 'bg-muted text-foreground hover:bg-muted/80'
                   }`}
                 >
                   {plan.cta}
@@ -168,23 +168,23 @@ export function CTASection() {
 
         {/* Final CTA */}
         <div className="mx-auto mt-20 max-w-2xl text-center">
-          <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-8 border border-white/20">
-            <h3 className="text-2xl font-bold text-white mb-4">
+          <div className="bg-card/50 backdrop-blur-sm rounded-2xl p-8 border border-border">
+            <h3 className="text-2xl font-bold text-foreground mb-4">
               Ready to Transform Your Crypto Journey?
             </h3>
-            <p className="text-gray-300 mb-6">
+            <p className="text-muted-foreground mb-6">
               Don't let another opportunity pass by. Start building your crypto wealth today with the tools used by professional investors.
             </p>
             <div className="flex flex-row gap-3 sm:gap-4 justify-center">
               <Link
                 href="/auth/register"
-                className="bg-white text-gray-900 px-4 sm:px-8 py-2 sm:py-3 text-sm sm:text-base rounded-lg font-semibold hover:bg-gray-100 transition-colors"
+                className="bg-primary text-primary-foreground px-4 sm:px-8 py-2 sm:py-3 text-sm sm:text-base rounded-lg font-semibold hover:bg-primary/90 transition-colors"
               >
                 Start Your Free Trial
               </Link>
               <Link
                 href="/auth/login"
-                className="text-white hover:text-gray-300 transition-colors flex items-center justify-center"
+                className="text-foreground hover:text-muted-foreground transition-colors flex items-center justify-center"
               >
                 Already have an account? Sign in →
               </Link>

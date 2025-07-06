@@ -62,15 +62,15 @@ export function EducationSection() {
   ];
 
   return (
-    <section className="bg-gray-800 py-24 sm:py-32">
+    <section className="bg-muted/20 py-24 sm:py-32">
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         {/* Header */}
         <div className="mx-auto max-w-2xl text-center">
-          <h2 className="text-base font-semibold leading-7 text-blue-400">Crypto Education</h2>
-          <p className="mt-2 text-4xl font-bold tracking-tight text-white sm:text-5xl">
+          <h2 className="text-base font-semibold leading-7 text-primary">Crypto Education</h2>
+          <p className="mt-2 text-4xl font-bold tracking-tight text-foreground sm:text-5xl">
             Learn Crypto the Right Way
           </p>
-          <p className="mt-6 text-lg leading-8 text-gray-300">
+          <p className="mt-6 text-lg leading-8 text-muted-foreground">
             From complete beginner to crypto expert. Our structured learning paths ensure you build knowledge safely and confidently.
           </p>
         </div>
@@ -81,13 +81,13 @@ export function EducationSection() {
             {learningPaths.map((path, index) => {
               const Icon = path.icon;
               return (
-                <div key={index} className="group relative bg-gray-900 p-8 rounded-2xl border border-gray-700 hover:border-gray-600 transition-all duration-300 hover:shadow-xl hover:shadow-blue-500/10">
+                <div key={index} className="group relative bg-card p-8 rounded-2xl border border-border hover:border-primary/50 transition-all duration-300 hover:shadow-xl hover:shadow-primary/10">
                   {/* Level Badge */}
                   <div className="absolute top-4 right-4">
                     <span className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-medium ${ 
-                      path.level === 'Beginner' ? 'bg-green-900/30 text-green-400' :
-                      path.level === 'Intermediate' ? 'bg-blue-900/30 text-blue-400' :
-                      'bg-purple-900/30 text-purple-400'
+                      path.level === 'Beginner' ? 'bg-green-500/10 text-green-600 dark:text-green-400' :
+                      path.level === 'Intermediate' ? 'bg-primary/10 text-primary' :
+                      'bg-purple-500/10 text-purple-600 dark:text-purple-400'
                     }`}>
                       {path.level}
                     </span>
@@ -99,11 +99,11 @@ export function EducationSection() {
                   </div>
 
                   {/* Content */}
-                  <h3 className="text-xl font-semibold text-white mb-3">{path.title}</h3>
-                  <p className="text-gray-300 mb-6 text-sm leading-relaxed">{path.description}</p>
+                  <h3 className="text-xl font-semibold text-foreground mb-3">{path.title}</h3>
+                  <p className="text-muted-foreground mb-6 text-sm leading-relaxed">{path.description}</p>
 
                   {/* Stats */}
-                  <div className="flex items-center gap-4 mb-6 text-sm text-gray-400">
+                  <div className="flex items-center gap-4 mb-6 text-sm text-muted-foreground">
                     <div className="flex items-center gap-1">
                       <span>{path.lessons} lessons</span>
                     </div>
@@ -114,18 +114,18 @@ export function EducationSection() {
 
                   {/* Topics */}
                   <div className="mb-6">
-                    <h4 className="text-sm font-medium text-white mb-3">What you'll learn:</h4>
+                    <h4 className="text-sm font-medium text-foreground mb-3">What you'll learn:</h4>
                     <ul className="space-y-2">
                       {path.topics.map((topic, topicIndex) => (
-                        <li key={topicIndex} className="flex items-center gap-2 text-sm text-gray-300">
-                          <CheckIcon className="h-4 w-4 text-green-400 flex-shrink-0" />
+                        <li key={topicIndex} className="flex items-center gap-2 text-sm text-muted-foreground">
+                          <CheckIcon className="h-4 w-4 text-green-500 flex-shrink-0" />
                           {topic}
                         </li>
                       ))}\n                    </ul>
                   </div>
 
                   {/* CTA */}
-                  <button className="group w-full bg-gray-800 hover:bg-gray-700 text-white px-4 py-3 rounded-lg font-medium transition-all duration-200 border border-gray-600 hover:border-gray-500 flex items-center justify-center gap-2">
+                  <button className="group w-full bg-muted hover:bg-accent text-foreground px-4 py-3 rounded-lg font-medium transition-all duration-200 border border-border hover:border-primary/50 flex items-center justify-center gap-2">
                     <span>Start Learning</span>
                     <ArrowRightIcon className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
                   </button>
@@ -138,8 +138,8 @@ export function EducationSection() {
         {/* Features */}
         <div className="mx-auto mt-24 max-w-2xl sm:mt-32 lg:max-w-none">
           <div className="text-center mb-12">
-            <h3 className="text-2xl font-bold text-white mb-4">Why Our Education Program Works</h3>
-            <p className="text-gray-400">Designed by crypto experts, built for real-world success</p>
+            <h3 className="text-2xl font-bold text-foreground mb-4">Why Our Education Program Works</h3>
+            <p className="text-muted-foreground">Designed by crypto experts, built for real-world success</p>
           </div>
           
           <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
@@ -147,11 +147,11 @@ export function EducationSection() {
               const Icon = feature.icon;
               return (
                 <div key={index} className="text-center">
-                  <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-blue-900/30 mb-6">
-                    <Icon className="h-8 w-8 text-blue-400" />
+                  <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-primary/20 mb-6">
+                    <Icon className="h-8 w-8 text-primary" />
                   </div>
-                  <h4 className="text-xl font-semibold text-white mb-3">{feature.title}</h4>
-                  <p className="text-gray-300">{feature.description}</p>
+                  <h4 className="text-xl font-semibold text-foreground mb-3">{feature.title}</h4>
+                  <p className="text-muted-foreground">{feature.description}</p>
                 </div>
               );
             })}
@@ -160,22 +160,22 @@ export function EducationSection() {
 
         {/* Call to Action */}
         <div className="mx-auto mt-16 max-w-2xl text-center">
-          <div className="bg-gradient-to-r from-blue-600 to-purple-600 p-8 rounded-2xl">
-            <h3 className="text-2xl font-bold text-white mb-4">
+          <div className="bg-gradient-to-r from-primary to-primary/80 p-8 rounded-2xl">
+            <h3 className="text-2xl font-bold text-primary-foreground mb-4">
               Ready to Become a Crypto Expert?
             </h3>
-            <p className="text-blue-100 mb-6">
+            <p className="text-primary-foreground/80 mb-6">
               Join 50,000+ students who've successfully completed our courses
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <button className="bg-white text-blue-600 px-8 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors">
+              <button className="bg-background text-primary px-8 py-3 rounded-lg font-semibold hover:bg-accent transition-colors">
                 Start Free Course
               </button>
-              <button className="border border-white/30 text-white px-8 py-3 rounded-lg font-semibold hover:bg-white/10 transition-colors">
+              <button className="border border-primary-foreground/30 text-primary-foreground px-8 py-3 rounded-lg font-semibold hover:bg-primary-foreground/10 transition-colors">
                 View Curriculum
               </button>
             </div>
-            <div className="mt-4 text-sm text-blue-200">
+            <div className="mt-4 text-sm text-primary-foreground/80">
               ✨ First course is completely free • No credit card required
             </div>
           </div>
