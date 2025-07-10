@@ -72,7 +72,7 @@ export function Logo({ className, size = 'md', variant = 'default' }: LogoProps)
         PTracker
       </span>
       <span className="text-xs text-muted-foreground font-medium leading-none mt-0.5">
-        Portfolio Tracker
+        First Trade to Bot Master
       </span>
     </div>
   );

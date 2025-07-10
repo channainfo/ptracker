@@ -1,6 +1,12 @@
-# CryptoTracker
+# PTracker
+
+> **Your Journey from First Trade to Trading Bot Mastery – One Platform, Every Chain, Unlimited Potential**
 
 A comprehensive cryptocurrency portfolio management and education platform that empowers users to track, learn, and make informed investment decisions in the crypto space.
+
+## Demo
+
+![PTracker Demo](demo.gif)
 
 ## Features
 
@@ -79,7 +85,7 @@ A comprehensive cryptocurrency portfolio management and education platform that 
 
 1. Clone the repository:
 ```bash
-git clone https://github.com/yourusername/ptracker.git
+git clone https://github.com/channainfo/ptracker.git
 cd ptracker
 ```
 
@@ -200,11 +206,11 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## Support
 
-- Documentation: [docs.cryptotracker.com](https://docs.cryptotracker.com)
-- Issues: [GitHub Issues](https://github.com/yourusername/ptracker/issues)
-- Discord: [Join our community](https://discord.gg/cryptotracker)
+- Documentation: [docs.ptracker.com](https://docs.ptracker.com)
+- Issues: [GitHub Issues](https://github.com/channainfo/ptracker/issues)
+- Discord: [Join our community](https://discord.gg/ptracker)
 
 ## Acknowledgments
 
-- Built with love by the CryptoTracker team
+- Built with love by the PTracker team
 - Special thanks to all contributors and the open-source community
