@@ -135,7 +135,7 @@ export class AuthService {
       });
 
       const user = await this.userRepository.findOne({
-        where: { 
+        where: {
           id: payload.sub,
           refreshToken,
           isActive: true,

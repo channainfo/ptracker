@@ -1,0 +1,270 @@
+import { DataSource } from 'typeorm';
+import { User } from '../../users/entities/user.entity';
+import { Portfolio } from '../../portfolio/entities/portfolio.entity';
+import { PortfolioHolding } from '../../portfolio/entities/portfolio-holding.entity';
+import { Transaction } from '../../portfolio/entities/transaction.entity';
+import * as bcrypt from 'bcrypt';
+
+const SALT_ROUNDS = 12;
+
+// Crypto assets with realistic price ranges
+const CRYPTO_ASSETS = [
+  { symbol: 'BTC', name: 'Bitcoin', priceRange: [30000, 70000] },
+  { symbol: 'ETH', name: 'Ethereum', priceRange: [1800, 4200] },
+  { symbol: 'SOL', name: 'Solana', priceRange: [80, 200] },
+  { symbol: 'ADA', name: 'Cardano', priceRange: [0.25, 1.2] },
+  { symbol: 'DOT', name: 'Polkadot', priceRange: [4, 15] },
+  { symbol: 'MATIC', name: 'Polygon', priceRange: [0.4, 2.8] },
+  { symbol: 'LINK', name: 'Chainlink', priceRange: [6, 35] },
+  { symbol: 'AVAX', name: 'Avalanche', priceRange: [15, 80] },
+  { symbol: 'UNI', name: 'Uniswap', priceRange: [4, 25] },
+  { symbol: 'ATOM', name: 'Cosmos', priceRange: [7, 25] },
+  { symbol: 'ALGO', name: 'Algorand', priceRange: [0.1, 1.5] },
+  { symbol: 'XTZ', name: 'Tezos', priceRange: [0.8, 5] },
+  { symbol: 'NEAR', name: 'NEAR Protocol', priceRange: [1.5, 15] },
+  { symbol: 'FTM', name: 'Fantom', priceRange: [0.2, 2.5] },
+  { symbol: 'SAND', name: 'The Sandbox', priceRange: [0.3, 3] },
+];
+
+// User profile templates
+const USER_TEMPLATES = [
+  { firstNames: ['John', 'Michael', 'David', 'James', 'Robert'], lastNames: ['Smith', 'Johnson', 'Brown', 'Davis', 'Miller'] },
+  { firstNames: ['Sarah', 'Jennifer', 'Lisa', 'Jessica', 'Ashley'], lastNames: ['Wilson', 'Moore', 'Taylor', 'Anderson', 'Thomas'] },
+  { firstNames: ['Alex', 'Jordan', 'Casey', 'Morgan', 'Riley'], lastNames: ['Jackson', 'White', 'Harris', 'Martin', 'Thompson'] },
+  { firstNames: ['Chris', 'Sam', 'Taylor', 'Jamie', 'Drew'], lastNames: ['Garcia', 'Martinez', 'Robinson', 'Clark', 'Rodriguez'] },
+];
+
+// Portfolio themes
+const PORTFOLIO_THEMES = [
+  { name: 'Conservative Growth', description: 'Long-term stable investments', risk: 'low' },
+  { name: 'Aggressive Growth', description: 'High-risk high-reward strategy', risk: 'high' },
+  { name: 'DeFi Focus', description: 'Decentralized finance protocols', risk: 'medium' },
+  { name: 'Layer 1 Blockchain', description: 'Foundation blockchain investments', risk: 'medium' },
+  { name: 'Gaming & NFT', description: 'Metaverse and gaming tokens', risk: 'high' },
+  { name: 'Stablecoin Yield', description: 'Low-risk yield farming', risk: 'low' },
+  { name: 'AI & Tech Tokens', description: 'Artificial intelligence crypto', risk: 'high' },
+  { name: 'Institutional Mix', description: 'Enterprise-grade assets', risk: 'low' },
+];
+
+function getRandomElement<T>(array: T[]): T {
+  return array[Math.floor(Math.random() * array.length)];
+}
+
+function getRandomNumber(min: number, max: number, decimals = 2): number {
+  return parseFloat((Math.random() * (max - min) + min).toFixed(decimals));
+}
+
+function getRandomDate(start: Date, end: Date): Date {
+  return new Date(start.getTime() + Math.random() * (end.getTime() - start.getTime()));
+}
+
+function generateRealisticHoldings(portfolioTheme: string, totalValue: number) {
+  const holdings: any[] = [];
+  let remainingValue = totalValue;
+
+  // Define asset allocation based on portfolio theme
+  let assetDistribution: { [key: string]: number } = {};
+
+  switch (portfolioTheme) {
+    case 'Conservative Growth':
+      assetDistribution = { BTC: 0.5, ETH: 0.3, ADA: 0.1, DOT: 0.1 };
+      break;
+    case 'Aggressive Growth':
+      assetDistribution = { SOL: 0.25, AVAX: 0.2, NEAR: 0.15, FTM: 0.15, SAND: 0.15, ALGO: 0.1 };
+      break;
+    case 'DeFi Focus':
+      assetDistribution = { UNI: 0.3, LINK: 0.25, MATIC: 0.2, AVAX: 0.15, ATOM: 0.1 };
+      break;
+    case 'Layer 1 Blockchain':
+      assetDistribution = { ETH: 0.3, SOL: 0.25, ADA: 0.2, DOT: 0.15, NEAR: 0.1 };
+      break;
+    case 'Gaming & NFT':
+      assetDistribution = { SAND: 0.4, MATIC: 0.3, ETH: 0.2, FTM: 0.1 };
+      break;
+    default:
+      assetDistribution = { BTC: 0.4, ETH: 0.3, SOL: 0.15, ADA: 0.15 };
+  }
+
+  for (const [symbol, percentage] of Object.entries(assetDistribution)) {
+    const asset = CRYPTO_ASSETS.find(a => a.symbol === symbol);
+    if (!asset) continue;
+
+    const allocationValue = totalValue * percentage;
+    const currentPrice = getRandomNumber(asset.priceRange[0], asset.priceRange[1]);
+    const quantity = allocationValue / currentPrice;
+
+    // Add some historical price variation for average price
+    const averagePrice = currentPrice * getRandomNumber(0.85, 1.15);
+
+    holdings.push({
+      asset: symbol,
+      quantity: parseFloat(quantity.toFixed(8)),
+      averagePrice: parseFloat(averagePrice.toFixed(2)),
+      currentPrice: parseFloat(currentPrice.toFixed(2)),
+    });
+  }
+
+  return holdings;
+}
+
+function generateTransactionHistory(holdings: any[], portfolioId: string, userId: string) {
+  const transactions: any[] = [];
+  const startDate = new Date('2023-01-01');
+  const endDate = new Date();
+
+  holdings.forEach(holding => {
+    // Generate 3-8 transactions per holding to build up the position
+    const transactionCount = Math.floor(Math.random() * 6) + 3;
+    let accumulatedQuantity = 0;
+
+    for (let i = 0; i < transactionCount; i++) {
+      const transactionDate = getRandomDate(startDate, endDate);
+      const isBuy = Math.random() > 0.2; // 80% buy, 20% sell
+
+      let quantity: number;
+      if (isBuy) {
+        const remainingQuantity = holding.quantity - accumulatedQuantity;
+        quantity = remainingQuantity > 0 ?
+          Math.min(remainingQuantity * Math.random() * 0.8, remainingQuantity) :
+          holding.quantity * Math.random() * 0.3;
+        accumulatedQuantity += quantity;
+      } else {
+        quantity = accumulatedQuantity > 0 ?
+          accumulatedQuantity * Math.random() * 0.3 :
+          holding.quantity * Math.random() * 0.2;
+        accumulatedQuantity -= quantity;
+      }
+
+      const priceVariation = getRandomNumber(0.85, 1.15);
+      const transactionPrice = holding.averagePrice * priceVariation;
+
+      transactions.push({
+        id: `tx_${portfolioId}_${holding.asset}_${i}`,
+        portfolioId,
+        userId,
+        type: isBuy ? 'BUY' : 'SELL',
+        asset: holding.asset,
+        quantity: parseFloat(Math.abs(quantity).toFixed(8)),
+        price: parseFloat(transactionPrice.toFixed(2)),
+        totalAmount: parseFloat((Math.abs(quantity) * transactionPrice).toFixed(2)),
+        fees: parseFloat((Math.abs(quantity) * transactionPrice * 0.001).toFixed(2)), // 0.1% fee
+        status: 'COMPLETED',
+        executedAt: transactionDate,
+        createdAt: transactionDate,
+        updatedAt: transactionDate,
+        notes: `${isBuy ? 'Purchase' : 'Sale'} of ${holding.asset}`,
+      });
+    }
+  });
+
+  return transactions.sort((a, b) => a.executedAt.getTime() - b.executedAt.getTime());
+}
+
+export async function seedUsers(dataSource: DataSource) {
+  console.log('🌱 Starting to seed 470 users with portfolio data...');
+
+  const userRepository = dataSource.getRepository(User);
+  const portfolioRepository = dataSource.getRepository(Portfolio);
+  const holdingRepository = dataSource.getRepository(PortfolioHolding);
+  const transactionRepository = dataSource.getRepository(Transaction);
+
+  // morgan.martin127@cryptotracker.demo
+  const hashedPassword = await bcrypt.hash('Pass!047-Crypto', SALT_ROUNDS);
+
+  const users: User[] = [];
+  const portfolios: Portfolio[] = [];
+  const holdings: PortfolioHolding[] = [];
+  const transactions: Transaction[] = [];
+
+  for (let i = 1; i <= 470; i++) {
+    // Generate user data
+    const template = getRandomElement(USER_TEMPLATES);
+    const firstName = getRandomElement(template.firstNames);
+    const lastName = getRandomElement(template.lastNames);
+    const email = `${firstName.toLowerCase()}.${lastName.toLowerCase()}${i}@cryptotracker.demo`;
+
+    const user = userRepository.create({
+      email,
+      password: hashedPassword,
+      firstName,
+      lastName,
+      role: 'user' as any,
+      emailVerified: Math.random() > 0.1, // 90% verified
+      twoFactorEnabled: Math.random() > 0.7, // 30% with 2FA
+      isActive: Math.random() > 0.05, // 95% active
+      lastLoginAt: getRandomDate(new Date('2024-11-01'), new Date()),
+    });
+    users.push(user);
+
+    // Generate 1-3 portfolios per user
+    const portfolioCount = Math.floor(Math.random() * 3) + 1;
+
+    for (let p = 0; p < portfolioCount; p++) {
+      const theme = getRandomElement(PORTFOLIO_THEMES);
+      const portfolioValue = getRandomNumber(1000, 50000); // $1K to $50K
+
+      const portfolio = portfolioRepository.create({
+        userId: user.id,
+        name: portfolioCount === 1 ? 'Main Portfolio' :
+          p === 0 ? theme.name :
+            `${theme.name} ${p + 1}`,
+        description: theme.description,
+        baseCurrency: 'USD',
+        isPublic: Math.random() > 0.8, // 20% public
+        totalValue: portfolioValue,
+      });
+      portfolios.push(portfolio);
+
+      // Generate holdings for this portfolio
+      const portfolioHoldings = generateRealisticHoldings(theme.name, portfolioValue);
+
+      portfolioHoldings.forEach(holdingData => {
+        const asset = CRYPTO_ASSETS.find(a => a.symbol === holdingData.asset);
+        const holding = holdingRepository.create({
+          portfolioId: portfolio.id,
+          symbol: holdingData.asset,
+          name: asset?.name || holdingData.asset,
+          quantity: holdingData.quantity,
+          averagePrice: holdingData.averagePrice,
+          totalCost: holdingData.quantity * holdingData.averagePrice,
+          currentPrice: holdingData.currentPrice,
+          currentValue: holdingData.quantity * holdingData.currentPrice,
+          profitLoss: (holdingData.currentPrice - holdingData.averagePrice) * holdingData.quantity,
+        });
+        holdings.push(holding);
+      });
+
+      // Generate transaction history
+      const portfolioTransactions = generateTransactionHistory(portfolioHoldings, portfolio.id, user.id);
+      const createdTransactions: any = portfolioTransactions.map(txData =>
+        transactionRepository.create(txData)
+      );
+      transactions.push(...createdTransactions);
+    }
+
+    // Log progress every 50 users
+    if (i % 50 === 0) {
+      console.log(`✅ Generated ${i}/470 users with portfolios...`);
+    }
+  }
+
+  // Save all data in batches
+  console.log('💾 Saving users to database...');
+  await userRepository.save(users, { chunk: 100 });
+
+  console.log('💾 Saving portfolios to database...');
+  await portfolioRepository.save(portfolios, { chunk: 100 });
+
+  console.log('💾 Saving holdings to database...');
+  await holdingRepository.save(holdings, { chunk: 100 });
+
+  console.log('💾 Saving transactions to database...');
+  await transactionRepository.save(transactions, { chunk: 100 });
+
+  console.log('🎉 Successfully seeded database with:');
+  console.log(`   👥 ${users.length} users`);
+  console.log(`   📊 ${portfolios.length} portfolios`);
+  console.log(`   💰 ${holdings.length} holdings`);
+  console.log(`   📝 ${transactions.length} transactions`);
+  console.log(`   🔐 All users password: Pass!047-Crypto`);
+}

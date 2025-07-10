@@ -3,7 +3,7 @@ import { StarIcon } from '@heroicons/react/24/solid';
 export function TestimonialsSection() {
   const testimonials = [
     {
-      content: "As a complete crypto beginner, CryptoTracker's learning modules helped me understand blockchain fundamentals and make my first confident investment. The AI insights have guided me to a 34% portfolio gain in just 6 months!",
+      content: "As a complete crypto beginner, PTracker's learning modules helped me understand blockchain fundamentals and make my first confident investment. The AI insights have guided me to a 34% portfolio gain in just 6 months!",
       author: "Sarah Chen",
       role: "Crypto Beginner → Confident Investor",
       avatar: "SC",
@@ -21,7 +21,7 @@ export function TestimonialsSection() {
       timeframe: "1 year"
     },
     {
-      content: "The real-time alerts and technical analysis tools have revolutionized my trading strategy. I've improved my success rate from 60% to 85% since using CryptoTracker's AI recommendations.",
+      content: "The real-time alerts and technical analysis tools have revolutionized my trading strategy. I've improved my success rate from 60% to 85% since using PTracker's AI recommendations.",
       author: "Alex Kim",
       role: "Day Trader",
       avatar: "AK",
@@ -39,7 +39,7 @@ export function TestimonialsSection() {
       timeframe: "2 years"
     },
     {
-      content: "Started with $500 following CryptoTracker's beginner guide. The educational content and community support helped me grow my portfolio while learning about blockchain technology.",
+      content: "Started with $500 following PTracker's beginner guide. The educational content and community support helped me grow my portfolio while learning about blockchain technology.",
       author: "David Thompson",
       role: "College Student",
       avatar: "DT",
@@ -48,7 +48,7 @@ export function TestimonialsSection() {
       timeframe: "8 months"
     },
     {
-      content: "The institutional-grade analytics rival what I used at my previous hedge fund job. CryptoTracker democratizes professional-level crypto analysis for retail investors.",
+      content: "The institutional-grade analytics rival what I used at my previous hedge fund job. PTracker democratizes professional-level crypto analysis for retail investors.",
       author: "Linda Wang",
       role: "Former Hedge Fund Manager",
       avatar: "LW",
@@ -59,14 +59,14 @@ export function TestimonialsSection() {
   ];
 
   return (
-    <section className="bg-gray-900 py-24 sm:py-32">
+    <section id="testimonials" className="bg-background py-24 sm:py-32">
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         <div className="mx-auto max-w-2xl text-center">
-          <h2 className="text-base font-semibold leading-7 text-blue-400">Success Stories</h2>
-          <p className="mt-2 text-4xl font-bold tracking-tight text-white sm:text-5xl">
+          <h2 className="text-base font-semibold leading-7 text-primary">Success Stories</h2>
+          <p className="mt-2 text-4xl font-bold tracking-tight text-foreground sm:text-5xl">
             Real Results from Real Investors
           </p>
-          <p className="mt-6 text-lg leading-8 text-gray-300">
+          <p className="mt-6 text-lg leading-8 text-muted-foreground">
             Join thousands of successful crypto investors who've transformed their portfolios with our platform
           </p>
         </div>
@@ -74,17 +74,17 @@ export function TestimonialsSection() {
         {/* Stats Bar */}
         <div className="mx-auto mt-12 max-w-4xl">
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 text-center">
-            <div className="bg-gray-800 p-6 rounded-xl border border-gray-700">
-              <div className="text-3xl font-bold text-green-400">92%</div>
-              <div className="text-sm text-gray-300">Average Success Rate</div>
+            <div className="bg-card p-6 rounded-xl border border-border">
+              <div className="text-3xl font-bold text-green-500">92%</div>
+              <div className="text-sm text-muted-foreground">Average Success Rate</div>
             </div>
-            <div className="bg-gray-800 p-6 rounded-xl border border-gray-700">
-              <div className="text-3xl font-bold text-blue-400">$12.8M</div>
-              <div className="text-sm text-gray-300">Total Profits Generated</div>
+            <div className="bg-card p-6 rounded-xl border border-border">
+              <div className="text-3xl font-bold text-primary">$12.8M</div>
+              <div className="text-sm text-muted-foreground">Total Profits Generated</div>
             </div>
-            <div className="bg-gray-800 p-6 rounded-xl border border-gray-700">
-              <div className="text-3xl font-bold text-purple-400">50K+</div>
-              <div className="text-sm text-gray-300">Happy Investors</div>
+            <div className="bg-card p-6 rounded-xl border border-border">
+              <div className="text-3xl font-bold text-purple-500">50K+</div>
+              <div className="text-sm text-muted-foreground">Happy Investors</div>
             </div>
           </div>
         </div>
@@ -92,7 +92,7 @@ export function TestimonialsSection() {
         <div className="mx-auto mt-16 max-w-2xl sm:mt-20 lg:mx-0 lg:max-w-none">
           <div className="grid grid-cols-1 gap-8 lg:grid-cols-2 xl:grid-cols-3">
             {testimonials.map((testimonial, index) => (
-              <div key={index} className="group relative bg-gray-800 p-8 rounded-2xl border border-gray-700 hover:border-gray-600 transition-all duration-300 hover:shadow-xl hover:shadow-blue-500/10">
+              <div key={index} className="group relative bg-card p-8 rounded-2xl border border-border hover:border-primary/50 transition-all duration-300 hover:shadow-xl hover:shadow-primary/10">
                 {/* Rating */}
                 <div className="flex items-center mb-4">
                   {[...Array(testimonial.rating)].map((_, i) => (
@@ -101,13 +101,13 @@ export function TestimonialsSection() {
                 </div>
                 
                 {/* Content */}
-                <blockquote className="text-gray-300 mb-6">
+                <blockquote className="text-muted-foreground mb-6">
                   <p className="text-sm leading-relaxed">"{testimonial.content}"</p>
                 </blockquote>
                 
                 {/* Performance Badge */}
                 <div className="mb-6">
-                  <div className="inline-flex items-center gap-2 bg-green-900/30 text-green-400 px-3 py-1 rounded-full text-sm font-medium">
+                  <div className="inline-flex items-center gap-2 bg-green-500/10 text-green-600 dark:text-green-400 px-3 py-1 rounded-full text-sm font-medium">
                     <span className="text-lg">{testimonial.gain}</span>
                     <span>in {testimonial.timeframe}</span>
                   </div>
@@ -121,8 +121,8 @@ export function TestimonialsSection() {
                     </div>
                   </div>
                   <div>
-                    <div className="font-semibold text-white">{testimonial.author}</div>
-                    <div className="text-sm text-gray-400">{testimonial.role}</div>
+                    <div className="font-semibold text-foreground">{testimonial.author}</div>
+                    <div className="text-sm text-muted-foreground">{testimonial.role}</div>
                   </div>
                 </div>
               </div>
@@ -132,18 +132,18 @@ export function TestimonialsSection() {
 
         {/* Social Proof */}
         <div className="mx-auto mt-16 max-w-2xl text-center">
-          <div className="bg-gray-800 p-8 rounded-2xl border border-gray-700">
-            <h3 className="text-xl font-bold text-white mb-4">
+          <div className="bg-card p-8 rounded-2xl border border-border">
+            <h3 className="text-xl font-bold text-foreground mb-4">
               Join the Success Stories
             </h3>
-            <p className="text-gray-300 mb-6">
+            <p className="text-muted-foreground mb-6">
               Start your crypto journey with confidence. Our proven system has helped investors at every level achieve their financial goals.
             </p>
             <div className="flex flex-row gap-3 sm:gap-4 justify-center">
-              <button className="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-4 sm:px-8 py-2 sm:py-3 text-sm sm:text-base rounded-lg font-semibold hover:from-blue-700 hover:to-purple-700 transition-all duration-200 transform hover:scale-105">
+              <button className="bg-gradient-to-r from-primary to-primary/80 text-primary-foreground px-4 sm:px-8 py-2 sm:py-3 text-sm sm:text-base rounded-lg font-semibold hover:from-primary/90 hover:to-primary/70 transition-all duration-200 transform hover:scale-105">
                 Start Your Success Story
               </button>
-              <button className="border border-gray-600 text-gray-300 px-4 sm:px-8 py-2 sm:py-3 text-sm sm:text-base rounded-lg font-semibold hover:bg-gray-700 transition-colors">
+              <button className="border border-border text-foreground px-4 sm:px-8 py-2 sm:py-3 text-sm sm:text-base rounded-lg font-semibold hover:bg-accent transition-colors">
                 Read More Stories
               </button>
             </div>

@@ -3,11 +3,7 @@
 import React, { useEffect } from 'react';
 import { useAuthStore } from '@/stores/authStore';
 import { useMarketStore } from '@/stores/marketStore';
-import { 
-  TrendingUpIcon, 
-  TrendingDownIcon,
-  ChartBarIcon 
-} from '@heroicons/react/24/outline';
+import { TrendingUp, TrendingDown, BarChart3 } from 'lucide-react';
 
 const TrendingAssets: React.FC = () => {
   const { token } = useAuthStore();
@@ -18,7 +14,7 @@ const TrendingAssets: React.FC = () => {
   } = useMarketStore();
 
   useEffect(() => {
-    fetchTopCoins(10, 'usd', token);
+    fetchTopCoins(10, 'usd', token || undefined);
   }, [token, fetchTopCoins]);
 
   const formatCurrency = (amount: number) => {
@@ -74,7 +70,7 @@ const TrendingAssets: React.FC = () => {
         <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
           Trending Assets
         </h2>
-        <ChartBarIcon className="h-5 w-5 text-gray-400" />
+        <BarChart3 className="h-5 w-5 text-gray-400" />
       </div>
 
       <div className="space-y-4">
@@ -123,9 +119,9 @@ const TrendingAssets: React.FC = () => {
                     : 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200'
                 }`}>
                   {isPositive ? (
-                    <TrendingUpIcon className="h-3 w-3" />
+                    <TrendingUp className="h-3 w-3" />
                   ) : (
-                    <TrendingDownIcon className="h-3 w-3" />
+                    <TrendingDown className="h-3 w-3" />
                   )}
                   <span>{formatPercentage(coin.price_change_percentage_24h)}</span>
                 </div>

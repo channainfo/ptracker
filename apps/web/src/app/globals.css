@@ -2,6 +2,11 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
 @layer base {
   :root {
     --background: 0 0% 100%;
@@ -110,11 +115,11 @@
   }
 
   .card {
-    @apply rounded-lg border bg-card text-card-foreground shadow-sm;
+    @apply rounded-lg border bg-card text-card-foreground shadow-sm p-4 sm:p-6;
   }
 
   .crypto-card {
-    @apply card p-6 transition-all duration-200 hover:shadow-md;
+    @apply card transition-all duration-200 hover:shadow-md;
   }
 
   .price-up {

@@ -34,7 +34,9 @@
     "migration:revert": "npm run typeorm -- migration:revert -d src/database/data-source.js",
     "schema:sync": "npm run typeorm -- schema:sync -d src/database/data-source.js",
     "migration:create": "npm run typeorm -- migration:create",
-    "db:verify": "ts-node src/database/verify-schema.ts"
+    "db:verify": "ts-node src/database/verify-schema.ts",
+    "seed:users": "ts-node src/database/seeds/simple-users-seed.ts",
+    "seed:verify": "ts-node src/database/seeds/verify-seed-data.ts"
   },
   "dependencies": {
     "@mysten/sui.js": "^0.44.0",
