@@ -1,7 +1,9 @@
 "use client";
 
-import { Menu, Bell, Search, Sun, Moon } from "lucide-react";
+import { Menu, Bell, Search, Sun, Moon, LogOut, Settings, User } from "lucide-react";
 import { useTheme } from "next-themes";
+import { useRouter } from "next/navigation";
+import { useAuth } from "@/components/providers/auth-provider";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -9,6 +11,7 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
+  DropdownMenuSeparator,
 } from "@/components/ui/dropdown-menu";
 
 interface TopBarProps {
@@ -18,6 +21,24 @@ interface TopBarProps {
 
 export function TopBar({ onMenuClick, user }: TopBarProps) {
   const { theme, setTheme } = useTheme();
+  const { logout, isLoading } = useAuth();
+  const router = useRouter();
+
+  const handleLogout = async () => {
+    try {
+      await logout();
+    } catch (error) {
+      console.error('Logout failed:', error);
+    }
+  };
+
+  const handleProfileClick = () => {
+    router.push('/settings/profile');
+  };
+
+  const handleSettingsClick = () => {
+    router.push('/settings/security');
+  };
 
   return (
     <header className="bg-background border-b border-border px-4 py-3">
@@ -74,9 +95,23 @@ export function TopBar({ onMenuClick, user }: TopBarProps) {
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
-              <DropdownMenuItem>Profile</DropdownMenuItem>
-              <DropdownMenuItem>Settings</DropdownMenuItem>
-              <DropdownMenuItem>Sign Out</DropdownMenuItem>
+              <DropdownMenuItem onClick={handleProfileClick}>
+                <User className="w-4 h-4 mr-2" />
+                Profile
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={handleSettingsClick}>
+                <Settings className="w-4 h-4 mr-2" />
+                Settings
+              </DropdownMenuItem>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem 
+                onClick={handleLogout}
+                disabled={isLoading}
+                className="text-red-600 focus:text-red-600"
+              >
+                <LogOut className="w-4 h-4 mr-2" />
+                {isLoading ? 'Signing out...' : 'Sign Out'}
+              </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
         </div>

@@ -3,7 +3,7 @@
  * Enhanced with security features and better error handling
  */
 
-export interface ApiError {
+interface ApiError {
   message: string;
   statusCode?: number;
   field?: string;
@@ -49,7 +49,7 @@ export class ApiClient {
           this.accessToken = this.getSecureCookie('accessToken');
           this.refreshToken = this.getSecureCookie('refreshToken');
         }
-        
+
         // Fallback to localStorage if secure storage not available
         if (!this.accessToken || !this.refreshToken) {
           this.accessToken = localStorage.getItem('accessToken');
@@ -64,7 +64,7 @@ export class ApiClient {
 
   private getSecureCookie(name: string): string | null {
     if (typeof document === 'undefined') return null;
-    
+
     const value = `; ${document.cookie}`;
     const parts = value.split(`; ${name}=`);
     if (parts.length === 2) {
@@ -76,7 +76,7 @@ export class ApiClient {
   setTokens(accessToken: string, refreshToken: string) {
     this.accessToken = accessToken;
     this.refreshToken = refreshToken;
-    
+
     if (typeof window !== 'undefined') {
       try {
         // Store tokens securely
@@ -89,7 +89,7 @@ export class ApiClient {
           localStorage.setItem('accessToken', accessToken);
           localStorage.setItem('refreshToken', refreshToken);
         }
-        
+
         // Set last activity timestamp
         localStorage.setItem('lastActivity', Date.now().toString());
       } catch (error) {
@@ -100,25 +100,25 @@ export class ApiClient {
 
   private setSecureCookie(name: string, value: string): void {
     if (typeof document === 'undefined') return;
-    
+
     const secure = this.secureStorage ? '; Secure' : '';
     const sameSite = '; SameSite=Strict';
     const httpOnly = ''; // Note: httpOnly cannot be set from client-side JS
-    
+
     document.cookie = `${name}=${value}; Path=/${secure}${sameSite}${httpOnly}`;
   }
 
   clearTokens() {
     this.accessToken = null;
     this.refreshToken = null;
-    
+
     if (typeof window !== 'undefined') {
       try {
         // Clear from all storage types
         localStorage.removeItem('accessToken');
         localStorage.removeItem('refreshToken');
         localStorage.removeItem('lastActivity');
-        
+
         // Clear secure cookies
         if (this.secureStorage) {
           this.clearSecureCookie('accessToken');
@@ -132,7 +132,7 @@ export class ApiClient {
 
   private clearSecureCookie(name: string): void {
     if (typeof document === 'undefined') return;
-    
+
     document.cookie = `${name}=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;`;
   }
 
@@ -155,7 +155,7 @@ export class ApiClient {
     }
 
     this.refreshPromise = this.performTokenRefresh();
-    
+
     try {
       await this.refreshPromise;
     } finally {
@@ -183,7 +183,7 @@ export class ApiClient {
 
   private async handleApiError(response: Response): Promise<never> {
     let errorData: any = {};
-    
+
     try {
       errorData = await response.json();
     } catch {
@@ -224,7 +224,7 @@ export class ApiClient {
   private async requestWithTimeout(url: string, config: RequestInit, timeout = 30000): Promise<Response> {
     const controller = new AbortController();
     const timeoutId = setTimeout(() => controller.abort(), timeout);
-    
+
     try {
       const response = await fetch(url, {
         ...config,
@@ -242,13 +242,19 @@ export class ApiClient {
   }
 
   async request<T = any>(
-    endpoint: string, 
+    endpoint: string,
     options: RequestConfig = {}
   ): Promise<T> {
+    console.log('12. API Client: making request to:', endpoint);
+    console.log('13. API Client: base URL:', this.baseUrl);
+    console.log('14. API Client: access token:', this.accessToken ? 'exists' : 'missing');
+    
     const { retries = 3, timeout = 30000, ...requestOptions } = options;
     const url = `${this.baseUrl}${endpoint}`;
     const requestId = this.generateRequestId();
     
+    console.log('15. API Client: full URL:', url);
+
     const config: RequestInit = {
       credentials: 'include', // Important for CORS with cookies
       headers: {
@@ -268,28 +274,36 @@ export class ApiClient {
       };
     }
 
+    console.log('16. API Client: making HTTP request...');
     let response = await this.requestWithTimeout(url, config, timeout);
+    console.log('17. API Client: response status:', response.status);
 
     // Handle token refresh on 401
     if (response.status === 401 && this.refreshToken && !endpoint.includes('/refresh')) {
+      console.log('18. API Client: got 401, attempting token refresh...');
       try {
         await this.refreshTokens();
-        
+
         // Retry the original request with new token
         config.headers = {
           ...config.headers,
           Authorization: `Bearer ${this.accessToken}`,
         };
         response = await this.requestWithTimeout(url, config, timeout);
+        console.log('19. API Client: retry response status:', response.status);
       } catch (refreshError) {
+        console.log('20. API Client: token refresh failed:', refreshError);
         this.clearTokens();
         // Let the original 401 response be handled below
       }
     }
 
     if (!response.ok) {
+      console.log('21. API Client: response not ok, handling error...');
       await this.handleApiError(response);
     }
+
+    console.log('22. API Client: request successful, parsing response...');
 
     // Handle empty responses
     const contentType = response.headers.get('content-type');
@@ -301,7 +315,7 @@ export class ApiClient {
   }
 
   private generateRequestId(): string {
-    return `req_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+    return `req_${Date.now()}_${Math.random().toString(36).substring(2, 9)}`;
   }
 
   // Convenience methods with enhanced options

@@ -8,8 +8,8 @@ import * as compression from 'compression';
 import { AppModule } from './app.module';
 
 
-const dotenvPath = `.env.${process.env.NODE_ENV || 'development'}`
-dotenv.config({ path: dotenvPath });
+// Load .env file from the API directory
+dotenv.config({ path: '.env' });
 
 async function bootstrap(): Promise<void> {
   const app = await NestFactory.create(AppModule);
@@ -64,7 +64,7 @@ async function bootstrap(): Promise<void> {
   // Swagger documentation
   if (configService.get('NODE_ENV') !== 'production') {
     const config = new DocumentBuilder()
-      .setTitle('CryptoTracker API')
+      .setTitle('PTracker API')
       .setDescription('Smart crypto portfolio and education platform API')
       .setVersion('1.0')
       .addBearerAuth()
@@ -82,7 +82,7 @@ async function bootstrap(): Promise<void> {
   const port = configService.get('PORT') || 3001;
   await app.listen(port);
 
-  console.log(`🚀 CryptoTracker API is running on: http://localhost:${port}`);
+  console.log(`🚀 PTracker API is running on: http://localhost:${port}`);
   console.log(`📖 API Documentation: http://localhost:${port}/api/docs`);
 }
 

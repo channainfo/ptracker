@@ -12,7 +12,7 @@ The API uses JWT (JSON Web Tokens) for authentication with access and refresh to
 
 ## Base URL
 ```
-https://api.cryptotracker.com/auth
+https://api.ptracker.com/auth
 ```
 
 ## Authentication Endpoints
@@ -426,7 +426,7 @@ Then complete login with:
 
 ```typescript
 class AuthService {
-  private baseUrl = 'https://api.cryptotracker.com/auth';
+  private baseUrl = 'https://api.ptracker.com/auth';
   private accessToken: string | null = null;
   private refreshToken: string | null = null;
 

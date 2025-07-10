@@ -6,19 +6,22 @@ import Link from 'next/link';
 import { useAuth } from '@/components/providers/auth-provider';
 
 export function EmailVerificationForm() {
+  console.log("verify: EmailVerificationForm")
   const [isVerifying, setIsVerifying] = useState(false);
   const [isVerified, setIsVerified] = useState(false);
   const [error, setError] = useState('');
   const [resendCooldown, setResendCooldown] = useState(0);
-  
+
   const searchParams = useSearchParams();
   const router = useRouter();
   const { user, verifyEmail, resendEmailVerification, isAuthenticated } = useAuth();
-  
+
   const token = searchParams.get('token');
+  const wasSent = searchParams.get('sent') === 'true';
 
   // Handle email verification on component mount if token is present
   useEffect(() => {
+    console.log(`token: ${token}} -------------------------`)
     if (token && !isVerified && !isVerifying) {
       handleVerification(token);
     }
@@ -35,11 +38,11 @@ export function EmailVerificationForm() {
   const handleVerification = async (verificationToken: string) => {
     setIsVerifying(true);
     setError('');
-    
+
     try {
       await verifyEmail(verificationToken);
       setIsVerified(true);
-      
+
       // Redirect to dashboard after successful verification
       setTimeout(() => {
         router.push('/dashboard');
@@ -52,13 +55,27 @@ export function EmailVerificationForm() {
   };
 
   const handleResendVerification = async () => {
+    debugger
     if (resendCooldown > 0) return;
-    
+
+    console.log('=== RESEND VERIFICATION DEBUG ===');
+    console.log('1. Button clicked');
+    console.log('2. isAuthenticated:', isAuthenticated);
+    console.log('3. user object:', user);
+    console.log('4. About to call resendEmailVerification()');
+
     try {
-      await resendEmailVerification();
+      const result = await resendEmailVerification();
+      console.log('5. Success! Result:', result);
       setResendCooldown(60); // 60 second cooldown
       setError('');
     } catch (err: any) {
+      console.error('5. Failed! Error:', err);
+      console.error('Error details:', {
+        message: err.message,
+        statusCode: err.statusCode,
+        stack: err.stack
+      });
       setError(err.message || 'Failed to resend verification email');
     }
   };
@@ -151,7 +168,7 @@ export function EmailVerificationForm() {
     );
   }
 
-  // Default state - waiting for verification
+  // Default state - waiting for verification (show this for both token verification and resend scenarios)
   return (
     <div className="space-y-6">
       <div className="text-center">
@@ -170,10 +187,16 @@ export function EmailVerificationForm() {
             />
           </svg>
         </div>
-        <h2 className="mt-4 text-2xl font-bold text-foreground">Check your email</h2>
+        <h2 className="mt-4 text-2xl font-bold text-foreground">
+          {token ? 'Check your email' : wasSent ? 'Verification email sent!' : 'Verify your email address'}
+        </h2>
         <p className="mt-2 text-sm text-muted-foreground">
-          We've sent a verification link to{' '}
-          <strong className="text-foreground">{user?.email || 'your email address'}</strong>
+          {token 
+            ? `We've sent a verification link to ${user?.email || 'your email address'}`
+            : wasSent
+            ? `A new verification email has been sent to ${user?.email || 'your email address'}`
+            : `Please verify your email address: ${user?.email || 'your email address'}`
+          }
         </p>
       </div>
 
@@ -198,18 +221,18 @@ export function EmailVerificationForm() {
       </div>
 
       <div className="flex flex-col space-y-4">
-        {isAuthenticated && (
-          <button
-            onClick={handleResendVerification}
-            disabled={resendCooldown > 0}
-            className="btn-outline btn-lg w-full disabled:opacity-50"
-          >
-            {resendCooldown > 0
+        <button
+          onClick={isAuthenticated ? handleResendVerification : () => setError('Please log in to resend verification email')}
+          disabled={resendCooldown > 0 || !isAuthenticated}
+          className="btn-outline btn-lg w-full disabled:opacity-50"
+        >
+          {!isAuthenticated
+            ? 'Log in to resend email'
+            : resendCooldown > 0
               ? `Resend email in ${resendCooldown}s`
               : 'Resend verification email'
-            }
-          </button>
-        )}
+          }
+        </button>
 
         <div className="flex flex-col sm:flex-row gap-3">
           <Link

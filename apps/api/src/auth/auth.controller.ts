@@ -23,11 +23,16 @@ import { VerifyEmailDto } from './dto/verify-email.dto';
 import { User } from '../users/entities/user.entity';
 import { GetUser } from './decorators/get-user.decorator';
 import { JwtAuthGuard } from './guards/jwt-auth.guard';
+import { ConfigService } from '@nestjs/config';
+import { TelegramStrategy } from './strategies/telegram.strategy';
 
 @ApiTags('auth')
 @Controller('auth')
 export class AuthController {
-  constructor(private readonly authService: AuthService) {}
+  constructor(
+    private readonly authService: AuthService,
+    private readonly configService: ConfigService,
+  ) {}
 
   @Post('register')
   @HttpCode(HttpStatus.CREATED)
@@ -100,7 +105,17 @@ export class AuthController {
   @ApiOperation({ summary: 'Resend email verification' })
   @ApiResponse({ status: 200, description: 'Verification email sent' })
   async resendVerification(@GetUser() user: User): Promise<any> {
-    return this.authService.resendVerificationEmail(user.id);
+    console.log('=== RESEND VERIFICATION ENDPOINT HIT ===');
+    console.log('User:', user ? user.id : 'undefined');
+    console.log('User email:', user ? user.email : 'undefined');
+    try {
+      const result = await this.authService.resendVerificationEmail(user.id);
+      console.log('Resend verification successful:', result);
+      return result;
+    } catch (error) {
+      console.error('Resend verification failed:', error);
+      throw error;
+    }
   }
 
   @Get('profile')
@@ -125,7 +140,7 @@ export class AuthController {
   @ApiOperation({ summary: 'Google OAuth callback' })
   async googleAuthCallback(@Req() req: Request, @Res() res: Response): Promise<void> {
     const result = await this.authService.socialLogin(req.user as any);
-    res.redirect(`${process.env.FRONTEND_URL}/auth/success?token=${result.accessToken}`);
+    res.redirect(`${process.env.FRONTEND_URL}/auth/success?token=${result.accessToken}&refreshToken=${result.refreshToken}`);
   }
 
   @Get('facebook')
@@ -140,7 +155,48 @@ export class AuthController {
   @ApiOperation({ summary: 'Facebook OAuth callback' })
   async facebookAuthCallback(@Req() req: Request, @Res() res: Response): Promise<void> {
     const result = await this.authService.socialLogin(req.user as any);
-    res.redirect(`${process.env.FRONTEND_URL}/auth/success?token=${result.accessToken}`);
+    res.redirect(`${process.env.FRONTEND_URL}/auth/success?token=${result.accessToken}&refreshToken=${result.refreshToken}`);
+  }
+
+  @Post('telegram')
+  @UseGuards(AuthGuard('telegram'))
+  @ApiOperation({ summary: 'Telegram authentication (POST)' })
+  @ApiResponse({ status: 200, description: 'Telegram authentication successful' })
+  @ApiResponse({ status: 401, description: 'Invalid Telegram authentication data' })
+  async telegramAuth(@Req() req: Request): Promise<any> {
+    const result = await this.authService.socialLogin(req.user as any);
+    return {
+      accessToken: result.accessToken,
+      refreshToken: result.refreshToken,
+      user: result.user,
+    };
+  }
+
+  @Get('telegram')
+  @ApiOperation({ summary: 'Telegram authentication (GET redirect)' })
+  @ApiResponse({ status: 302, description: 'Redirect to frontend with tokens' })
+  @ApiResponse({ status: 401, description: 'Invalid Telegram authentication data' })
+  async telegramAuthRedirect(@Req() req: Request, @Res() res: Response): Promise<void> {
+    try {
+      console.log('Telegram auth GET request received');
+      console.log('Query params:', req.query);
+      
+      // Manually validate Telegram auth data from query parameters
+      const telegramStrategy = new TelegramStrategy(this.configService);
+      
+      // Validate the request manually
+      const user = await telegramStrategy.validate(req);
+      console.log('Telegram user validated:', user);
+      
+      // If validation passes, proceed with social login
+      const result = await this.authService.socialLogin(user);
+      console.log('Social login successful, redirecting...');
+      res.redirect(`${process.env.FRONTEND_URL}/auth/success?token=${result.accessToken}&refreshToken=${result.refreshToken}`);
+    } catch (error) {
+      console.error('Telegram auth error:', error);
+      console.error('Error details:', error.message);
+      res.redirect(`${process.env.FRONTEND_URL}/auth/login?error=telegram_auth_failed`);
+    }
   }
 
   // Wallet authentication

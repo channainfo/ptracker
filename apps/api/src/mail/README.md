@@ -21,7 +21,7 @@ SMTP_PORT=587
 SMTP_SECURE=false
 SMTP_USER=your-email@gmail.com
 SMTP_PASS=your-app-password
-SMTP_FROM="CryptoTracker" <noreply@cryptotracker.com>
+SMTP_FROM="CryptoTracker" <noreply@ptracker.com>
 APP_URL=http://localhost:3000
 ```
 

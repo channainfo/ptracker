@@ -511,7 +511,7 @@ interface CachingLayers {
 
 ```typescript
 // Real-time sentiment stream
-const ws = new WebSocket('wss://api.cryptotracker.com/v1/sentiment/stream');
+const ws = new WebSocket('wss://api.ptracker.com/v1/sentiment/stream');
 
 ws.on('message', (data) => {
   const sentiment = JSON.parse(data);
@@ -604,7 +604,7 @@ class SentimentTradingBot:
     
     async def run(self):
         async with websockets.connect(
-            'wss://api.cryptotracker.com/v1/sentiment/stream',
+            'wss://api.ptracker.com/v1/sentiment/stream',
             extra_headers={'X-API-Key': self.api_key}
         ) as websocket:
             await websocket.send(json.dumps({

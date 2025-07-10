@@ -476,7 +476,7 @@ jobs:
           # Wait for deployment
           sleep 60
           # Run basic health checks
-          curl -f https://qa-api.cryptotracker.com/health
+          curl -f https://qa-api.ptracker.com/health
           
       - name: Notify deployment status
         uses: 8398a7/action-slack@v3
@@ -636,10 +636,10 @@ jobs:
             --output text)
           
           # Test health endpoint
-          curl -f -H "Host: api.cryptotracker.com" https://$ALB_DNS/health
+          curl -f -H "Host: api.ptracker.com" https://$ALB_DNS/health
           
           # Test critical API endpoints
-          curl -f -H "Host: api.cryptotracker.com" https://$ALB_DNS/api/v1/market/prices?symbols=BTC,ETH
+          curl -f -H "Host: api.ptracker.com" https://$ALB_DNS/api/v1/market/prices?symbols=BTC,ETH
 
   traffic-switch:
     needs: [pre-deployment, deploy-target-environment]
@@ -740,8 +740,8 @@ jobs:
           sleep 60
           
           # Validate production is working
-          curl -f https://api.cryptotracker.com/health
-          curl -f https://api.cryptotracker.com/api/v1/market/prices?symbols=BTC,ETH
+          curl -f https://api.ptracker.com/health
+          curl -f https://api.ptracker.com/api/v1/market/prices?symbols=BTC,ETH
           
           # Check critical business metrics
           # Monitor for 5 minutes after switch
@@ -867,7 +867,7 @@ jobs:
       - name: Validate rollback
         run: |
           sleep 30
-          curl -f https://api.cryptotracker.com/health
+          curl -f https://api.ptracker.com/health
 
       - name: Create incident
         uses: actions/github-script@v7

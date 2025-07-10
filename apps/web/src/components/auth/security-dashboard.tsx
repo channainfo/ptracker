@@ -45,11 +45,17 @@ export function SecurityDashboard() {
           {
             id: 'email-verified',
             title: 'Email Verification',
-            description: user.emailVerified 
-              ? 'Your email address has been verified' 
-              : 'Please verify your email address to secure your account',
-            status: user.emailVerified ? 'secure' : 'critical',
-            action: user.emailVerified ? undefined : 'Verify Email',
+            description: !user.email 
+              ? 'No email address linked to your account (social login)'
+              : user.emailVerified 
+                ? 'Your email address has been verified' 
+                : 'Please verify your email address to secure your account',
+            status: !user.email 
+              ? 'secure' // Social login users without email are considered secure
+              : user.emailVerified 
+                ? 'secure' 
+                : 'critical',
+            action: !user.email || user.emailVerified ? undefined : 'Verify Email',
             actionUrl: '/auth/verify-email'
           },
           {
@@ -82,7 +88,8 @@ export function SecurityDashboard() {
 
         // Calculate security score
         let score = 0;
-        if (user.emailVerified) score += 30;
+        // Email verification: 30 points if verified, or 30 points if no email (social login)
+        if (!user.email || user.emailVerified) score += 30;
         if (user.twoFactorEnabled) score += 40;
         score += 20; // Base score for having an account
         score += 10; // Assuming strong password

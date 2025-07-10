@@ -33,7 +33,7 @@ import { Dashboard } from './components/Dashboard';
 
 function App() {
   return (
-    <AuthProvider apiBaseUrl="https://api.cryptotracker.com/auth">
+    <AuthProvider apiBaseUrl="https://api.ptracker.com/auth">
       <div className="app">
         <Router>
           <Routes>
@@ -109,6 +109,7 @@ import { LoginForm } from './components/LoginForm';
 ```
 
 **Props:**
+
 | Prop | Type | Description |
 |------|------|-------------|
 | `onSuccess` | `() => void` | Called after successful login |
@@ -630,7 +631,7 @@ const LoginForm = memo(({ onSuccess, onRegisterClick }) => {
 
 ```bash
 # Frontend environment variables
-REACT_APP_API_URL=https://api.cryptotracker.com
+REACT_APP_API_URL=https://api.ptracker.com
 REACT_APP_ENVIRONMENT=production
 REACT_APP_SENTRY_DSN=your-sentry-dsn
 REACT_APP_GOOGLE_CLIENT_ID=your-google-client-id

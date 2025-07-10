@@ -7,11 +7,13 @@ import { ConfigService } from '@nestjs/config';
 export class FacebookStrategy extends PassportStrategy(Strategy, 'facebook') {
   constructor(private configService: ConfigService) {
     super({
-      clientID: configService.get('FACEBOOK_APP_ID', 'dummy-app-id'),
-      clientSecret: configService.get('FACEBOOK_APP_SECRET', 'dummy-app-secret'),
-      callbackURL: configService.get('FACEBOOK_CALLBACK_URL', '/api/v1/auth/facebook/callback'),
-      scope: 'email',
-      profileFields: ['emails', 'name'],
+      clientID: configService.get('FACEBOOK_APP_ID'),
+      clientSecret: configService.get('FACEBOOK_APP_SECRET'),
+      callbackURL: configService.get('FACEBOOK_CALLBACK_URL'),
+      // add 'email' permission in the facebook login setting
+      scope: ['public_profile'],
+      profileFields: ['id', 'emails', 'name', 'displayName'],
+      enableProof: true,
     });
   }
 
@@ -22,7 +24,7 @@ export class FacebookStrategy extends PassportStrategy(Strategy, 'facebook') {
     done: (err: any, user: any, info?: any) => void,
   ): Promise<any> {
     const { id, name, emails } = profile;
-    
+
     const user = {
       provider: 'facebook',
       providerId: id,

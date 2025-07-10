@@ -375,11 +375,11 @@ metadata:
 spec:
   tls:
   - hosts:
-    - api.cryptotracker.com
-    - app.cryptotracker.com
+    - api.ptracker.com
+    - app.ptracker.com
     secretName: cryptotracker-tls
   rules:
-  - host: api.cryptotracker.com
+  - host: api.ptracker.com
     http:
       paths:
       - path: /
@@ -389,7 +389,7 @@ spec:
             name: api
             port:
               number: 80
-  - host: app.cryptotracker.com
+  - host: app.ptracker.com
     http:
       paths:
       - path: /

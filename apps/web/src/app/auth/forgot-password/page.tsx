@@ -3,8 +3,8 @@ import { ForgotPasswordForm } from '@/components/auth/forgot-password-form';
 import { AuthLayout } from '@/components/layout/auth-layout';
 
 export const metadata: Metadata = {
-  title: 'Forgot Password | CryptoTracker',
-  description: 'Reset your CryptoTracker account password',
+  title: 'Forgot Password | PTracker',
+  description: 'Reset your PTracker account password',
 };
 
 export default function ForgotPasswordPage() {

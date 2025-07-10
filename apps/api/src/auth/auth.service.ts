@@ -105,10 +105,8 @@ export class AuthService {
       throw new UnauthorizedException('Invalid credentials');
     }
 
-    // Check if email is verified
-    if (!user.emailVerified) {
-      throw new UnauthorizedException('Please verify your email before logging in');
-    }
+    // Note: We allow unverified users to log in and prompt them to verify within the app
+    // This provides a consistent experience whether they just registered or are logging back in
 
     // Generate tokens
     const tokens = await this.generateTokens(user);
@@ -245,31 +243,60 @@ export class AuthService {
   }
 
   async socialLogin(socialUser: any): Promise<AuthResult> {
-    const { email, firstName, lastName, provider, providerId } = socialUser;
+    const { email, firstName, lastName, provider, providerId, username } = socialUser;
 
-    let user = await this.userRepository.findOne({ where: { email } });
+    let user: User;
 
-    if (!user) {
-      // Create new user
-      user = this.userRepository.create({
-        email,
-        firstName,
-        lastName,
-        emailVerified: true, // Social accounts are pre-verified
-        role: UserRole.USER,
-        isActive: true,
-        authProvider: provider,
-        authProviderId: providerId,
+    if (provider === 'telegram') {
+      // For Telegram, look up by provider and providerId since no email is provided
+      user = await this.userRepository.findOne({ 
+        where: { 
+          authProvider: provider,
+          authProviderId: providerId 
+        } 
       });
 
-      user = await this.userRepository.save(user);
-    } else {
-      // Link social account if not already linked
-      if (!user.authProvider || user.authProviderId !== providerId) {
-        await this.userRepository.update(user.id, {
+      if (!user) {
+        // Create new Telegram user without email
+        user = this.userRepository.create({
+          email: `telegram_${providerId}@ptracker.local`, // Generate a unique email identifier
+          firstName,
+          lastName,
+          emailVerified: true, // Consider Telegram accounts as verified
+          role: UserRole.USER,
+          isActive: true,
           authProvider: provider,
           authProviderId: providerId,
         });
+
+        user = await this.userRepository.save(user);
+      }
+    } else {
+      // For other providers (Google, Facebook) that provide email
+      user = await this.userRepository.findOne({ where: { email } });
+
+      if (!user) {
+        // Create new user
+        user = this.userRepository.create({
+          email,
+          firstName,
+          lastName,
+          emailVerified: true, // Social accounts are pre-verified
+          role: UserRole.USER,
+          isActive: true,
+          authProvider: provider,
+          authProviderId: providerId,
+        });
+
+        user = await this.userRepository.save(user);
+      } else {
+        // Link social account if not already linked
+        if (!user.authProvider || user.authProviderId !== providerId) {
+          await this.userRepository.update(user.id, {
+            authProvider: provider,
+            authProviderId: providerId,
+          });
+        }
       }
     }
 
