@@ -21,7 +21,7 @@ export class AppService {
 
   getHello(): Record<string, string> {
     return {
-      message: 'Welcome to CryptoTracker API',
+      message: 'Welcome to PTracker API',
       version: '1.0.0',
       documentation: '/api/docs',
     };

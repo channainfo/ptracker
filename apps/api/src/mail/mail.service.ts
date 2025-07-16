@@ -83,7 +83,7 @@ export class MailService {
     try {
       await this.mailerService.sendMail({
         to: email,
-        subject: 'Verify your CryptoTracker email address',
+        subject: 'Verify your PTracker email address',
         template: 'email-verification',
         context: {
           name,
@@ -101,7 +101,7 @@ export class MailService {
         const fallbackHtml = `
           <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
             <h2>Hi ${name},</h2>
-            <p>Welcome to CryptoTracker! Please verify your email address by clicking the link below:</p>
+            <p>Welcome to PTracker! Please verify your email address by clicking the link below:</p>
             <p><a href="${verificationUrl}" style="background-color: #4f46e5; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px;">Verify Email Address</a></p>
             <p>Or copy and paste this link: ${verificationUrl}</p>
             <p>This link will expire in 24 hours.</p>
@@ -110,7 +110,7 @@ export class MailService {
 
         await this.mailerService.sendMail({
           to: email,
-          subject: 'Verify your CryptoTracker email address',
+          subject: 'Verify your PTracker email address',
           html: fallbackHtml,
         });
       } catch (fallbackError) {
@@ -130,7 +130,7 @@ export class MailService {
 
     await this.mailerService.sendMail({
       to: email,
-      subject: 'Reset your CryptoTracker password',
+      subject: 'Reset your PTracker password',
       template: 'password-reset',
       context: {
         name,
@@ -148,7 +148,7 @@ export class MailService {
 
     await this.mailerService.sendMail({
       to: email,
-      subject: 'Welcome to CryptoTracker!',
+      subject: 'Welcome to PTracker!',
       template: 'welcome',
       context: {
         name,
@@ -165,7 +165,7 @@ export class MailService {
   ): Promise<void> {
     await this.mailerService.sendMail({
       to: email,
-      subject: `CryptoTracker Alert: ${alertType}`,
+      subject: `PTracker Alert: ${alertType}`,
       template: 'portfolio-alert',
       context: {
         name,
@@ -183,7 +183,7 @@ export class MailService {
   ): Promise<void> {
     await this.mailerService.sendMail({
       to: email,
-      subject: 'Transaction Confirmation - CryptoTracker',
+      subject: 'Transaction Confirmation - PTracker',
       template: 'transaction-confirmation',
       context: {
         name,

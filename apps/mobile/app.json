@@ -11,7 +11,9 @@
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.cryptotracker.app",
@@ -23,7 +25,7 @@
         "NSPhotoLibraryUsageDescription": "This app allows you to select photos for your profile."
       },
       "associatedDomains": [
-        "applinks:cryptotracker.com"
+        "applinks:ptracker.com"
       ]
     },
     "android": {
@@ -51,10 +53,13 @@
           "data": [
             {
               "scheme": "https",
-              "host": "cryptotracker.com"
+              "host": "ptracker.com"
             }
           ],
-          "category": ["BROWSABLE", "DEFAULT"]
+          "category": [
+            "BROWSABLE",
+            "DEFAULT"
+          ]
         }
       ]
     },

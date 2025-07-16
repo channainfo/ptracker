@@ -4,7 +4,7 @@ import * as nodemailer from 'nodemailer';
 
 async function testSMTPConnection() {
   console.log('🧪 Testing SMTP connection directly...\n');
-  
+
   // Force localhost settings
   const config = {
     host: '127.0.0.1',
@@ -16,24 +16,24 @@ async function testSMTPConnection() {
     },
     ignoreTLS: true,
   };
-  
+
   console.log('📧 SMTP Configuration:');
   console.log(JSON.stringify(config, null, 2));
   console.log('');
-  
+
   try {
     // Create transporter
     const transporter = nodemailer.createTransport(config);
-    
+
     // Test connection
     console.log('🔄 Testing connection...');
     await transporter.verify();
     console.log('✅ Connection successful!');
-    
+
     // Send test email
     console.log('📨 Sending test email...');
     const info = await transporter.sendMail({
-      from: '"CryptoTracker Test" <test@cryptotracker.com>',
+      from: '"PTracker Test" <test@ptracker.com>',
       to: 'test@example.com',
       subject: 'SMTP Connection Test',
       html: `
@@ -42,11 +42,11 @@ async function testSMTPConnection() {
         <p>Sent at: ${new Date().toISOString()}</p>
       `,
     });
-    
+
     console.log('✅ Email sent successfully!');
     console.log('📋 Message ID:', info.messageId);
     console.log('🌐 Check MailHog at: http://localhost:8025');
-    
+
   } catch (error) {
     console.error('❌ SMTP test failed:');
     console.error(error.message);

@@ -13,7 +13,7 @@ const LOCKOUT_DURATION = 15 * 60 * 1000; // 15 minutes
 // Types
 export interface User {
   id: string;
-  email: string;
+  email?: string; // Optional for social login users without email
   firstName: string;
   lastName: string;
   role: 'user' | 'moderator' | 'admin';
@@ -21,6 +21,8 @@ export interface User {
   twoFactorEnabled: boolean;
   createdAt: string;
   lastLoginAt?: string;
+  authProvider?: string; // Track login method (matches backend)
+  authProviderId?: string; // Provider-specific ID
 }
 
 export interface RegisterData {
@@ -159,7 +161,7 @@ class AuthService {
   }
 
   async resetPassword(token: string, newPassword: string): Promise<{ message: string }> {
-    return apiClient.post('/auth/reset-password', { token, password: newPassword });
+    return apiClient.post('/auth/reset-password', { token, newPassword });
   }
 
   async verifyEmail(token: string): Promise<{ message: string }> {
@@ -167,7 +169,12 @@ class AuthService {
   }
 
   async resendEmailVerification(): Promise<{ message: string }> {
-    return apiClient.post('/auth/resend-verification');
+    console.log('8. Auth service: starting API call...');
+    console.log('9. Auth service: access token exists?', !!this.getAccessToken());
+    console.log('10. Auth service: making request to /auth/resend-verification');
+    const result = await apiClient.post('/auth/resend-verification');
+    console.log('11. Auth service: API success:', result);
+    return result;
   }
 
   async getCurrentUser(): Promise<User> {
@@ -230,15 +237,20 @@ class AuthService {
     const recommendations: string[] = [];
     const user = await this.getCurrentUser();
     
-    if (!user.emailVerified) {
+    // Only recommend email verification if user has an email and it's not verified
+    if (user.email && !user.emailVerified) {
       recommendations.push('Verify your email address');
     }
     if (!user.twoFactorEnabled) {
       recommendations.push('Enable two-factor authentication');
     }
     
+    // Consider account secure if:
+    // - Email is verified (when email exists) OR no email (social login)
+    // - AND 2FA is enabled
+    const emailSecure = !user.email || user.emailVerified;
     return {
-      isSecure: user.emailVerified && user.twoFactorEnabled,
+      isSecure: emailSecure && user.twoFactorEnabled,
       recommendations
     };
   }
@@ -477,10 +489,13 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const resendEmailVerification = useCallback(async () => {
     try {
+      console.log('6. Auth provider: calling service...');
       const result = await authService.resendEmailVerification();
+      console.log('7. Auth provider: service success:', result);
       toast.success('Verification email sent');
       return result;
     } catch (error: any) {
+      console.error('7. Auth provider: service error:', error);
       const message = error.message || 'Failed to send verification email';
       toast.error(message);
       throw error;

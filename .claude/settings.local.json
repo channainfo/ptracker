@@ -41,7 +41,12 @@
       "Bash(time npm run test:setup:migrations)",
       "Bash(time npm run test:unit)",
       "Bash(npx tsc:*)",
-      "Bash(cp:*)"
+      "Bash(cp:*)",
+      "Bash(npx ts-node:*)",
+      "Bash(/Users/channaly/Project/prompt/ptracker/apps/api/list-routes.sh:*)",
+      "Bash(./list-routes.sh:*)",
+      "Bash(LOG_LEVEL=silent npm run routes:list)",
+      "mcp__ide__getDiagnostics"
     ],
     "deny": []
   }

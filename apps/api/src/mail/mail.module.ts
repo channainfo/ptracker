@@ -25,7 +25,7 @@ import { MailService } from './mail.service';
           ignoreTLS: ['localhost', '127.0.0.1'].includes(configService.get('SMTP_HOST')),
         },
         defaults: {
-          from: configService.get('SMTP_FROM', '"CryptoTracker" <noreply@cryptotracker.com>'),
+          from: configService.get('SMTP_FROM', '"PTracker" <noreply@ptracker.com>'),
         },
         template: {
           dir: join(__dirname, 'templates'),
@@ -41,4 +41,4 @@ import { MailService } from './mail.service';
   providers: [MailService],
   exports: [MailService],
 })
-export class MailModule {}
+export class MailModule { }

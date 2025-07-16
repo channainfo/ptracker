@@ -202,7 +202,7 @@ class SecureTokenStorage {
                script-src 'self' 'unsafe-inline'; 
                style-src 'self' 'unsafe-inline'; 
                img-src 'self' data: https:; 
-               connect-src 'self' https://api.cryptotracker.com;">
+               connect-src 'self' https://api.ptracker.com;">
 ```
 
 **Input Sanitization:**

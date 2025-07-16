@@ -14,14 +14,18 @@ interface AuthLayoutProps {
 }
 
 export function AuthLayout({ children, title, subtitle }: AuthLayoutProps) {
-  const { isAuthenticated, isInitialized } = useAuth();
+  const { isAuthenticated, isInitialized, user } = useAuth();
   const router = useRouter();
 
   useEffect(() => {
     if (isInitialized && isAuthenticated) {
-      router.push('/dashboard');
+      // Only redirect to dashboard if user's email is verified or they don't have an email (social login)
+      const shouldRedirect = !user?.email || user?.emailVerified;
+      if (shouldRedirect) {
+        router.push('/dashboard');
+      }
     }
-  }, [isAuthenticated, isInitialized, router]);
+  }, [isAuthenticated, isInitialized, user, router]);
 
   if (!isInitialized) {
     return (
@@ -31,8 +35,11 @@ export function AuthLayout({ children, title, subtitle }: AuthLayoutProps) {
     );
   }
 
-  if (isAuthenticated) {
-    return null; // Will redirect
+  // Allow authenticated users with unverified emails to stay on auth pages (like email verification)
+  if (isAuthenticated && user?.email && !user?.emailVerified) {
+    // Allow access to auth pages for email verification
+  } else if (isAuthenticated) {
+    return null; // Will redirect to dashboard for verified users
   }
 
   return (

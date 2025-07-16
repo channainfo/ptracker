@@ -27,7 +27,7 @@ Domain authentication improves deliverability and removes "via sendgrid.net" fro
 1. In SendGrid dashboard, go to **Settings > Sender Authentication**
 2. Click **Authenticate Your Domain**
 3. Choose your DNS provider
-4. Enter your domain (e.g., `cryptotracker.com`)
+4. Enter your domain (e.g., `ptracker.com`)
 5. Add the provided DNS records to your domain
 6. Wait for verification (can take up to 48 hours)
 
@@ -92,7 +92,7 @@ SMTP_PORT=587
 SMTP_SECURE=false
 SMTP_USER=apikey
 SMTP_PASS=SG.abc123def456ghi789jkl012mno345pqr678stu901vwx234yzA
-SMTP_FROM="CryptoTracker" <noreply@cryptotracker.com>
+SMTP_FROM="CryptoTracker" <noreply@ptracker.com>
 ```
 
 ### Development/Testing Setup
@@ -102,7 +102,7 @@ SMTP_PORT=587
 SMTP_SECURE=false
 SMTP_USER=apikey
 SMTP_PASS=SG.test-api-key-for-development
-SMTP_FROM="CryptoTracker Dev" <dev@cryptotracker.com>
+SMTP_FROM="CryptoTracker Dev" <dev@ptracker.com>
 ```
 
 ### High-Volume Setup (with SSL)
@@ -112,7 +112,7 @@ SMTP_PORT=465
 SMTP_SECURE=true
 SMTP_USER=apikey
 SMTP_PASS=SG.production-api-key-here
-SMTP_FROM="CryptoTracker" <notifications@cryptotracker.com>
+SMTP_FROM="CryptoTracker" <notifications@ptracker.com>
 ```
 
 ## Best Practices

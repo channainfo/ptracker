@@ -200,6 +200,11 @@ The API can be deployed to various platforms:
 - `EXPO_PUBLIC_API_URL`: Backend API URL
 - `EXPO_PUBLIC_WS_URL`: WebSocket server URL
 
+## Ref
+- Register Google Oauth API: https://dev.to/jkevinbaluyot/google-login-rails-7-tutorial-1ai6
+- Google one-tap login: https://developers.google.com/identity/gsi/web/reference/html-reference and make sure to whitelist your domains in the **Authorized JavaScript origins** section next to the Authorized redirect URIs in the Credentials config.
+- Register Github Oauth API: https://github.com/settings/applications/new
+
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.

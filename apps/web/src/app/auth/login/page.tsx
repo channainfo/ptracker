@@ -3,8 +3,8 @@ import { ImprovedLoginForm } from '@/components/auth/improved-login-form';
 import { AuthLayout } from '@/components/layout/auth-layout';
 
 export const metadata: Metadata = {
-  title: 'Sign In | CryptoTracker',
-  description: 'Sign in to your CryptoTracker account to manage your cryptocurrency portfolio',
+  title: 'Sign In | PTracker',
+  description: 'Sign in to your PTracker account to manage your cryptocurrency portfolio',
 };
 
 export default function LoginPage() {

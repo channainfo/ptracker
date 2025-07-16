@@ -55,7 +55,7 @@ export class AppWebSocketGateway
 
       // Send welcome message
       client.emit('connected', {
-        message: 'Connected to CryptoTracker WebSocket',
+        message: 'Connected to PTracker WebSocket',
         timestamp: new Date().toISOString(),
       });
 
