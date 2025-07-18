@@ -4,6 +4,7 @@ import { useState, useRef, useEffect } from 'react';
 import Link from 'next/link';
 import { useAuth } from '@/components/providers/auth-provider';
 import { ThemeToggle } from '@/components/ui/theme-toggle';
+import { Badge } from '@/components/ui/badge';
 import { Logo } from '@/components/ui/logo';
 import {
   Bars3Icon,
@@ -112,8 +113,13 @@ export function Header() {
               <>
                 <div className="flex items-center space-x-3">
                   <div className="text-right">
-                    <div className="text-sm font-medium text-foreground">
+                    <div className="text-sm font-medium text-foreground flex items-center gap-2">
                       {user?.firstName} {user?.lastName}
+                      {user?.role === 'admin' && (
+                        <Badge className="text-xs bg-yellow-500/10 text-yellow-600 border-yellow-500/20">
+                          Admin
+                        </Badge>
+                      )}
                     </div>
                     <div className="text-xs text-muted-foreground">
                       {user?.email}
@@ -247,8 +253,13 @@ export function Header() {
                           </span>
                         </div>
                         <div>
-                          <div className="text-sm font-medium text-foreground">
+                          <div className="text-sm font-medium text-foreground flex items-center gap-2">
                             {user?.firstName} {user?.lastName}
+                            {user?.role === 'admin' && (
+                              <Badge className="text-xs bg-yellow-500/10 text-yellow-600 border-yellow-500/20">
+                                Admin
+                              </Badge>
+                            )}
                           </div>
                           <div className="text-xs text-muted-foreground">
                             {user?.email}

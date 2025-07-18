@@ -9,7 +9,7 @@ This tech stack is specifically optimized for ultra-low latency market sentiment
 ### Web Application
 ```typescript
 interface WebStack {
-  framework: 'Next.js 14+ (App Router)';
+  framework: 'Next.js 15+ (App Router)';
   language: 'TypeScript 5+';
   styling: 'Tailwind CSS + Headless UI';
   stateManagement: 'Zustand + React Query';
@@ -22,7 +22,7 @@ interface WebStack {
 ```
 
 **Why This Stack:**
-- **Next.js 14**: Edge runtime for global CDN, ISR for performance
+- **Next.js 15**: Edge runtime for global CDN, ISR for performance
 - **TypeScript**: Type safety across frontend/backend shared types
 - **TradingView Charting**: Industry-standard financial charts
 - **Zustand**: Lightweight state management, perfect for real-time updates

@@ -22,13 +22,14 @@ export class UpdateUserDto {
   @MaxLength(50)
   lastName?: string;
 
-  @ApiPropertyOptional({
-    description: 'User email address',
-    example: 'user@example.com',
-  })
-  @IsOptional()
-  @IsEmail()
-  email?: string;
+  // Email updates should be done through a separate endpoint with verification
+  // @ApiPropertyOptional({
+  //   description: 'User email address',
+  //   example: 'user@example.com',
+  // })
+  // @IsOptional()
+  // @IsEmail()
+  // email?: string;
 
   @ApiPropertyOptional({
     description: 'User bio',

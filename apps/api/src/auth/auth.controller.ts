@@ -20,6 +20,7 @@ import { RegisterDto } from './dto/register.dto';
 import { ForgotPasswordDto } from './dto/forgot-password.dto';
 import { ResetPasswordDto } from './dto/reset-password.dto';
 import { VerifyEmailDto } from './dto/verify-email.dto';
+import { ChangeEmailDto, ConfirmEmailChangeDto } from './dto/change-email.dto';
 import { User } from '../users/entities/user.entity';
 import { GetUser } from './decorators/get-user.decorator';
 import { JwtAuthGuard } from './guards/jwt-auth.guard';
@@ -125,6 +126,28 @@ export class AuthController {
   @ApiResponse({ status: 200, description: 'User profile data' })
   async getProfile(@GetUser() user: User): Promise<User> {
     return user;
+  }
+
+  @Post('change-email')
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
+  @Throttle({ short: { limit: 2, ttl: 300000 } }) // 2 requests per 5 minutes
+  @ApiOperation({ summary: 'Request email change' })
+  @ApiResponse({ status: 200, description: 'Email change confirmation sent' })
+  @ApiResponse({ status: 409, description: 'Email already in use' })
+  async changeEmail(
+    @GetUser() user: User,
+    @Body() changeEmailDto: ChangeEmailDto
+  ): Promise<any> {
+    return this.authService.requestEmailChange(user.id, changeEmailDto.newEmail);
+  }
+
+  @Post('confirm-email-change')
+  @ApiOperation({ summary: 'Confirm email change with token' })
+  @ApiResponse({ status: 200, description: 'Email changed successfully' })
+  @ApiResponse({ status: 400, description: 'Invalid or expired token' })
+  async confirmEmailChange(@Body() confirmDto: ConfirmEmailChangeDto): Promise<any> {
+    return this.authService.confirmEmailChange(confirmDto.token);
   }
 
   // Social authentication endpoints
