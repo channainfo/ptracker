@@ -5,38 +5,46 @@ describe('FeaturesSection', () => {
   it('renders section title', () => {
     render(<FeaturesSection />);
     
-    expect(screen.getByText('Features')).toBeInTheDocument();
-    expect(screen.getByText('Everything you need to track crypto')).toBeInTheDocument();
+    expect(screen.getByText('Powerful Features')).toBeInTheDocument();
+    expect(screen.getByText('Everything you need to succeed in crypto')).toBeInTheDocument();
   });
 
-  it('renders all feature cards', () => {
+  it('renders all main feature cards', () => {
     render(<FeaturesSection />);
     
-    expect(screen.getByText('Real-time Portfolio Tracking')).toBeInTheDocument();
-    expect(screen.getByText('Market Sentiment Analysis')).toBeInTheDocument();
-    expect(screen.getByText('Educational Resources')).toBeInTheDocument();
+    expect(screen.getByText('Smart Portfolio Tracking')).toBeInTheDocument();
+    expect(screen.getByText('Learn & Earn Program')).toBeInTheDocument();
+    expect(screen.getByText('AI-Powered Insights')).toBeInTheDocument();
   });
 
   it('renders feature descriptions', () => {
     render(<FeaturesSection />);
     
-    expect(screen.getByText(/Monitor your crypto investments with live price updates/)).toBeInTheDocument();
-    expect(screen.getByText(/Get insights into market trends with AI-powered sentiment/)).toBeInTheDocument();
-    expect(screen.getByText(/Learn about cryptocurrency and trading with our comprehensive/)).toBeInTheDocument();
+    expect(screen.getByText(/Monitor your crypto investments across multiple exchanges/)).toBeInTheDocument();
+    expect(screen.getByText(/Master crypto fundamentals through our structured learning/)).toBeInTheDocument();
+    expect(screen.getByText(/Get intelligent market analysis, risk assessments/)).toBeInTheDocument();
   });
 
-  it('renders feature icons', () => {
+  it('renders feature stats', () => {
     render(<FeaturesSection />);
     
-    expect(screen.getByText('📊')).toBeInTheDocument();
-    expect(screen.getByText('🧠')).toBeInTheDocument();
-    expect(screen.getByText('📚')).toBeInTheDocument();
+    expect(screen.getByText('500+ Supported Coins')).toBeInTheDocument();
+    expect(screen.getByText('50+ Courses Available')).toBeInTheDocument();
+    expect(screen.getByText('95% Accuracy Rate')).toBeInTheDocument();
   });
 
-  it('has proper dark mode styling', () => {
+  it('renders additional features', () => {
     render(<FeaturesSection />);
     
-    const section = screen.getByText('Features').closest('section');
-    expect(section).toHaveClass('bg-gray-800');
+    expect(screen.getByText('Bank-Level Security')).toBeInTheDocument();
+    expect(screen.getByText('Real-time Alerts')).toBeInTheDocument();
+    expect(screen.getByText('Educational Hub')).toBeInTheDocument();
+  });
+
+  it('has proper styling', () => {
+    render(<FeaturesSection />);
+    
+    const section = screen.getByText('Powerful Features').closest('section');
+    expect(section).toHaveClass('bg-background');
   });
 });

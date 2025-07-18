@@ -198,13 +198,20 @@ describe('AuthService', () => {
       await expect(service.login(loginDto)).rejects.toThrow(UnauthorizedException);
     });
 
-    it('should throw UnauthorizedException for unverified email', async () => {
+    it('should allow login for unverified email but return unverified user', async () => {
       const unverifiedUser = { ...mockUser, emailVerified: false, password: 'hashedPassword' };
       mockUserRepository.findOne.mockResolvedValue(unverifiedUser);
+      mockJwtService.sign.mockReturnValue('mock-token');
+      mockConfigService.get.mockReturnValue('mock-secret');
 
       jest.spyOn(bcrypt, 'compare').mockImplementation(() => Promise.resolve(true as never));
 
-      await expect(service.login(loginDto)).rejects.toThrow(UnauthorizedException);
+      const result = await service.login(loginDto);
+      
+      expect(result).toBeDefined();
+      expect(result.user.emailVerified).toBe(false);
+      expect(result.accessToken).toBeDefined();
+      expect(result.refreshToken).toBeDefined();
     });
   });
 

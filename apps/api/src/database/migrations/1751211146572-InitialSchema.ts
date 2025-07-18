@@ -4,8 +4,22 @@ export class InitialSchema1751211146572 implements MigrationInterface {
     name = 'InitialSchema1751211146572'
 
     public async up(queryRunner: QueryRunner): Promise<void> {
-        await queryRunner.query(`CREATE TYPE "public"."users_role_enum" AS ENUM('user', 'moderator', 'admin')`);
-        await queryRunner.query(`CREATE TYPE "public"."users_tier_enum" AS ENUM('novice', 'learner', 'trader', 'expert', 'master', 'legend')`);
+        // Check and create enum types if they don't exist
+        const roleEnumExists = await queryRunner.query(`
+            SELECT 1 FROM pg_type WHERE typname = 'users_role_enum'
+        `);
+        
+        if (roleEnumExists.length === 0) {
+            await queryRunner.query(`CREATE TYPE "public"."users_role_enum" AS ENUM('user', 'moderator', 'admin')`);
+        }
+        
+        const tierEnumExists = await queryRunner.query(`
+            SELECT 1 FROM pg_type WHERE typname = 'users_tier_enum'
+        `);
+        
+        if (tierEnumExists.length === 0) {
+            await queryRunner.query(`CREATE TYPE "public"."users_tier_enum" AS ENUM('novice', 'learner', 'trader', 'expert', 'master', 'legend')`);
+        }
         await queryRunner.query(`CREATE TABLE "users" ("id" uuid NOT NULL DEFAULT uuid_generate_v4(), "email" character varying, "password" character varying, "first_name" character varying, "last_name" character varying, "wallet_address" character varying, "wallet_network" character varying, "role" "public"."users_role_enum" NOT NULL DEFAULT 'user', "tier" "public"."users_tier_enum" NOT NULL DEFAULT 'novice', "email_verified" boolean NOT NULL DEFAULT false, "email_verification_token" character varying, "password_reset_token" character varying, "password_reset_expiry" TIMESTAMP, "refresh_token" character varying, "auth_provider" character varying, "auth_provider_id" character varying, "two_factor_enabled" boolean NOT NULL DEFAULT false, "two_factor_secret" character varying, "is_active" boolean NOT NULL DEFAULT true, "last_login_at" TIMESTAMP, "login_count" integer NOT NULL DEFAULT '0', "profile_picture" character varying, "bio" text, "timezone" character varying, "language" character varying, "notification_preferences" jsonb, "privacy_settings" jsonb, "knowledge_score" integer NOT NULL DEFAULT '0', "investment_score" integer NOT NULL DEFAULT '0', "reputation_score" integer NOT NULL DEFAULT '0', "created_at" TIMESTAMP NOT NULL DEFAULT now(), "updated_at" TIMESTAMP NOT NULL DEFAULT now(), CONSTRAINT "UQ_97672ac88f789774dd47f7c8be3" UNIQUE ("email"), CONSTRAINT "UQ_196ef3e52525d3cd9e203bdb1de" UNIQUE ("wallet_address"), CONSTRAINT "PK_a3ffb1c0c8416b9fc6f907b7433" PRIMARY KEY ("id"))`);
         await queryRunner.query(`CREATE UNIQUE INDEX "IDX_7038d44154f0e1c8213352b403" ON "users" ("wallet_address") WHERE wallet_address IS NOT NULL`);
         await queryRunner.query(`CREATE UNIQUE INDEX "IDX_65cbf5fcb331619593ee334c7c" ON "users" ("email") WHERE email IS NOT NULL`);

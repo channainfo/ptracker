@@ -429,14 +429,16 @@ export class AuthService {
       throw new ConflictException('Email already in use');
     }
 
-    // Generate email change token
+    // Generate email change token with 24-hour expiry
     const token = uuidv4();
+    const expiry = new Date();
+    expiry.setHours(expiry.getHours() + 24);
     
-    // Store the token and new email
-    // Direct repository update to bypass DTO validation
+    // Store the pending email, token, and expiry
     await this.userRepository.update(userId, {
-      emailVerificationToken: token,
-      // TODO: Add a pendingEmail field to store the new email
+      pendingEmail: newEmail,
+      pendingEmailToken: token,
+      pendingEmailExpiry: expiry,
     });
 
     // Send confirmation email to the NEW email address
@@ -446,19 +448,26 @@ export class AuthService {
   }
 
   async confirmEmailChange(token: string): Promise<{ message: string; user: User }> {
-    // Find user by email verification token
-    const user = await this.usersService.findByEmailVerificationToken(token);
-    if (!user) {
-      throw new BadRequestException('Invalid or expired token');
+    // Find user by pending email token
+    const user = await this.userRepository.findOne({
+      where: { pendingEmailToken: token },
+    });
+
+    if (!user || !user.pendingEmailExpiry || user.pendingEmailExpiry < new Date()) {
+      throw new BadRequestException('Invalid or expired email change token');
     }
 
-    // Update the user's email
-    // Note: You would need to store the pending email somewhere
-    // For now, this is a placeholder implementation
+    if (!user.pendingEmail) {
+      throw new BadRequestException('No pending email change found');
+    }
+
+    // Update the user's email from pending to active
     await this.userRepository.update(user.id, {
+      email: user.pendingEmail,
       emailVerified: true,
-      emailVerificationToken: null,
-      // TODO: Update email field with the pending email
+      pendingEmail: null,
+      pendingEmailToken: null,
+      pendingEmailExpiry: null,
     });
 
     const updatedUser = await this.usersService.findOne(user.id);

@@ -53,6 +53,12 @@ export class UsersService {
     });
   }
 
+  async findByPendingEmailToken(token: string): Promise<User | null> {
+    return this.userRepository.findOne({
+      where: { pendingEmailToken: token },
+    });
+  }
+
   async findByWalletAddress(walletAddress: string): Promise<User | null> {
     return this.userRepository.findOne({
       where: { walletAddress },

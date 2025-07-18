@@ -173,7 +173,7 @@ describe('AuthController Integration Tests', () => {
       await expect(controller.login(loginDto)).rejects.toThrow();
     });
 
-    it('should fail for unverified email', async () => {
+    it('should allow login for unverified email but return unverified user data', async () => {
       // Create unverified user
       const registerDto: RegisterDto = {
         email: 'unverified@example.com',
@@ -189,7 +189,13 @@ describe('AuthController Integration Tests', () => {
         password: 'Password123!',
       };
 
-      await expect(controller.login(loginDto)).rejects.toThrow();
+      const result = await controller.login(loginDto);
+      
+      expect(result).toBeDefined();
+      expect(result.user.emailVerified).toBe(false);
+      expect(result.user.email).toBe('unverified@example.com');
+      expect(result.accessToken).toBeDefined();
+      expect(result.refreshToken).toBeDefined();
     });
   });
 
