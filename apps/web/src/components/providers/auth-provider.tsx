@@ -23,6 +23,20 @@ export interface User {
   lastLoginAt?: string;
   authProvider?: string; // Track login method (matches backend)
   authProviderId?: string; // Provider-specific ID
+  
+  // Extended fields from backend
+  bio?: string;
+  timezone?: string;
+  language?: string;
+  profilePicture?: string;
+  tier?: string;
+  walletAddress?: string;
+  walletNetwork?: string;
+  knowledgeScore?: number;
+  investmentScore?: number;
+  reputationScore?: number;
+  loginCount?: number;
+  isActive?: boolean;
 }
 
 export interface RegisterData {
@@ -182,7 +196,7 @@ class AuthService {
   }
 
   async updateProfile(data: Partial<User>): Promise<User> {
-    return apiClient.put('/auth/profile', data);
+    return apiClient.patch('/users/me', data);
   }
 
   async changePassword(currentPassword: string, newPassword: string): Promise<{ message: string }> {

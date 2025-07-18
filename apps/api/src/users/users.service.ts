@@ -47,6 +47,12 @@ export class UsersService {
     });
   }
 
+  async findByEmailVerificationToken(token: string): Promise<User | null> {
+    return this.userRepository.findOne({
+      where: { emailVerificationToken: token },
+    });
+  }
+
   async findByWalletAddress(walletAddress: string): Promise<User | null> {
     return this.userRepository.findOne({
       where: { walletAddress },

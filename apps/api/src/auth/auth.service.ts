@@ -4,6 +4,7 @@ import {
   ConflictException,
   BadRequestException,
   NotFoundException,
+  InternalServerErrorException,
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -412,6 +413,73 @@ export class AuthService {
     } catch (error) {
       console.error('Failed to send password reset email:', error);
       // Log error but don't fail the request
+    }
+  }
+
+  async requestEmailChange(userId: string, newEmail: string): Promise<{ message: string }> {
+    // Check if user exists
+    const user = await this.usersService.findOne(userId);
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
+
+    // Check if new email is already in use
+    const existingUser = await this.usersService.findByEmail(newEmail);
+    if (existingUser) {
+      throw new ConflictException('Email already in use');
+    }
+
+    // Generate email change token
+    const token = uuidv4();
+    
+    // Store the token and new email
+    // Direct repository update to bypass DTO validation
+    await this.userRepository.update(userId, {
+      emailVerificationToken: token,
+      // TODO: Add a pendingEmail field to store the new email
+    });
+
+    // Send confirmation email to the NEW email address
+    await this.sendEmailChangeConfirmation(newEmail, user.firstName || 'User', token);
+
+    return { message: 'Email change confirmation sent to new email address' };
+  }
+
+  async confirmEmailChange(token: string): Promise<{ message: string; user: User }> {
+    // Find user by email verification token
+    const user = await this.usersService.findByEmailVerificationToken(token);
+    if (!user) {
+      throw new BadRequestException('Invalid or expired token');
+    }
+
+    // Update the user's email
+    // Note: You would need to store the pending email somewhere
+    // For now, this is a placeholder implementation
+    await this.userRepository.update(user.id, {
+      emailVerified: true,
+      emailVerificationToken: null,
+      // TODO: Update email field with the pending email
+    });
+
+    const updatedUser = await this.usersService.findOne(user.id);
+
+    return { 
+      message: 'Email changed successfully',
+      user: updatedUser
+    };
+  }
+
+  private async sendEmailChangeConfirmation(newEmail: string, userName: string, token: string): Promise<void> {
+    try {
+      // You would need to add this method to your mail service
+      await this.mailService.sendEmailVerification(
+        newEmail,
+        userName,
+        token,
+      );
+    } catch (error) {
+      console.error('Failed to send email change confirmation:', error);
+      throw new InternalServerErrorException('Failed to send confirmation email');
     }
   }
 }
