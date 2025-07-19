@@ -192,6 +192,18 @@ export class User {
   @Column({ name: 'reputation_score', default: 0 })
   reputationScore: number;
 
+  @Column({ name: 'pending_email', nullable: true })
+  @Exclude()
+  pendingEmail?: string;
+
+  @Column({ name: 'pending_email_token', nullable: true })
+  @Exclude()
+  pendingEmailToken?: string;
+
+  @Column({ name: 'pending_email_expiry', type: 'timestamp', nullable: true })
+  @Exclude()
+  pendingEmailExpiry?: Date;
+
   @CreateDateColumn({ name: 'created_at' })
   createdAt: Date;
 

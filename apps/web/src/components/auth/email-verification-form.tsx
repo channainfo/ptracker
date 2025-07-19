@@ -239,7 +239,7 @@ export function EmailVerificationForm() {
             href="/auth/login"
             className="btn-outline btn-lg flex-1 text-center"
           >
-            Sign in with different account
+            Switch Account
           </Link>
           <Link
             href="/dashboard"

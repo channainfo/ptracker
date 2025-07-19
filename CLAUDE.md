@@ -35,7 +35,13 @@ Generate code following these requirements:
   - Presentation layer separate from business logic
   - Clear layered architecture
 
+- **Database / ORM**:
+  - Use Migration when create or modify existing column or table
+  - Ensure create index properly
+  - Maintain high compatibility between schema changes
+
 - **Testing**: Include example unit tests demonstrating:
+  - Use factory and faker to construct records
   - Happy path scenarios
   - Edge cases
   - Error handling

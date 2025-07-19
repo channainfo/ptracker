@@ -78,13 +78,13 @@ function UserRow({ user, onEdit, onDelete, onToggleRole }: UserRowProps) {
           </div>
         </div>
       </td>
-      
+
       <td className="px-6 py-4">
         <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${getRoleBadgeColor(user.role)}`}>
           {user.role}
         </span>
       </td>
-      
+
       <td className="px-6 py-4">
         <div className="flex items-center">
           {user.emailVerified ? (
@@ -97,15 +97,15 @@ function UserRow({ user, onEdit, onDelete, onToggleRole }: UserRowProps) {
           </span>
         </div>
       </td>
-      
+
       <td className="px-6 py-4 text-sm text-muted-foreground">
         {formatDate(user.createdAt)}
       </td>
-      
+
       <td className="px-6 py-4 text-sm text-muted-foreground">
         {user.lastLoginAt ? formatDate(user.lastLoginAt) : 'Never'}
       </td>
-      
+
       <td className="px-6 py-4 text-right text-sm font-medium">
         <div className="relative">
           <button
@@ -114,17 +114,17 @@ function UserRow({ user, onEdit, onDelete, onToggleRole }: UserRowProps) {
           >
             <EllipsisVerticalIcon className="h-5 w-5" />
           </button>
-          
+
           {/* 📚 LEARNING: Dropdown Menu */}
           {/* This shows/hides based on showActions state */}
           {showActions && (
             <>
               {/* Backdrop to close dropdown when clicking outside */}
-              <div 
-                className="fixed inset-0 z-10" 
+              <div
+                className="fixed inset-0 z-10"
                 onClick={() => setShowActions(false)}
               />
-              
+
               {/* Dropdown menu */}
               <div className="absolute right-0 mt-2 w-48 bg-card border border-border rounded-lg shadow-lg z-20">
                 <button
@@ -137,7 +137,7 @@ function UserRow({ user, onEdit, onDelete, onToggleRole }: UserRowProps) {
                   <PencilIcon className="h-4 w-4 mr-2" />
                   Edit User
                 </button>
-                
+
                 <button
                   onClick={() => {
                     // Toggle between user and moderator (admin can't be changed)
@@ -150,7 +150,7 @@ function UserRow({ user, onEdit, onDelete, onToggleRole }: UserRowProps) {
                 >
                   {user.role === 'user' ? 'Promote to Moderator' : 'Demote to User'}
                 </button>
-                
+
                 <button
                   onClick={() => {
                     onDelete(user.id);
@@ -188,11 +188,11 @@ export default function UserManagement() {
     const fetchUsers = async () => {
       try {
         setIsLoading(true);
-        
+
         // 📚 LEARNING: Simulated API Call
         // In real app, this would be: await apiClient.get('/admin/users')
         await new Promise(resolve => setTimeout(resolve, 1000));
-        
+
         // Mock user data
         const mockUsers: AdminUser[] = [
           {
@@ -239,7 +239,7 @@ export default function UserManagement() {
             isActive: true,
           },
         ];
-        
+
         setUsers(mockUsers);
       } catch (error) {
         console.error('Failed to fetch users:', error);
@@ -255,13 +255,13 @@ export default function UserManagement() {
   // This only recalculates when users, searchTerm, or roleFilter change
   const filteredUsers = useMemo(() => {
     return users.filter(user => {
-      const matchesSearch = 
+      const matchesSearch =
         user.firstName.toLowerCase().includes(searchTerm.toLowerCase()) ||
         user.lastName.toLowerCase().includes(searchTerm.toLowerCase()) ||
         user.email.toLowerCase().includes(searchTerm.toLowerCase());
-      
+
       const matchesRole = roleFilter === 'all' || user.role === roleFilter;
-      
+
       return matchesSearch && matchesRole;
     });
   }, [users, searchTerm, roleFilter]);
@@ -287,7 +287,7 @@ export default function UserManagement() {
   const handleToggleRole = async (userId: string, newRole: AdminUser['role']) => {
     try {
       // In real app: await apiClient.patch(`/admin/users/${userId}`, { role: newRole })
-      setUsers(users.map(user => 
+      setUsers(users.map(user =>
         user.id === userId ? { ...user, role: newRole } : user
       ));
       console.log('User role updated:', userId, newRole);
@@ -310,7 +310,7 @@ export default function UserManagement() {
 
   return (
     <AdminLayout title="User Management" subtitle="Manage user accounts and permissions">
-      
+
       {/* 📚 LEARNING: Search and Filter Controls */}
       <div className="mb-6 flex flex-col sm:flex-row gap-4 items-start sm:items-center justify-between">
         <div className="flex flex-col sm:flex-row gap-4 flex-1">
@@ -325,7 +325,7 @@ export default function UserManagement() {
               className="input pl-10"
             />
           </div>
-          
+
           {/* Role Filter */}
           <select
             value={roleFilter}
@@ -338,7 +338,7 @@ export default function UserManagement() {
             <option value="admin">Admins</option>
           </select>
         </div>
-        
+
         {/* Add User Button */}
         <button className="btn-primary flex items-center">
           <UserPlusIcon className="h-5 w-5 mr-2" />
@@ -392,15 +392,15 @@ export default function UserManagement() {
             </tbody>
           </table>
         </div>
-        
+
         {/* Empty State */}
         {filteredUsers.length === 0 && (
           <div className="text-center py-12">
-            <UsersIcon className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
+            <UserPlusIcon className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
             <h3 className="text-lg font-medium text-foreground mb-2">No users found</h3>
             <p className="text-muted-foreground">
-              {searchTerm || roleFilter !== 'all' 
-                ? 'Try adjusting your search or filter criteria.' 
+              {searchTerm || roleFilter !== 'all'
+                ? 'Try adjusting your search or filter criteria.'
                 : 'No users have been registered yet.'
               }
             </p>
@@ -415,7 +415,7 @@ export default function UserManagement() {
             <h3 className="text-lg font-semibold text-foreground mb-4">
               Edit User: {selectedUser.firstName} {selectedUser.lastName}
             </h3>
-            
+
             <div className="space-y-4">
               <div>
                 <label className="form-label">First Name</label>
@@ -425,7 +425,7 @@ export default function UserManagement() {
                   className="input"
                 />
               </div>
-              
+
               <div>
                 <label className="form-label">Last Name</label>
                 <input
@@ -434,7 +434,7 @@ export default function UserManagement() {
                   className="input"
                 />
               </div>
-              
+
               <div>
                 <label className="form-label">Email</label>
                 <input
@@ -443,7 +443,7 @@ export default function UserManagement() {
                   className="input"
                 />
               </div>
-              
+
               <div>
                 <label className="form-label">Role</label>
                 <select defaultValue={selectedUser.role} className="input">
@@ -453,7 +453,7 @@ export default function UserManagement() {
                 </select>
               </div>
             </div>
-            
+
             <div className="flex justify-end space-x-3 mt-6">
               <button
                 onClick={() => setShowEditModal(false)}

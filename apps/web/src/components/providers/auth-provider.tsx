@@ -88,6 +88,8 @@ interface AuthContextType {
   checkSecurityStatus: () => Promise<{ isSecure: boolean; recommendations: string[] }>;
   getLoginAttempts: (email: string) => LoginAttempt | null;
   clearLoginAttempts: (email: string) => void;
+  requestEmailChange: (newEmail: string) => Promise<{ message: string }>;
+  confirmEmailChange: (token: string) => Promise<{ message: string; user: User }>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -267,6 +269,14 @@ class AuthService {
       isSecure: emailSecure && user.twoFactorEnabled,
       recommendations
     };
+  }
+
+  async requestEmailChange(newEmail: string): Promise<{ message: string }> {
+    return apiClient.post('/auth/change-email', { newEmail });
+  }
+
+  async confirmEmailChange(token: string): Promise<{ message: string; user: User }> {
+    return apiClient.post('/auth/confirm-email-change', { token });
   }
 }
 
@@ -577,6 +587,31 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     });
   }, []);
 
+  const requestEmailChange = useCallback(async (newEmail: string) => {
+    try {
+      const result = await authService.requestEmailChange(newEmail);
+      toast.success('Email change confirmation sent to your new email address');
+      return result;
+    } catch (error: any) {
+      const message = error.message || 'Failed to request email change';
+      toast.error(message);
+      throw error;
+    }
+  }, []);
+
+  const confirmEmailChange = useCallback(async (token: string) => {
+    try {
+      const result = await authService.confirmEmailChange(token);
+      setUser(result.user);
+      toast.success('Email changed successfully');
+      return result;
+    } catch (error: any) {
+      const message = error.message || 'Failed to confirm email change';
+      toast.error(message);
+      throw error;
+    }
+  }, []);
+
   const value: AuthContextType = {
     user,
     isAuthenticated: !!user,
@@ -597,6 +632,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     checkSecurityStatus,
     getLoginAttempts,
     clearLoginAttempts,
+    requestEmailChange,
+    confirmEmailChange,
   };
 
   return (

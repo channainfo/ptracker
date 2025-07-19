@@ -9,16 +9,73 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import { SearchableSelect, type Option } from "@/components/ui/searchable-select";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { useAuth } from "@/components/providers/auth-provider";
 import { User, Mail, Phone, MapPin, Calendar, Camera, Crown, Shield, Star } from "lucide-react";
 import toast from "react-hot-toast";
+import { ChangeEmailModal } from "@/components/settings/change-email-modal";
 
 // export const metadata: Metadata = {
 //   title: "Profile Settings - PTracker",
 //   description: "Manage your profile information and preferences",
 // };
+
+const timezoneOptions: Option[] = [
+  { value: "Pacific/Honolulu", label: "(UTC-10:00) Hawaii" },
+  { value: "America/Anchorage", label: "(UTC-09:00) Alaska" },
+  { value: "America/Los_Angeles", label: "(UTC-08:00) Pacific Time (US & Canada)" },
+  { value: "America/Phoenix", label: "(UTC-07:00) Arizona" },
+  { value: "America/Denver", label: "(UTC-07:00) Mountain Time (US & Canada)" },
+  { value: "America/Chicago", label: "(UTC-06:00) Central Time (US & Canada)" },
+  { value: "America/New_York", label: "(UTC-05:00) Eastern Time (US & Canada)" },
+  { value: "America/Caracas", label: "(UTC-04:00) Caracas" },
+  { value: "America/Santiago", label: "(UTC-04:00) Santiago" },
+  { value: "America/Sao_Paulo", label: "(UTC-03:00) Brasilia, São Paulo" },
+  { value: "America/Argentina/Buenos_Aires", label: "(UTC-03:00) Buenos Aires" },
+  { value: "Atlantic/Azores", label: "(UTC-01:00) Azores" },
+  { value: "Europe/London", label: "(UTC+00:00) London, Dublin, Lisbon" },
+  { value: "Europe/Paris", label: "(UTC+01:00) Paris, Madrid, Rome" },
+  { value: "Europe/Berlin", label: "(UTC+01:00) Berlin, Vienna, Prague" },
+  { value: "Europe/Athens", label: "(UTC+02:00) Athens, Istanbul, Cairo" },
+  { value: "Europe/Moscow", label: "(UTC+03:00) Moscow, St. Petersburg" },
+  { value: "Asia/Dubai", label: "(UTC+04:00) Dubai, Abu Dhabi" },
+  { value: "Asia/Karachi", label: "(UTC+05:00) Karachi, Islamabad" },
+  { value: "Asia/Kolkata", label: "(UTC+05:30) Mumbai, Kolkata, New Delhi" },
+  { value: "Asia/Dhaka", label: "(UTC+06:00) Dhaka" },
+  { value: "Asia/Bangkok", label: "(UTC+07:00) Bangkok, Hanoi, Jakarta" },
+  { value: "Asia/Shanghai", label: "(UTC+08:00) Beijing, Shanghai" },
+  { value: "Asia/Hong_Kong", label: "(UTC+08:00) Hong Kong" },
+  { value: "Asia/Singapore", label: "(UTC+08:00) Singapore" },
+  { value: "Asia/Tokyo", label: "(UTC+09:00) Tokyo, Osaka, Sapporo" },
+  { value: "Asia/Seoul", label: "(UTC+09:00) Seoul" },
+  { value: "Australia/Sydney", label: "(UTC+10:00) Sydney, Melbourne" },
+  { value: "Pacific/Auckland", label: "(UTC+12:00) Auckland, Wellington" },
+];
+
+const languageOptions: Option[] = [
+  { value: "en", label: "English" },
+  { value: "es", label: "Español (Spanish)" },
+  { value: "fr", label: "Français (French)" },
+  { value: "de", label: "Deutsch (German)" },
+  { value: "it", label: "Italiano (Italian)" },
+  { value: "pt", label: "Português (Portuguese)" },
+  { value: "ru", label: "Русский (Russian)" },
+  { value: "zh", label: "中文 (Chinese)" },
+  { value: "ja", label: "日本語 (Japanese)" },
+  { value: "ko", label: "한국어 (Korean)" },
+  { value: "ar", label: "العربية (Arabic)" },
+  { value: "hi", label: "हिन्दी (Hindi)" },
+  { value: "th", label: "ไทย (Thai)" },
+  { value: "vi", label: "Tiếng Việt (Vietnamese)" },
+  { value: "id", label: "Bahasa Indonesia" },
+  { value: "ms", label: "Bahasa Melayu" },
+  { value: "tr", label: "Türkçe (Turkish)" },
+  { value: "nl", label: "Nederlands (Dutch)" },
+  { value: "pl", label: "Polski (Polish)" },
+  { value: "sv", label: "Svenska (Swedish)" },
+];
 
 export default function ProfileSettingsPage() {
   const { user, updateProfile, isLoading } = useAuth();
@@ -30,6 +87,7 @@ export default function ProfileSettingsPage() {
     language: '',
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [showEmailChangeModal, setShowEmailChangeModal] = useState(false);
 
   // Initialize form data when user data is available
   useEffect(() => {
@@ -207,10 +265,7 @@ export default function ProfileSettingsPage() {
                     <Button 
                       variant="outline" 
                       size="sm"
-                      onClick={() => toast('Email change requires verification. This feature is coming soon!', {
-                        icon: 'ℹ️',
-                        duration: 4000,
-                      })}
+                      onClick={() => setShowEmailChangeModal(true)}
                     >
                       Change Email
                     </Button>
@@ -285,20 +340,22 @@ export default function ProfileSettingsPage() {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="space-y-2">
                   <Label htmlFor="timezone">Timezone</Label>
-                  <Input 
+                  <SearchableSelect 
                     id="timezone" 
+                    options={timezoneOptions}
                     value={formData.timezone}
-                    onChange={(e) => handleInputChange('timezone', e.target.value)}
-                    placeholder="America/New_York" 
+                    onChange={(value) => handleInputChange('timezone', value)}
+                    placeholder="Search and select a timezone"
                   />
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="language">Language</Label>
-                  <Input 
+                  <SearchableSelect 
                     id="language" 
+                    options={languageOptions}
                     value={formData.language}
-                    onChange={(e) => handleInputChange('language', e.target.value)}
-                    placeholder="English (US)" 
+                    onChange={(value) => handleInputChange('language', value)}
+                    placeholder="Search and select a language"
                   />
                 </div>
               </div>
@@ -383,6 +440,13 @@ export default function ProfileSettingsPage() {
             </Button>
           </div>
         </div>
+
+        {/* Email Change Modal */}
+        <ChangeEmailModal 
+          isOpen={showEmailChangeModal}
+          onClose={() => setShowEmailChangeModal(false)}
+          currentEmail={user.email || ''}
+        />
       </AuthenticatedLayout>
     </ProtectedRoute>
   );
