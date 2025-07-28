@@ -47,7 +47,8 @@
       "Bash(./list-routes.sh:*)",
       "Bash(LOG_LEVEL=silent npm run routes:list)",
       "mcp__ide__getDiagnostics",
-      "Bash(npx next dev:*)"
+      "Bash(npx next dev:*)",
+      "Bash(mv:*)"
     ],
     "deny": []
   }

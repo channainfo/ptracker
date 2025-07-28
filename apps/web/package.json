@@ -5,6 +5,9 @@
   "private": true,
   "scripts": {
     "dev": "next dev -p 3900",
+    "dev:turbo": "next dev --turbo -p 3900",
+    "dev:precompile": "npm run dev & sleep 5 && node scripts/precompile-pages.js",
+    "precompile": "node scripts/precompile-pages.js",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",

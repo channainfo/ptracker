@@ -7,6 +7,24 @@ const nextConfig = {
   eslint: {
     ignoreDuringBuilds: true,
   },
+  // Development optimizations
+  onDemandEntries: {
+    // Period (in ms) where the server will keep pages in the buffer
+    maxInactiveAge: 60 * 1000,
+    // Number of pages that should be kept simultaneously without being disposed
+    pagesBufferLength: 5,
+  },
+  // Experimental features for better dev experience
+  experimental: {
+    // Enable optimizePackageImports for better dev performance
+    optimizePackageImports: ['lucide-react', 'react-hot-toast'],
+    // Enable turbo for faster builds (if available)
+    turbo: {
+      loaders: {
+        // Add custom loaders if needed
+      },
+    },
+  },
   env: {
     CUSTOM_KEY: process.env.CUSTOM_KEY,
   },
@@ -52,7 +70,7 @@ const nextConfig = {
       },
     ];
   },
-  webpack: (config, { isServer }) => {
+  webpack: (config, { isServer, dev }) => {
     if (!isServer) {
       config.resolve.fallback = {
         ...config.resolve.fallback,
@@ -62,6 +80,15 @@ const nextConfig = {
         crypto: false,
       };
     }
+    
+    // Disable lazy compilation in development for better dev experience
+    if (dev) {
+      config.experiments = {
+        ...config.experiments,
+        lazyCompilation: false,
+      };
+    }
+    
     return config;
   },
 };

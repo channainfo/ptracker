@@ -1,221 +1,358 @@
 # PTracker
 
-> **Your Journey from First Trade to Trading Bot Mastery – One Platform, Every Chain, Unlimited Potential**
+<div align="center">
 
-A comprehensive cryptocurrency portfolio management and education platform that empowers users to track, learn, and make informed investment decisions in the crypto space.
+[![GitHub stars](https://img.shields.io/github/stars/channainfo/ptracker?style=social)](https://github.com/channainfo/ptracker/stargazers)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=flat&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
+[![Docker](https://img.shields.io/badge/Docker-2496ED?style=flat&logo=docker&logoColor=white)](https://www.docker.com/)
+[![Discord](https://img.shields.io/badge/Discord-7289DA?style=flat&logo=discord&logoColor=white)](https://discord.gg/ptracker)
+
+</div>
+
+> **🚀 Open Source Crypto Portfolio Management – Your Data, Your Control, Your Success**
+
+**The first truly open source cryptocurrency portfolio tracker built for privacy, transparency, and community.**
+
+## 🌟 Why PTracker?
+
+In a world where crypto exchanges collapse and centralized services compromise user data, PTracker offers a **transparent, self-hostable alternative** that puts you in complete control of your financial data.
+
+### 🔓 **Open Source Advantages**
+- ✅ **Full Transparency** - Audit every line of code yourself
+- ✅ **Data Ownership** - Your portfolio data stays on your infrastructure  
+- ✅ **No Vendor Lock-in** - Export or migrate your data anytime
+- ✅ **Community-Driven** - Features built by and for the community
+- ✅ **Privacy First** - No tracking, no data mining, no surveillance
+
+### 🆚 **vs Closed Source Competitors**
+
+| Feature | CoinTracker | Koinly | Delta | **PTracker** |
+|---------|-------------|--------|-------|--------------|
+| **Open Source** | ❌ | ❌ | ❌ | ✅ **Yes** |
+| **Self-Hosting** | ❌ | ❌ | ❌ | ✅ **Full Control** |
+| **Data Ownership** | ⚠️ Limited | ⚠️ Limited | ⚠️ Limited | ✅ **Complete** |
+| **Cost (Basic)** | $199/year | $179/year | Free/Premium | ✅ **Free Forever** |
+| **Customizable** | ❌ | ❌ | ❌ | ✅ **Unlimited** |
+
+## 🚀 **Quick Start Options**
+
+### Option 1: One-Click Deployment (Recommended)
+```bash
+# Deploy with Docker Compose
+git clone https://github.com/channainfo/ptracker.git
+cd ptracker
+docker-compose up -d
+```
+**⚡ Ready in under 5 minutes!**
+
+### Option 2: Managed Cloud Service
+**[Try PTracker Cloud →](https://cloud.ptracker.com)** (Free 30-day trial)
+- No setup required
+- Automatic updates
+- Premium support included
+
+### Option 3: Development Setup
+Perfect for contributors and advanced users
+```bash
+git clone https://github.com/channainfo/ptracker.git
+cd ptracker
+npm install && npm run dev
+```
 
 ## Demo
 
 ![PTracker Demo](demo.gif)
 
-## Features
+## ✨ **Core Features**
 
-### Portfolio Management
-- **Multi-Portfolio Support**: Manage multiple portfolios with different strategies
-- **Exchange Integration**: Connect and sync with major cryptocurrency exchanges
-- **Real-time Tracking**: 
-  - Live price updates and portfolio valuation
-  - Multi-chain support (Ethereum, BSC, Polygon, Arbitrum, Solana, Sui)
-  - Cross-chain asset tracking and analytics
-  - Trading Bot Integration with automated strategies
-  - Real-time P&L tracking for bot performance
-- **Transaction History**: Complete record of all trades and transfers
-- **Performance Analytics**: Detailed profit/loss analysis and portfolio metrics
+### 📊 **Portfolio Management**
+- **🔗 Multi-Exchange Support** - Binance, Coinbase, Kraken, KuCoin and more
+- **⛓️ Multi-Chain Tracking** - Ethereum, BSC, Polygon, Arbitrum, Solana, Sui
+- **📈 Real-time Analytics** - Live P&L, performance metrics, allocation charts
+- **📱 Cross-Platform** - Web, mobile, and API access
+- **📋 Transaction History** - Complete audit trail with CSV export
 
-### Market Intelligence
-- **Real-time Data**: Live cryptocurrency prices and market updates
-- **Market Sentiment**: AI-powered sentiment analysis from multiple sources
-- **Price Alerts**: Customizable notifications for price movements
-- **Trending Assets**: Discover trending cryptocurrencies and tokens
+### 🛡️ **Privacy & Security First**
+- **🔐 Your Keys, Your Data** - Read-only API access, no withdrawal permissions
+- **🏠 Self-Hostable** - Deploy on your own infrastructure
+- **🔒 End-to-End Encryption** - All sensitive data encrypted locally
+- **🕵️ No Tracking** - Zero analytics, no user behavior monitoring
+- **✅ Open Source Auditable** - Every line of code is transparent
 
-### Educational Platform
-- **Structured Learning**: Progressive courses from beginner to advanced
-- **Interactive Content**: Quizzes, challenges, and hands-on exercises
-- **Expert Insights**: Curated content from industry professionals
-- **Community Learning**: Share and learn with other users
+### 🤖 **Advanced Features** *(Coming Soon)*
+- **Trading Bot Integration** - Automated DCA, grid trading, arbitrage strategies
+- **AI Market Sentiment** - Real-time sentiment analysis from social media
+- **Educational Platform** - Learn crypto trading and DeFi
+- **Tax Reporting** - Generate tax reports for multiple jurisdictions
 
-### Trading Bot Features
-- **Automated Trading**: Deploy custom trading strategies across multiple chains
-- **Strategy Templates**: Pre-built strategies for DCA, grid trading, and arbitrage
-- **Risk Management**: Stop-loss, take-profit, and position sizing controls
-- **Backtesting**: Test strategies against historical data
-- **Performance Monitoring**: Real-time bot performance metrics and alerts
+### 🌐 **Community-Driven Development**
+- **📝 Feature Voting** - Community decides development priorities  
+- **🔧 Plugin Architecture** - Extend functionality with custom plugins
+- **📚 Open Documentation** - Comprehensive guides and API docs
+- **💬 Active Community** - Discord, GitHub discussions, and forums
 
-### Security & Privacy
-- **Secure Authentication**: JWT-based auth with OAuth support
-- **Data Encryption**: End-to-end encryption for sensitive data
-- **Biometric Support**: Face ID/Touch ID on mobile devices
-- **API Key Management**: Secure storage of exchange API credentials
+## 🛠️ **Modern Tech Stack**
 
-## Tech Stack
+<div align="center">
 
-### Backend (API)
-- **Framework**: NestJS with TypeScript
-- **Database**: PostgreSQL with TypeORM
-- **Cache**: Redis for performance optimization
-- **Authentication**: Passport.js with JWT
-- **Real-time**: Socket.io for live updates
-- **Blockchain**: Multi-chain integration (Ethereum, BSC, Polygon, Arbitrum, Solana, Sui)
-- **Trading Bot**: Custom bot framework with strategy engine
+![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white)
+![Next.js](https://img.shields.io/badge/Next.js-000000?style=for-the-badge&logo=next.js&logoColor=white)
+![NestJS](https://img.shields.io/badge/NestJS-E0234E?style=for-the-badge&logo=nestjs&logoColor=white)
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-316192?style=for-the-badge&logo=postgresql&logoColor=white)
+![Docker](https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white)
+![Redis](https://img.shields.io/badge/Redis-DC382D?style=for-the-badge&logo=redis&logoColor=white)
 
-### Frontend (Web)
-- **Framework**: Next.js 15 with React 19
-- **Styling**: Tailwind CSS
-- **State Management**: Zustand
-- **Data Fetching**: TanStack Query, SWR
-- **UI Components**: Radix UI, Headless UI
-- **Wallet Integration**: RainbowKit, WalletConnect
+</div>
 
-### Mobile
-- **Framework**: Expo with React Native
-- **Navigation**: React Navigation
-- **Styling**: NativeWind
-- **Charts**: Victory Native
-- **Security**: Biometric authentication
+### 🔧 **Backend (API)**
+- **Framework**: NestJS with TypeScript - Enterprise-grade Node.js framework
+- **Database**: PostgreSQL with TypeORM - Reliable, ACID-compliant data storage
+- **Cache**: Redis - High-performance caching and sessions
+- **Authentication**: Passport.js with JWT - Secure, stateless authentication
+- **Real-time**: Socket.io - Live portfolio updates and notifications
+- **Blockchain**: Multi-chain RPC integration - Direct blockchain data access
 
-## Getting Started
+### 🌐 **Frontend (Web)**
+- **Framework**: Next.js 15 with React 19 - Modern, performant web framework
+- **Styling**: Tailwind CSS - Utility-first CSS framework
+- **State Management**: Zustand - Lightweight state management
+- **Data Fetching**: TanStack Query - Smart data fetching and caching
+- **UI Components**: Radix UI + Headless UI - Accessible, unstyled components
+- **Wallet Integration**: RainbowKit + WalletConnect - Seamless wallet connections
 
-### Prerequisites
+### 📱 **Mobile**
+- **Framework**: Expo with React Native - Cross-platform mobile development
+- **Navigation**: React Navigation - Native navigation patterns
+- **Styling**: NativeWind - Tailwind CSS for React Native
+- **Charts**: Victory Native - Beautiful, performant charts
+- **Security**: Expo SecureStore + Biometric authentication
+
+## 🤝 **Join Our Community**
+
+<div align="center">
+
+### **🌟 Star us on GitHub • 🐛 Report Issues • 💡 Request Features • 🚀 Contribute Code**
+
+[![Discord](https://img.shields.io/badge/Discord-5865F2?style=for-the-badge&logo=discord&logoColor=white)](https://discord.gg/ptracker)
+[![Twitter](https://img.shields.io/badge/Twitter-1DA1F2?style=for-the-badge&logo=twitter&logoColor=white)](https://twitter.com/ptracker_dev)
+[![GitHub Discussions](https://img.shields.io/badge/GitHub-Discussions-181717?style=for-the-badge&logo=github&logoColor=white)](https://github.com/channainfo/ptracker/discussions)
+
+</div>
+
+### 📢 **Stay Updated**
+- **🔔 [GitHub Releases](https://github.com/channainfo/ptracker/releases)** - Get notified of new versions
+- **📧 [Newsletter](https://ptracker.dev/newsletter)** - Monthly updates and crypto insights  
+- **📱 [Discord Community](https://discord.gg/ptracker)** - Real-time chat with developers and users
+- **🐦 [Twitter](https://twitter.com/ptracker_dev)** - Latest news and development updates
+
+### 🤝 **Contributing**
+We're always looking for contributors! Here are ways to get involved:
+
+- **🐛 Report Bugs** - Help us improve by reporting issues
+- **💡 Suggest Features** - Share your ideas in GitHub Discussions  
+- **📝 Improve Docs** - Help make our documentation better
+- **🔧 Write Code** - Contribute features and bug fixes
+- **🌍 Translate** - Help us reach more users globally
+- **💰 Sponsor** - Support the project financially
+
+**New to open source?** Check out our [**First Contributions Guide**](docs/contributing/first-contributions.md)
+
+## 📦 **Installation & Setup**
+
+### 🐳 **Docker (Recommended)**
+The fastest way to get PTracker running:
+
+```bash
+# Clone and start with Docker Compose
+git clone https://github.com/channainfo/ptracker.git
+cd ptracker
+docker-compose up -d
+
+# Access the application
+open http://localhost:3000
+```
+
+### 🔧 **Manual Development Setup**
+
+**Prerequisites:**
 - Node.js 18+ and npm
 - PostgreSQL 14+
 - Redis 6+
-- Git
 
-### Installation
-
-1. Clone the repository:
 ```bash
+# 1. Clone repository
 git clone https://github.com/channainfo/ptracker.git
 cd ptracker
-```
 
-2. Install dependencies:
-```bash
+# 2. Install dependencies
 npm install
-```
 
-3. Set up environment variables:
-```bash
-# Copy example env files
+# 3. Set up environment variables
 cp apps/api/.env.example apps/api/.env
 cp apps/web/.env.example apps/web/.env
-cp apps/mobile/.env.example apps/mobile/.env
-```
 
-4. Set up the database:
-```bash
-# Run database migrations
+# 4. Set up database
 npm run db:migrate
+npm run db:seed  # Optional: Add sample data
 
-# Seed initial data (optional)
-npm run db:seed
-```
-
-5. Start the development servers:
-```bash
-# Start all services
+# 5. Start development servers
 npm run dev
-
-# Or start individually
-npm run dev:api    # Backend API
-npm run dev:web    # Web frontend
-npm run dev:mobile # Mobile app
 ```
 
-### Running Tests
+**🌐 Access your PTracker instance:**
+- **Web App**: http://localhost:3000
+- **API Docs**: http://localhost:3001/api/docs
+- **Admin Panel**: http://localhost:3000/admin
+
+### ☁️ **Cloud Deployment**
+Deploy to your favorite cloud provider:
+
+<div align="center">
+
+[![Deploy on Railway](https://railway.app/button.svg)](https://railway.app/template/ptracker)
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/channainfo/ptracker)
+[![Deploy to Heroku](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/channainfo/ptracker)
+
+</div>
+
+## 🧪 **Testing**
 
 ```bash
 # Run all tests
 npm run test
 
-# Run specific workspace tests
-npm run test:api
-npm run test:web
-npm run test:mobile
-
-# Run E2E tests
-npm run test:e2e
+# Test specific components
+npm run test:api      # Backend API tests
+npm run test:web      # Frontend tests
+npm run test:mobile   # Mobile app tests
+npm run test:e2e      # End-to-end tests
 ```
 
-## Project Structure
+## 📁 **Project Structure**
 
 ```
 ptracker/
 ├── apps/
-│   ├── api/          # NestJS backend API
-│   ├── web/          # Next.js web application
-│   └── mobile/       # React Native mobile app
-├── packages/         # Shared packages
-│   ├── types/        # TypeScript type definitions
-│   ├── utils/        # Shared utilities
-│   └── ui/           # Shared UI components
-├── docs/             # Documentation
-└── scripts/          # Build and deployment scripts
+│   ├── api/          # 🔧 NestJS backend API
+│   ├── web/          # 🌐 Next.js web application  
+│   └── mobile/       # 📱 React Native mobile app
+├── packages/         # 📦 Shared packages
+│   ├── types/        # 📝 TypeScript definitions
+│   ├── utils/        # 🛠️ Shared utilities
+│   └── ui/           # 🎨 Shared UI components
+├── docs/             # 📚 Documentation
+└── docker/           # 🐳 Docker configurations
 ```
 
-## API Documentation
+## 📖 **Documentation**
 
-The API documentation is available at `http://localhost:3000/api/docs` when running the backend server in development mode.
+<div align="center">
 
-## Contributing
+[![Documentation](https://img.shields.io/badge/Documentation-Read%20the%20Docs-blue?style=for-the-badge)](https://docs.ptracker.dev)
+[![API Docs](https://img.shields.io/badge/API-Swagger%20Docs-85EA2D?style=for-the-badge&logo=swagger&logoColor=black)](http://localhost:3001/api/docs)
 
-We welcome contributions! Please see our [Contributing Guide](CONTRIBUTING.md) for details.
+</div>
 
-### Development Workflow
+- **📚 [Complete Documentation](docs/README.md)** - Comprehensive guides and tutorials
+- **🚀 [Getting Started Guide](docs/getting-started/quick-start.md)** - Step-by-step setup instructions
+- **🔧 [Development Guide](docs/development/development.md)** - Contributing and development workflow
+- **🔌 [API Reference](docs/api/authentication-api.md)** - Complete API documentation
+- **🐳 [Deployment Guide](docs/deployment/deployment.md)** - Production deployment instructions
 
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
+## 🤝 **Contributing**
 
-## Deployment
+We ❤️ contributions! Here's how to get started:
 
-### Backend Deployment
-The API can be deployed to various platforms:
-- AWS ECS/Fargate
-- Google Cloud Run
-- Heroku
-- Digital Ocean App Platform
+```bash
+# 1. Fork the repo on GitHub
+# 2. Clone your fork
+git clone https://github.com/yourusername/ptracker.git
 
-### Frontend Deployment
-- Web: Vercel, Netlify, or AWS Amplify
-- Mobile: Expo EAS Build for app stores
+# 3. Create a feature branch
+git checkout -b feature/awesome-feature
 
-## Environment Variables
+# 4. Make your changes and commit
+git commit -m "Add awesome feature"
 
-### API Environment Variables
-- `DATABASE_URL`: PostgreSQL connection string
-- `REDIS_URL`: Redis connection string
-- `JWT_SECRET`: Secret for JWT token generation
-- `GOOGLE_CLIENT_ID`: Google OAuth client ID
-- `GOOGLE_CLIENT_SECRET`: Google OAuth client secret
+# 5. Push and create a Pull Request
+git push origin feature/awesome-feature
+```
 
-### Web Environment Variables
-- `NEXT_PUBLIC_API_URL`: Backend API URL
-- `NEXT_PUBLIC_WS_URL`: WebSocket server URL
-- `NEXT_PUBLIC_GOOGLE_CLIENT_ID`: Google OAuth client ID
+**📋 Before contributing:**
+- Read our [Contributing Guide](docs/contributing/contributing.md)
+- Check the [Development Setup](docs/development/development.md)
+- Join our [Discord](https://discord.gg/ptracker) for questions
 
-### Mobile Environment Variables
-- `EXPO_PUBLIC_API_URL`: Backend API URL
-- `EXPO_PUBLIC_WS_URL`: WebSocket server URL
+## 🚀 **Roadmap**
 
-## Ref
-- Register Google Oauth API: https://dev.to/jkevinbaluyot/google-login-rails-7-tutorial-1ai6
-- Google one-tap login: https://developers.google.com/identity/gsi/web/reference/html-reference and make sure to whitelist your domains in the **Authorized JavaScript origins** section next to the Authorized redirect URIs in the Credentials config.
-- Register Github Oauth API: https://github.com/settings/applications/new
+### **Phase 1: Open Source MVP** *(Q2 2025)*
+- [ ] Open source release on GitHub
+- [ ] Docker deployment setup
+- [ ] Basic portfolio tracking
+- [ ] Single exchange integration (Coinbase)
+- [ ] Community infrastructure (Discord, docs)
 
-## License
+### **Phase 2: Core Features** *(Q3 2025)*
+- [ ] Multi-exchange integration
+- [ ] Real-time portfolio tracking
+- [ ] Transaction history and analytics
+- [ ] Mobile app release
+- [ ] Managed SaaS launch
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+### **Phase 3: Advanced Features** *(Q4 2025)*
+- [ ] Trading bot integration
+- [ ] AI market sentiment analysis
+- [ ] Tax reporting tools
+- [ ] DeFi protocol tracking
+- [ ] Enterprise tier launch
 
-## Support
+### **Phase 4: Community & Education** *(Q1 2026)*
+- [ ] Educational platform
+- [ ] Community features and forums
+- [ ] Plugin marketplace
+- [ ] Multi-language support
 
-- Documentation: [docs.ptracker.com](https://docs.ptracker.com)
-- Issues: [GitHub Issues](https://github.com/channainfo/ptracker/issues)
-- Discord: [Join our community](https://discord.gg/ptracker)
+**📊 [View Full Roadmap](https://github.com/channainfo/ptracker/projects)**
 
-## Acknowledgments
+## 💰 **Sponsor the Project**
 
-- Built with love by the PTracker team
-- Special thanks to all contributors and the open-source community
+Help us build the future of open source crypto portfolio management:
+
+<div align="center">
+
+[![GitHub Sponsors](https://img.shields.io/badge/GitHub-Sponsors-EA4AAA?style=for-the-badge&logo=github&logoColor=white)](https://github.com/sponsors/channainfo)
+[![Open Collective](https://img.shields.io/badge/Open%20Collective-Support-41B883?style=for-the-badge&logo=opencollective&logoColor=white)](https://opencollective.com/ptracker)
+[![Ko-fi](https://img.shields.io/badge/Ko--fi-Buy%20a%20Coffee-FF5E5B?style=for-the-badge&logo=ko-fi&logoColor=white)](https://ko-fi.com/ptracker)
+
+</div>
+
+## 📄 **License**
+
+This project is licensed under the **MIT License** - see the [LICENSE](LICENSE) file for details.
+
+**💡 What this means:**
+- ✅ **Commercial use** - Use in commercial projects
+- ✅ **Modification** - Modify and distribute
+- ✅ **Distribution** - Share with others
+- ✅ **Private use** - Use for personal projects
+- ❗ **Limitation** - No warranty or liability
+
+## 🙏 **Acknowledgments**
+
+- **🌟 [All Contributors](https://github.com/channainfo/ptracker/graphs/contributors)** - Thank you for making PTracker better!
+- **🔗 [Crypto APIs](docs/references/api-providers.md)** - For reliable market data
+- **🛠️ [Open Source Libraries](package.json)** - Built on the shoulders of giants
+- **💬 [Community](https://discord.gg/ptracker)** - For feedback, bug reports, and feature requests
+
+---
+
+<div align="center">
+
+**⭐ If PTracker helps you manage your crypto portfolio, please give us a star!**
+
+[![Star History Chart](https://api.star-history.com/svg?repos=channainfo/ptracker&type=Date)](https://star-history.com/#channainfo/ptracker&Date)
+
+**Built with ❤️ by the open source community**
+
+</div>
